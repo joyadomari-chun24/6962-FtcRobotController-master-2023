@@ -79,6 +79,7 @@ import java.util.List;
  * Once you put all your sensor reads at the beginning of the control cycle, it's very easy to use
  * the bulk-read AUTO mode to streamline your cycle timing.
  */
+
 @TeleOp (name = "Motor Bulk Reads", group = "Tests")
 @Disabled
 public class ConceptMotorBulkRead extends LinearOpMode {
