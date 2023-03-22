@@ -1,6 +1,7 @@
 repositories {
     mavenCentral()
     google() // Needed for androidx
+    maven { url = 'https://maven.brott.dev/' }
     flatDir {
         dirs rootProject.file('libs')
     }
@@ -17,6 +18,7 @@ dependencies {
     implementation 'org.firstinspires.ftc:FtcCommon:8.1.1'
     implementation 'org.tensorflow:tensorflow-lite-task-vision:0.2.0'
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'org.firstinspires.ftc:gameAssets-PowerPlay:1.0.0'
+    implementation 'org.firstinspires.ftc:gameAssets-PowerPlay:1.0.0' //CHANGE THIS NEXT YEAR
+    implementation 'com.acmerobotics.dashboard:dashboard:0.4.5'
 }
 
