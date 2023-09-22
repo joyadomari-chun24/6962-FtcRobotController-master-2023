@@ -51,7 +51,6 @@ import java.util.List;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
  */
 @TeleOp(name = "Concept: Double Vision", group = "Concept")
-@Disabled
 public class ActiveDoubleVision extends LinearOpMode {
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
@@ -148,11 +147,6 @@ public class ActiveDoubleVision extends LinearOpMode {
         if (USE_WEBCAM) {
             myVisionPortal = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
-                .addProcessors(tfod, aprilTag)
-                .build();
-        } else {
-            myVisionPortal = new VisionPortal.Builder()
-                .setCamera(BuiltinCameraDirection.BACK)
                 .addProcessors(tfod, aprilTag)
                 .build();
         }
