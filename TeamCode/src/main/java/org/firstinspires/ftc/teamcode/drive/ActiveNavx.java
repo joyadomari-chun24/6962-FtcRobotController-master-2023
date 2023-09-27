@@ -97,6 +97,7 @@ public class ActiveNavx extends LinearOpMode {
             // about all three axes. Additionally, it internally integrates the Z axis to
             // be able to report an absolute angular Z orientation.
             AngularVelocity rates = gyro.getAngularVelocity(AngleUnit.DEGREES);
+            //Intrinsic = navx remains constant zyx axis orientation to the field
             Orientation angles = gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
             telemetry.addLine()
