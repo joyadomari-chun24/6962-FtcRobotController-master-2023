@@ -35,8 +35,8 @@ public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer 
     public static double FORWARD_OFFSET = 2; // in; offset of the lateral wheel
 
     //Tuning for deadwheels using the formula: actual distance/deadwheel's recorded distance
-    public static double X_MULTIPLIER = 1.032258064516129;
-    public static double Y_MULTIPLIER = 1.028139976973948;
+    public static double X_MULTIPLIER = 1;
+    public static double Y_MULTIPLIER = 1;
 
     private Encoder leftEncoder, rightEncoder, frontEncoder;
 
