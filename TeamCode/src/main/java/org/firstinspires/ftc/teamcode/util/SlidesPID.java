@@ -1,7 +1,20 @@
+package org.firstinspires.ftc.teamcode.util;
+
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.acmerobotics.dashboard.config.Config;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+import com.acmerobotics.roadrunner.util.NanoClock;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 public class PIDController {
 
 	/**
 	 * construct PID controller
+	 *
 	 * @param Kp Proportional coefficient
 	 * @param Ki Integral coefficient
 	 * @param Kd Derivative coefficient
@@ -12,14 +25,37 @@ public class PIDController {
 
 	/**
 	 * update the PID controller output
+	 *
 	 * @param target where we would like to be, also called the reference
-	 * @param state where we currently are, I.E. motor position
+	 * @param state  where we currently are, I.E. motor position
 	 * @return the command to our motor, I.E. motor power
 	 */
+
 	public double update(double target, double state) {
 		// PID logic and then return the output
+			// obtain the encoder position
+			encoderPosition = armMotor.getPosition();
+			// calculate the error
+			error = reference - encoderPosition;
+
+			// rate of change of the error
+			derivative = (error - lastError) / timer.seconds();
+
+			// sum of all error over time
+			integralSum = integralSum + (error * timer.seconds());
+
+			out = (Kp * error) + (Ki * integralSum) + (Kd * derivative);
+
+			armMotor.setPower(out);
+
+			lastError = error;
+
+			// reset the timer for next time
+			timer.reset();
+
 	}
 }
+
 public class tutorial extends LinearOpMode {
 
 	// motor declaration, we use the
@@ -30,7 +66,7 @@ public class tutorial extends LinearOpMode {
 	@Override
 	public void runOpMode() throws InterruptedException {
 		// the string is the hardware map name
-		motor = hardwareMap.get(DcMotorEx.class, "scoringSlide");
+		motor = hardwareMap.get(DcMotorEx.class, "arm");
 
 		// use braking to slow the motor down faster
 		motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
