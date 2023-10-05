@@ -44,11 +44,12 @@ public class VisionPortalStreamingOpMode extends LinearOpMode {
         //This is what we want to do to the frame
         @Override
         public Object processFrame(Mat frame, long captureTimeNanos) {
+            Mat imgMat = new Mat();
             Bitmap b = Bitmap.createBitmap(frame.width(), frame.height(), Bitmap.Config.RGB_565);
             Utils.matToBitmap(frame, b);
             lastFrame.set(b);
 
-            Imgproc.cvtColor(frame, frame, Imgproc.COLOR_RGB2HSV);
+            Imgproc.cvtColor(frame, imgMat, Imgproc.COLOR_RGB2HSV);
 //            if (frame.empty())
 //                return null;
 
@@ -63,7 +64,7 @@ public class VisionPortalStreamingOpMode extends LinearOpMode {
                             frame.rows()*(3f/4f)),
                     new Scalar(0, 255, 0), 4);
 
-            frame.copyTo(frame);
+            imgMat.copyTo(frame);
 
             return frame;
         }
