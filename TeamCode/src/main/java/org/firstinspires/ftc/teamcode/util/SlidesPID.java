@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 package org.firstinspires.ftc.teamcode.util;
 
@@ -11,11 +12,16 @@ import com.acmerobotics.roadrunner.util.NanoClock;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+=======
+>>>>>>> Stashed changes
 public class PIDController {
 
 	/**
 	 * construct PID controller
+<<<<<<< Updated upstream
 	 *
+=======
+>>>>>>> Stashed changes
 	 * @param Kp Proportional coefficient
 	 * @param Ki Integral coefficient
 	 * @param Kd Derivative coefficient
@@ -26,6 +32,7 @@ public class PIDController {
 
 	/**
 	 * update the PID controller output
+<<<<<<< Updated upstream
 	 *
 	 * @param target where we would like to be, also called the reference
 	 * @param state  where we currently are, I.E. motor position
@@ -57,6 +64,16 @@ public class PIDController {
 	}
 }
 
+=======
+	 * @param target where we would like to be, also called the reference
+	 * @param state where we currently are, I.E. motor position
+	 * @return the command to our motor, I.E. motor power
+	 */
+	public double update(double target, double state) {
+		// PID logic and then return the output
+	}
+}
+>>>>>>> Stashed changes
 public class tutorial extends LinearOpMode {
 
 	// motor declaration, we use the
@@ -67,7 +84,11 @@ public class tutorial extends LinearOpMode {
 	@Override
 	public void runOpMode() throws InterruptedException {
 		// the string is the hardware map name
+<<<<<<< Updated upstream
 		motor = hardwareMap.get(DcMotorEx.class, "arm");
+=======
+		motor = hardwareMap.get(DcMotorEx.class, "scoringSlide");
+>>>>>>> Stashed changes
 
 		// use braking to slow the motor down faster
 		motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -89,6 +110,7 @@ public class tutorial extends LinearOpMode {
 			motor.setPower(command);
 		}
 	}
+<<<<<<< Updated upstream
 }
 =======
 //public class PIDController {
@@ -147,3 +169,6 @@ public class tutorial extends LinearOpMode {
 //	}
 //}
 >>>>>>> 92365c0cf53c2ba0510953e47ad9c5221d732da3
+=======
+}
+>>>>>>> Stashed changes
