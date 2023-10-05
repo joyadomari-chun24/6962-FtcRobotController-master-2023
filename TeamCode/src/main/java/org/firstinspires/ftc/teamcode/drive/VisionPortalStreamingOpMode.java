@@ -9,13 +9,25 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.function.Consumer;
 import org.firstinspires.ftc.robotcore.external.function.Continuation;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.stream.CameraStreamSource;
 import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.VisionProcessor;
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
+
+import org.opencv.core.Core;
+import org.opencv.core.Point;
+import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
+
+import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraFactory;
+import org.openftc.easyopencv.OpenCvCameraRotation;
+import org.openftc.easyopencv.OpenCvInternalCamera;
+import org.openftc.easyopencv.OpenCvPipeline;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -29,12 +41,31 @@ public class VisionPortalStreamingOpMode extends LinearOpMode {
             lastFrame.set(Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565));
         }
 
+        //This is what we want to do to the frame
         @Override
         public Object processFrame(Mat frame, long captureTimeNanos) {
             Bitmap b = Bitmap.createBitmap(frame.width(), frame.height(), Bitmap.Config.RGB_565);
             Utils.matToBitmap(frame, b);
             lastFrame.set(b);
-            return null;
+
+            Imgproc.cvtColor(frame, frame, Imgproc.COLOR_RGB2HSV);
+//            if (frame.empty())
+//                return null;
+
+            //No idea if this is going to work :P It didn't!!
+            Imgproc.rectangle(
+                    frame,
+                    new Point(
+                            frame.cols()/4,
+                            frame.rows()/4),
+                    new Point(
+                            frame.cols()*(3f/4f),
+                            frame.rows()*(3f/4f)),
+                    new Scalar(0, 255, 0), 4);
+
+            frame.copyTo(frame);
+
+            return frame;
         }
 
         @Override
@@ -50,13 +81,16 @@ public class VisionPortalStreamingOpMode extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
+        //Creates an instance of the processor above
         final CameraStreamProcessor processor = new CameraStreamProcessor();
 
+        //Builds a vision portal with the processor we just made and sets the webcam (if we use .addProcessors, we can add multiple processors to the frame. See double vision example)
         new VisionPortal.Builder()
                 .addProcessor(processor)
-                .setCamera(BuiltinCameraDirection.BACK)
+                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
                 .build();
 
+        //Sends the camera feed to the dashboard
         FtcDashboard.getInstance().startCameraStream(processor, 0);
 
         waitForStart();
