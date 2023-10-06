@@ -36,7 +36,6 @@ import java.util.concurrent.atomic.AtomicReference;
 @Config
 public class VisionPortalStreamingOpMode extends LinearOpMode {
     public static class CameraStreamProcessor implements VisionProcessor, CameraStreamSource {
-        int testVarDoesNothing = 0;
         private final AtomicReference<Bitmap> lastFrame = new AtomicReference<>(Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565));
 
         @Override
@@ -48,24 +47,17 @@ public class VisionPortalStreamingOpMode extends LinearOpMode {
         @Override
         public Object processFrame(Mat frame, long captureTimeNanos) {
             Mat imgMat = new Mat();
+
+            //Not sure what this does exactly.
             Bitmap b = Bitmap.createBitmap(frame.width(), frame.height(), Bitmap.Config.RGB_565);
             Utils.matToBitmap(frame, b);
             lastFrame.set(b);
 
+            //Converts from RGB to HSV
             Imgproc.cvtColor(frame, imgMat, Imgproc.COLOR_RGB2HSV);
-//            if (frame.empty())
-//                return null;
 
-            //No idea if this is going to work :P It didn't!!
-            Imgproc.rectangle(
-                    frame,
-                    new Point(
-                            frame.cols()/4,
-                            frame.rows()/4),
-                    new Point(
-                            frame.cols()*(3f/4f),
-                            frame.rows()*(3f/4f)),
-                    new Scalar(0, 255, 0), 4);
+            if (imgMat.empty())
+                return null;
 
             imgMat.copyTo(frame);
 
