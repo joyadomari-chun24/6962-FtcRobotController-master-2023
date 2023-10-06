@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -32,8 +33,10 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Autonomous
+@Config
 public class VisionPortalStreamingOpMode extends LinearOpMode {
     public static class CameraStreamProcessor implements VisionProcessor, CameraStreamSource {
+        int testVarDoesNothing = 0;
         private final AtomicReference<Bitmap> lastFrame = new AtomicReference<>(Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565));
 
         @Override
@@ -79,7 +82,6 @@ public class VisionPortalStreamingOpMode extends LinearOpMode {
             continuation.dispatch(bitmapConsumer -> bitmapConsumer.accept(lastFrame.get()));
         }
     }
-
     @Override
     public void runOpMode() throws InterruptedException {
         //Creates an instance of the processor above
