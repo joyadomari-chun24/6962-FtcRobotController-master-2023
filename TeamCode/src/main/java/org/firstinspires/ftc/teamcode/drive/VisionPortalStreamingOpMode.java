@@ -56,9 +56,12 @@ public class VisionPortalStreamingOpMode extends LinearOpMode {
             //Converts from RGB to HSV
             Imgproc.cvtColor(frame, imgMat, Imgproc.COLOR_RGB2HSV);
 
+<<<<<<< Updated upstream
             if (imgMat.empty())
                 return null;
 
+=======
+>>>>>>> Stashed changes
             imgMat.copyTo(frame);
 
             return frame;
