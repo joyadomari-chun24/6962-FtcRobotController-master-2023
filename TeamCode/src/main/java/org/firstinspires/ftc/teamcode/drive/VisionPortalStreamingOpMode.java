@@ -33,7 +33,6 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Autonomous
-@Config
 public class VisionPortalStreamingOpMode extends LinearOpMode {
     public static class CameraStreamProcessor implements VisionProcessor, CameraStreamSource {
         private final AtomicReference<Bitmap> lastFrame = new AtomicReference<>(Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565));
@@ -56,12 +55,9 @@ public class VisionPortalStreamingOpMode extends LinearOpMode {
             //Converts from RGB to HSV
             Imgproc.cvtColor(frame, imgMat, Imgproc.COLOR_RGB2HSV);
 
-//<<<<<<< Updated upstream
             if (imgMat.empty())
                 return null;
 
-//=======
-//>>>>>>> Stashed changes
             imgMat.copyTo(frame);
 
             return frame;
