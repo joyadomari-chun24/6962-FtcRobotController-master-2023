@@ -60,7 +60,7 @@ public class VisionPortalStreamingOpMode extends LinearOpMode {
 
             imgMat.copyTo(frame);
 
-            return frame;
+            return null;
         }
 
         @Override
