@@ -75,7 +75,8 @@ public class ActiveDoubleVision extends LinearOpMode {
     public void runOpMode() {
         initDoubleVision();
 
-        FtcDashboard.getInstance().startCameraStream((CameraStreamSource) myVisionPortal, 0);
+        //Didn't work
+        //FtcDashboard.getInstance().startCameraStream((CameraStreamSource) myVisionPortal, 0);
 
         // This OpMode loops continuously, allowing the user to switch between
         // AprilTag and TensorFlow Object Detection (TFOD) image processors.

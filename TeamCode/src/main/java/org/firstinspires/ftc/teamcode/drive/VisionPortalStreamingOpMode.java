@@ -47,18 +47,39 @@ public class VisionPortalStreamingOpMode extends LinearOpMode {
         public Object processFrame(Mat frame, long captureTimeNanos) {
             Mat imgMat = new Mat();
 
-            //Not sure what this does exactly.
-            Bitmap b = Bitmap.createBitmap(frame.width(), frame.height(), Bitmap.Config.RGB_565);
-            Utils.matToBitmap(frame, b);
-            lastFrame.set(b);
-
             //Converts from RGB to HSV
             Imgproc.cvtColor(frame, imgMat, Imgproc.COLOR_RGB2HSV);
 
             if (imgMat.empty())
                 return null;
 
-            imgMat.copyTo(frame);
+            Scalar lowRedHSV = new Scalar(0, 70, 50);
+            Scalar highRedHSV = new Scalar(10, 255, 255);
+
+            Mat imgThresh = new Mat();
+
+            //Makes the imgMat a balck and white image of red objects
+            Core.inRange(imgMat, lowRedHSV, highRedHSV, imgThresh);
+
+            Mat imgMask = new Mat();
+
+            //colors back in the filtered area
+            Core.bitwise_and(imgMat, imgMat, imgMask, imgThresh);
+
+            //Calculate average HSV value of the colors
+            Scalar average = Core.mean(imgMask, imgThresh);
+
+            //Scales mask to arbitrary saturation of 150 (from tutorial)
+            Mat scaledMask = new Mat();
+            imgMask.convertTo(scaledMask, -1, 150/average.val[1], 0);
+
+            imgThresh.copyTo(frame);
+            Imgproc.cvtColor(imgMask, frame, Imgproc.COLOR_HSV2RGB);
+
+            //Not sure what this does exactly. Removing it makes the camera a black screen on dashboard
+            Bitmap b = Bitmap.createBitmap(frame.width(), frame.height(), Bitmap.Config.RGB_565);
+            Utils.matToBitmap(frame, b);
+            lastFrame.set(b);
 
             return null;
         }
