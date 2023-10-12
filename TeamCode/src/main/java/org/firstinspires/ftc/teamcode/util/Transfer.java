@@ -1,7 +1,11 @@
 package org.firstinspires.ftc.teamcode.util;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import android.hardware.Sensor;
+
+import com.qualcomm.robotcore.hardware.AnalogSensor;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;// switch eventually
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.Servo;
 
 public class Transfer extends LinearOpMode {
 
@@ -10,34 +14,40 @@ public class Transfer extends LinearOpMode {
 
         waitForStart();
 
-        double tgtPower = 0;
+        double distanceToFlip = 0.6; // fraction of 280° that the regular servos need to turn in order to flip
 
         while (opModeIsActive()) {
-            CRServo leftFlipServo = hardwareMap.crservo.get("leftFlipServo");
-            CRServo rightFlipServo = hardwareMap.crservo.get("rightFlipServo");
+            Servo leftFlipServo = hardwareMap.servo.get("leftFlipServo");
+            Servo rightFlipServo = hardwareMap.servo.get("rightFlipServo");
             CRServo leftIntakeServo = hardwareMap.crservo.get("leftIntakeServo");
             CRServo rightIntakeServo = hardwareMap.crservo.get("rightIntakeServo");
+            Servo platformServo = hardwareMap.servo.get("platformServo");
+            AnalogSensor intakeBreakBeam = hardwareMap.get(AnalogSensor.class, "intakeBreakBeam");
+            AnalogSensor scoringBreakBeam = hardwareMap.get(AnalogSensor.class, "scoringBreakBeam");
 
-            double leftFlipServoPos = leftFlipServo.getPosition();
-            double rightFlipServoPos = rightFlipServo.getPosition();
-            double leftIntakeServoPos = leftIntakeServo.getPosition();
-            double rightIntakeServoPos = rightIntakeServo.getPosition();
+            // check if button pressed && other requirements
+            if(gamepad1.y && // button pressed
+              (intakeBreakBeam.readRawVoltage() < 0.1) && // intake break beam blocked
+              (scoringBreakBeam.readRawVoltage() < 0.1) && // scoring break beam blocked
+              (platformServo.getPosition() < 1 && platformServo.getPosition() > 0.8)) // platform servo in right position
+            {
+                // flips intake upside down
+                leftFlipServo.setPosition(leftFlipServo.getPosition() - distanceToFlip);
+                rightFlipServo.setPosition(rightFlipServo.getPosition() + distanceToFlip);
 
-            // check if button pressed
-            if(gamepad1.y) {
-                leftFlipServo.setPower(-1);
-                rightFlipServo.setPower(1);
+                // spins to eject pixels
+                leftIntakeServo.setPower(1);
+                rightIntakeServo.setPower(-1);
+                // waits 1 second
+                sleep(1000); //change depending on servo speed
+                // stops spinning
+                leftIntakeServo.setPower(0);
+                rightIntakeServo.setPower(0);
 
-            } else if (gamepad1.x) {
-                leftFlipServo.setPower(-1);
-                rightFlipServo.setPower(1);
+                //flips intake back to regular
+                leftFlipServo.setPosition(leftFlipServo.getPosition() + distanceToFlip);
+                rightFlipServo.setPosition(rightFlipServo.getPosition() - distanceToFlip);
             }
-            telemetry.addData("Servo Position", servoTest.getPosition());
-            telemetry.addData("Target Power", tgtPower);
-            telemetry.addData("Motor Power", motorTest.getPower());
-            telemetry.addData("Status", "Running");
-            telemetry.update();
-
         }
     }
 
