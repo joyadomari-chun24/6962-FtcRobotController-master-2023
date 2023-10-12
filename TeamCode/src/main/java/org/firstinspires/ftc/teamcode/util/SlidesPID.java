@@ -2,10 +2,10 @@ package org.firstinspires.ftc.teamcode.util;
 
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode; //switching to iterative opmode?
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-public class SlidesPID extends LinearOpMode {
+public class SlidesPID extends LinearOpMode { //switch to iterative opmode?
 
 	// motor declaration, we use the
 	// Ex version as it has velocity measurements

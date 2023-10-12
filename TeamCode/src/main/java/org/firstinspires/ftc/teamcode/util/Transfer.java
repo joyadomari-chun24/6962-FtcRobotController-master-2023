@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.util;
 
-import android.hardware.Sensor;
-
 import com.qualcomm.robotcore.hardware.AnalogSensor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;// switch eventually
 import com.qualcomm.robotcore.hardware.CRServo;
