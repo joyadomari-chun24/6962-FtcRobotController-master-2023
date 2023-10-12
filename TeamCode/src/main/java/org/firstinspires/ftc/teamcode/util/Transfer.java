@@ -1,18 +1,23 @@
 package org.firstinspires.ftc.teamcode.util;
 
 import com.qualcomm.robotcore.hardware.AnalogSensor;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;// switch eventually
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;// switch to iterative later
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
 
-public class Transfer extends LinearOpMode {
+public class Transfer extends LinearOpMode { // switch to iterative later
 
     @Override
     public void runOpMode() throws InterruptedException {
 
         waitForStart();
 
-        double distanceToFlip = 0.6; // fraction of 280° that the regular servos need to turn in order to flip
+        // fraction of 280° that the regular servos need to turn in order to flip
+        double distanceToFlip = 0.6; // tune based on testing
+        // also tune whether it's + or - distanceToFlip
+        // also tune whether it's + or - setPower
+
+
 
         while (opModeIsActive()) {
             Servo leftFlipServo = hardwareMap.servo.get("leftFlipServo");
@@ -23,8 +28,8 @@ public class Transfer extends LinearOpMode {
             AnalogSensor intakeBreakBeam = hardwareMap.get(AnalogSensor.class, "intakeBreakBeam");
             AnalogSensor scoringBreakBeam = hardwareMap.get(AnalogSensor.class, "scoringBreakBeam");
 
-            // check if button pressed && other requirements
-            if(gamepad1.y && // button pressed
+            // check if button pressed && other requirements true
+            if(gamepad1.y && // y button pressed
               (intakeBreakBeam.readRawVoltage() < 0.1) && // intake break beam blocked
               (scoringBreakBeam.readRawVoltage() < 0.1) && // scoring break beam blocked
               (platformServo.getPosition() < 1 && platformServo.getPosition() > 0.8)) // platform servo in right position
@@ -37,17 +42,15 @@ public class Transfer extends LinearOpMode {
                 leftIntakeServo.setPower(1);
                 rightIntakeServo.setPower(-1);
                 // waits 1 second
-                sleep(1000); //change depending on servo speed
+                sleep(1000); // tune based on testing
                 // stops spinning
                 leftIntakeServo.setPower(0);
                 rightIntakeServo.setPower(0);
 
-                //flips intake back to regular
+                // flips intake back to regular
                 leftFlipServo.setPosition(leftFlipServo.getPosition() + distanceToFlip);
                 rightFlipServo.setPosition(rightFlipServo.getPosition() - distanceToFlip);
             }
         }
     }
-
-
 }
