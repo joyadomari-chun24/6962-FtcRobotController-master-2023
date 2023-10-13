@@ -16,18 +16,15 @@ public class Transfer extends LinearOpMode { // switch to iterative later
         double distanceToFlip = 0.6; // tune based on testing
         // also tune whether it's + or - distanceToFlip
         // also tune whether it's + or - setPower
-
-
+        Servo leftFlipServo = hardwareMap.servo.get("leftFlipServo");
+        Servo rightFlipServo = hardwareMap.servo.get("rightFlipServo");
+        CRServo leftIntakeServo = hardwareMap.crservo.get("leftIntakeServo");
+        CRServo rightIntakeServo = hardwareMap.crservo.get("rightIntakeServo");
+        Servo platformServo = hardwareMap.servo.get("platformServo");
+        AnalogSensor intakeBreakBeam = hardwareMap.get(AnalogSensor.class, "intakeBreakBeam");
+        AnalogSensor scoringBreakBeam = hardwareMap.get(AnalogSensor.class, "scoringBreakBeam");
 
         while (opModeIsActive()) {
-            Servo leftFlipServo = hardwareMap.servo.get("leftFlipServo");
-            Servo rightFlipServo = hardwareMap.servo.get("rightFlipServo");
-            CRServo leftIntakeServo = hardwareMap.crservo.get("leftIntakeServo");
-            CRServo rightIntakeServo = hardwareMap.crservo.get("rightIntakeServo");
-            Servo platformServo = hardwareMap.servo.get("platformServo");
-            AnalogSensor intakeBreakBeam = hardwareMap.get(AnalogSensor.class, "intakeBreakBeam");
-            AnalogSensor scoringBreakBeam = hardwareMap.get(AnalogSensor.class, "scoringBreakBeam");
-
             // check if button pressed && other requirements true
             if(gamepad1.y && // y button pressed
               (intakeBreakBeam.readRawVoltage() < 0.1) && // intake break beam blocked
@@ -38,11 +35,12 @@ public class Transfer extends LinearOpMode { // switch to iterative later
                 leftFlipServo.setPosition(leftFlipServo.getPosition() - distanceToFlip);
                 rightFlipServo.setPosition(rightFlipServo.getPosition() + distanceToFlip);
 
-                // spins to eject pixels
-                leftIntakeServo.setPower(1);
-                rightIntakeServo.setPower(-1);
-                // waits 1 second
-                sleep(1000); // tune based on testing
+                while (gamepad1.y) {
+                    // spins to eject pixels
+                    leftIntakeServo.setPower(1);
+                    rightIntakeServo.setPower(-1);
+                }
+
                 // stops spinning
                 leftIntakeServo.setPower(0);
                 rightIntakeServo.setPower(0);
