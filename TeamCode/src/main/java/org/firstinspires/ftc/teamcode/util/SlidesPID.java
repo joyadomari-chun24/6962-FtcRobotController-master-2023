@@ -4,12 +4,14 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode; //switching to iterative opmode?
 import com.qualcomm.robotcore.util.ElapsedTime;
+import java.lang.String;
 
 public class SlidesPID extends LinearOpMode { //switch to iterative opmode?
-
-	// motor declaration, we use the
-	// Ex version as it has velocity measurements
 	DcMotorEx motor;
+	public SlidesPID(String name) {
+		motor = hardwareMap.get(DcMotorEx.class, name);
+	}
+
 	// parameters to tune below
 	double Kp = 0;
 	double Ki = 0;
@@ -22,7 +24,6 @@ public class SlidesPID extends LinearOpMode { //switch to iterative opmode?
 	@Override
 	public void runOpMode() throws InterruptedException {
 		// making variable to represent motor
-		motor = hardwareMap.get(DcMotorEx.class, "scoringSlide");
 
 		// use braking to slow the motor down faster
 		motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
