@@ -29,6 +29,8 @@
 
 package org.firstinspires.ftc.teamcode.drive;
 
+import android.graphics.Bitmap;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -44,6 +46,7 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 /*
  * This OpMode illustrates the basics of using both AprilTag recognition and TensorFlow
@@ -70,6 +73,11 @@ public class ActiveDoubleVision extends LinearOpMode {
      * The variable to store our instance of the vision portal.
      */
     private VisionPortal myVisionPortal;
+
+    /**
+     * For dashboard
+     * */
+    private final AtomicReference<Bitmap> lastFrame = new AtomicReference<>(Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565));
 
     @Override
     public void runOpMode() {
@@ -131,6 +139,9 @@ public class ActiveDoubleVision extends LinearOpMode {
      * Initialize AprilTag and TFOD.
      */
     private void initDoubleVision() {
+        //Dashboard stuff
+        //lastFrame.set(Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565));
+
         // -----------------------------------------------------------------------------------------
         // AprilTag Configuration
         // -----------------------------------------------------------------------------------------
@@ -155,6 +166,7 @@ public class ActiveDoubleVision extends LinearOpMode {
                 .addProcessors(tfod, aprilTag)
                 .build();
         }
+
     }   // end initDoubleVision()
 
     /**
