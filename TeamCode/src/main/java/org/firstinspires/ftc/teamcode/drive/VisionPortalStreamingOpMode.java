@@ -45,6 +45,20 @@ public class VisionPortalStreamingOpMode extends LinearOpMode {
         double largestContourY;
         Paint propLines = new Paint();
 
+        boolean colorIsRed = false;
+        Scalar lowRedHSV = new Scalar(0, 70, 50);
+        Scalar highRedHSV = new Scalar(10, 255, 255);
+        Scalar strictLowRedHSV = new Scalar(0, 150, 50);
+        Scalar strictHighRedHSV = new Scalar(10, 255, 255);
+        Scalar lowBlueHSV = new Scalar(100, 70, 0);
+        Scalar highBlueHSV = new Scalar(140, 255, 255);
+        Scalar strictLowBlueHSV = new Scalar(100, 150, 0);
+        Scalar strictHighBlueHSV = new Scalar(140, 255, 255);
+        Scalar highHSV = highBlueHSV;
+        Scalar lowHSV = lowBlueHSV;
+        Scalar strictHighHSV = strictHighBlueHSV;
+        Scalar strictLowHSV = strictLowBlueHSV;
+
         @Override
         public void init(int width, int height, CameraCalibration calibration) {
             lastFrame.set(Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565));
@@ -62,17 +76,12 @@ public class VisionPortalStreamingOpMode extends LinearOpMode {
             if (imgMat.empty())
                 return null;
 
-            Scalar lowRedHSV = new Scalar(0, 70, 50);
-            Scalar highRedHSV = new Scalar(10, 255, 255);
-
-            Mat imgThresh = new Mat();
-
             //Makes the imgMat a black and white image of only red
-            Core.inRange(imgMat, lowRedHSV, highRedHSV, imgThresh);
-
-            Mat imgMask = new Mat();
+            Mat imgThresh = new Mat();
+            Core.inRange(imgMat, lowHSV, highHSV, imgThresh);
 
             //Color back in the filtered area with RGB
+            Mat imgMask = new Mat();
             Core.bitwise_and(imgMat, imgMat, imgMask, imgThresh);
 
             //Calculate average HSV value of the colors
@@ -83,18 +92,12 @@ public class VisionPortalStreamingOpMode extends LinearOpMode {
             imgMask.convertTo(scaledMask, -1, 150/average.val[1], 0);
 
             //Creates new black and white mat with a stricter threshold
-            Scalar strictLowRedHSV = new Scalar(0, 150, 50);
-            Scalar strictHighRedHSV = new Scalar(10, 255, 255);
             Mat scaledThresh = new Mat();
-            Core.inRange(scaledMask, strictLowRedHSV, strictHighRedHSV, scaledThresh);
+            Core.inRange(scaledMask, strictLowHSV, strictHighHSV, scaledThresh);
 
             //Colors back in the colors
             Mat finalMask = new Mat();
             Core.bitwise_and(imgMat, imgMat, finalMask, scaledThresh);
-
-            //Displays edges...?
-//            Mat imgEdges = new Mat();
-//            Imgproc.Canny(scaledThresh, imgEdges, 100, 200);
 
             //Process the edges
             List<MatOfPoint> imgContours = new ArrayList<>();
@@ -103,6 +106,7 @@ public class VisionPortalStreamingOpMode extends LinearOpMode {
             Imgproc.findContours(scaledThresh, imgContours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
             largestContourArea = -1;
 
+            //Goes through every contour to find the largest one
             for (MatOfPoint contour : imgContours) {
                 double area = Imgproc.contourArea(contour);
                 if (area > largestContourArea && area > minArea) {
@@ -113,13 +117,14 @@ public class VisionPortalStreamingOpMode extends LinearOpMode {
 
             largestContourX = largestContourY = -1;
 
+            //Not exactly sure what moments are, but this finds the x and y of the contour
             if (largestContour != null) {
                 Moments moment = Imgproc.moments(largestContour);
                 largestContourX = (moment.m10 / moment.m00);
                 largestContourY = (moment.m01 / moment.m00);
             }
 
-            //Release and return data
+            //Release and return data (release as much as you can)
             frame.release();
             scaledThresh.copyTo(frame);
             Imgproc.cvtColor(finalMask, frame, Imgproc.COLOR_HSV2RGB);
@@ -127,7 +132,6 @@ public class VisionPortalStreamingOpMode extends LinearOpMode {
             scaledMask.release();
             imgMat.release();
             imgMask.release();
-            //imgEdges.release();
             imgThresh.release();
             finalMask.release();
 
@@ -146,20 +150,16 @@ public class VisionPortalStreamingOpMode extends LinearOpMode {
                 Rect rect = Imgproc.boundingRect(largestContour);
 
                 float[] points = {rect.x * scaleBmpPxToCanvasPx, rect.y * scaleBmpPxToCanvasPx, (rect.x + rect.width) * scaleBmpPxToCanvasPx, (rect.y + rect.height) * scaleBmpPxToCanvasPx};
-
-                canvas.drawLine(points[0], points[1], points[0], points[3], propLines);
-                canvas.drawLine(points[0], points[1], points[2], points[1], propLines);
-
-                canvas.drawLine(points[0], points[3], points[2], points[3], propLines);
-                canvas.drawLine(points[2], points[1], points[2], points[3], propLines);
             }
         }
 
+        //Something to do with dashboard
         @Override
         public void getFrameBitmap(Continuation<? extends Consumer<Bitmap>> continuation) {
             continuation.dispatch(bitmapConsumer -> bitmapConsumer.accept(lastFrame.get()));
         }
     }
+    //Returns the prop location
     public String GetPropLocation(double contourX, double contourY)
     {
         if(contourX < leftZone)
