@@ -12,10 +12,7 @@ public class Transfer extends LinearOpMode { // switch to iterative later
 
         waitForStart();
 
-        // fraction of 280° that the regular servos need to turn in order to flip
-        double distanceToFlip = 0.6; // tune based on testing
-        // also tune whether it's + or - distanceToFlip
-        // also tune whether it's + or - setPower
+        // finding motors, servos, and sensors in the hardware map
         Servo leftFlipServo = hardwareMap.servo.get("leftFlipServo");
         Servo rightFlipServo = hardwareMap.servo.get("rightFlipServo");
         CRServo leftIntakeServo = hardwareMap.crservo.get("leftIntakeServo");
@@ -23,6 +20,11 @@ public class Transfer extends LinearOpMode { // switch to iterative later
         Servo platformServo = hardwareMap.servo.get("platformServo");
         AnalogSensor intakeBreakBeam = hardwareMap.get(AnalogSensor.class, "intakeBreakBeam");
         AnalogSensor scoringBreakBeam = hardwareMap.get(AnalogSensor.class, "scoringBreakBeam");
+
+        // fraction of 280° that the regular servos need to turn in order to flip
+        double distanceToFlip = 0.6; // tune based on testing
+        // also tune whether it's + or - distanceToFlip
+        // also tune whether it's + or - setPower
 
         while (opModeIsActive()) {
             // check if button pressed && other requirements true
@@ -35,6 +37,7 @@ public class Transfer extends LinearOpMode { // switch to iterative later
                 leftFlipServo.setPosition(leftFlipServo.getPosition() - distanceToFlip);
                 rightFlipServo.setPosition(rightFlipServo.getPosition() + distanceToFlip);
 
+                // spins until button not pressed (when driver has seen the pixel go into the depositor)
                 while (gamepad1.y) {
                     // spins to eject pixels
                     leftIntakeServo.setPower(1);
