@@ -19,7 +19,6 @@ public class LocalizationTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        //Declare lift slides and intake slides
 
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 

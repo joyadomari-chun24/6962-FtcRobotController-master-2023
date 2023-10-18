@@ -30,13 +30,14 @@
 package org.firstinspires.ftc.teamcode.drive;
 
 import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gyroscope;
+import com.qualcomm.robotcore.hardware.HardwareDevice;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IntegratingGyroscope;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AngularVelocity;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -51,22 +52,23 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 @TeleOp(name = "navX test", group = "Sensor")
-public class ActiveNavx extends LinearOpMode {
+public class NavxManager {
 
-    /** In this sample, for illustration purposes we use two interfaces on the one gyro object.
-     * That's likely atypical: you'll probably use one or the other in any given situation,
-     * depending on what you're trying to do. {@link IntegratingGyroscope} (and it's base interface,
-     * {@link Gyroscope}) are common interfaces supported by possibly several different gyro
-     * implementations. {@link NavxMicroNavigationSensor}, by contrast, provides functionality that
-     * is unique to the navX Micro sensor.
+    /** {@link IntegratingGyroscope} and it's base interface, {@link Gyroscope}) are common
+     * interfaces supported by different gyro implementations. {@link NavxMicroNavigationSensor},
+     * by contrast, provides functionality that is unique to the navX Micro sensor.
+     *
+     * //
      */
     IntegratingGyroscope gyro;
     NavxMicroNavigationSensor navxMicro;
 
     // A timer helps provide feedback while calibration is taking place
     ElapsedTime timer = new ElapsedTime();
+    Telemetry telemetry;
 
-    @Override public void runOpMode() throws InterruptedException {
+    public NavxManager(Telemetry telemetry, HardwareMap hardwareMap) throws InterruptedException {
+        this.telemetry = telemetry;
         // Get a reference to a Modern Robotics GyroSensor object. We use several interfaces
         // on this object to illustrate which interfaces support which functionality.
         navxMicro = hardwareMap.get(NavxMicroNavigationSensor.class, "navx");
@@ -86,33 +88,27 @@ public class ActiveNavx extends LinearOpMode {
         }
         telemetry.log().clear(); telemetry.log().add("Gyro Calibrated. Press Start.");
         telemetry.clear(); telemetry.update();
+    }
 
-        // Wait for the start button to be pressed
-        waitForStart();
-        telemetry.log().clear();
+    public void navxTelemetry() throws InterruptedException
+    {
+        // Read dimensionalized data from the gyro. This gyro can report angular velocities
+        // about all three axes. Additionally, it internally integrates the Z axis to
+        // be able to report an absolute angular Z orientation.
+        AngularVelocity rates = gyro.getAngularVelocity(AngleUnit.DEGREES);
+        //Intrinsic = navx remains constant zyx axis orientation to the field
+        Orientation angles = gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
-        while (opModeIsActive()) {
-
-            // Read dimensionalized data from the gyro. This gyro can report angular velocities
-            // about all three axes. Additionally, it internally integrates the Z axis to
-            // be able to report an absolute angular Z orientation.
-            AngularVelocity rates = gyro.getAngularVelocity(AngleUnit.DEGREES);
-            //Intrinsic = navx remains constant zyx axis orientation to the field
-            Orientation angles = gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
-            telemetry.addLine()
+        telemetry.addLine()
                 .addData("dx", formatRate(rates.xRotationRate))
                 .addData("dy", formatRate(rates.yRotationRate))
                 .addData("dz", "%s deg/s", formatRate(rates.zRotationRate));
 
-            telemetry.addLine()
+        telemetry.addLine()
                 .addData("heading", formatAngle(angles.angleUnit, angles.firstAngle))
                 .addData("roll", formatAngle(angles.angleUnit, angles.secondAngle))
                 .addData("pitch", "%s deg", formatAngle(angles.angleUnit, angles.thirdAngle));
-            telemetry.update();
-
-            idle(); // Always call idle() at the bottom of your while(opModeIsActive()) loop
-        }
+        telemetry.update();
     }
 
     String formatRate(float rate) {
@@ -125,5 +121,18 @@ public class ActiveNavx extends LinearOpMode {
 
     String formatDegrees(double degrees){
         return String.format("%.1f", AngleUnit.DEGREES.normalize(degrees));
+    }
+
+    /**
+     * @param degrees of the navx
+     * @return the degrees mapped to a -1 to 1 float, which can be compared w/ joystick reading
+     */
+    float formatForJoystick(double degrees)
+    {
+        double inUpper = 180;
+        double inLower = -180;
+        int outUpper = -1;
+        int outLower = 1;
+        return (float)((degrees - inLower) * (outUpper - outLower) / (inUpper - inLower) + outUpper);
     }
 }

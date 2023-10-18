@@ -45,7 +45,7 @@ public class VisionPortalStreamingOpMode extends LinearOpMode {
         double largestContourY;
         Paint propLines = new Paint();
 
-        boolean colorIsRed = false;
+        boolean propIsBlue = false;
         Scalar lowRedHSV = new Scalar(0, 70, 50);
         Scalar highRedHSV = new Scalar(10, 255, 255);
         Scalar strictLowRedHSV = new Scalar(0, 150, 50);
