@@ -35,8 +35,11 @@ public class SlidesPID extends LinearOpMode { //switch to iterative opmode?
 
 		while (opModeIsActive()) {
 			// set motor power to output of PIDControl()
-			double power = PIDControl(100, motor.getCurrentPosition());
+			double power = PIDControl(2000, motor.getCurrentPosition());
 			motor.setPower(power);
+			if (gamepad1.b) {
+				idle();
+			}
 		}
 	}
 
