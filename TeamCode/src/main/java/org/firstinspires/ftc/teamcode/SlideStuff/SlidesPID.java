@@ -17,7 +17,6 @@ public class SlidesPID extends LinearOpMode { //switch to iterative opmode?
 	 *
 	 * USE THE OTHER SLIDE-RELATED FILES
 	 *
-	 * -Josh
 	 */
 	DcMotorEx motor;
 	public SlidesPID(String name) {
