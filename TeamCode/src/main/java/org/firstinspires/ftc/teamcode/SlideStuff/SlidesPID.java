@@ -1,12 +1,24 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.SlideStuff;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode; //switching to iterative opmode?
 import com.qualcomm.robotcore.util.ElapsedTime;
 import java.lang.String;
 
+@Disabled
 public class SlidesPID extends LinearOpMode { //switch to iterative opmode?
+
+	/**
+	 * DO NOT USE THIS FILE
+	 *
+	 * IT IS ONLY AN EXAMPLE
+	 *
+	 * USE THE OTHER SLIDE-RELATED FILES
+	 *
+	 * -Josh
+	 */
 	DcMotorEx motor;
 	public SlidesPID(String name) {
 		motor = hardwareMap.get(DcMotorEx.class, name);

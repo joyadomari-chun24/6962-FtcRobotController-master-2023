@@ -1,10 +1,9 @@
-package org.firstinspires.ftc.teamcode.conceptDemonstration;
+package org.firstinspires.ftc.teamcode.conceptDemonstrations;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
 import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
