@@ -11,22 +11,26 @@ import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
 @TeleOp
 public class TeleOpTest extends OpModeBase
 {
+    SampleMecanumDrive drive;
     @Override
     public void initialize()
     {
         super.initialize();
 
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        IntakeSlideSubsystem test = new IntakeSlideSubsystem();
+        drive = new SampleMecanumDrive(hardwareMap);
 
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+        //(add the listeners for button inputs that lead to commands here)
+
         telemetry.addLine("TeleOpTest has initialized.");
         telemetry.update();
+    }
 
-        waitForStart();
-
-        while (!isStopRequested()) {
+    public void run()
+    {
+        super.run();
+        if (!isStopRequested()) {
             drive.setWeightedDrivePower(
                     new Pose2d(
                             -gamepad1.left_stick_y,
@@ -44,6 +48,4 @@ public class TeleOpTest extends OpModeBase
             telemetry.update();
         }
     }
-
-    //(put methods here)
 }
