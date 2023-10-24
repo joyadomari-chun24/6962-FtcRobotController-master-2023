@@ -1,16 +1,18 @@
 package org.firstinspires.ftc.teamcode.SlideStuff;
 
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+
 public class ScoringSlideSubsystem extends SlideBaseSubsystem
 {
-    public ScoringSlideSubsystem()
+    public ScoringSlideSubsystem(DcMotorEx scoringMotor)
     {
-        super(0, 0, 0, true);
+        super(0, 0, 0, true, scoringMotor);
     }
     @Override
     public void periodic()
     {
         //WIP
-        double power = PIDControl(100, motor.getCurrentPosition());
+        double power = PIDControl(700, motor.getCurrentPosition());
         motor.setPower(power);
     }
 }

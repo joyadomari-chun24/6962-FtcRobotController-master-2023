@@ -4,12 +4,11 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.SlideStuff.IntakeSlideSubsystem;
-import org.firstinspires.ftc.teamcode.SlideStuff.SlideBaseSubsystem;
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
 
+
 @TeleOp
-public class TeleOpTest extends OpModeBase
+public class TeleOpSuperSimple extends OpModeBase
 {
     SampleMecanumDrive drive;
     @Override
@@ -23,7 +22,7 @@ public class TeleOpTest extends OpModeBase
 
         //(add the listeners for button inputs that lead to commands here)
 
-        telemetry.addLine("TeleOpTest has initialized.");
+        telemetry.log().add("TeleOpTest has initialized.");
         telemetry.update();
     }
 

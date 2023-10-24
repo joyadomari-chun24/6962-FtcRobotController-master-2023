@@ -4,6 +4,7 @@ import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -11,6 +12,7 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.SlideStuff.IntakeSlideSubsystem;
+import org.firstinspires.ftc.teamcode.SlideStuff.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.SlideStuff.ScoringSlideSubsystem;
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
 
@@ -23,7 +25,7 @@ public class OpModeBase extends CommandOpMode
      * through every single file to make a change.
      *
      * */
-    protected DcMotorEx leftFront, leftRearLeftEncoder, rightRearFrontEncoder, rightFront, scoringSlideMotor, intakeSlideMotor;
+    protected MotorEx leftFront, leftRearLeftEncoder, rightRearFrontEncoder, rightFront, scoringSlideMotor, intakeSlideMotor;
     protected NavxMicroNavigationSensor navxMicro;
     protected DistanceSensor distanceSensor;
     protected SampleMecanumDrive roadrunnerMecanumDrive;
@@ -31,6 +33,7 @@ public class OpModeBase extends CommandOpMode
     protected GamepadEx gamepadEx2;
     protected IntakeSlideSubsystem intakeSlides;
     protected ScoringSlideSubsystem outtakeSlides;
+    protected MecanumDriveSubsystem mecanumDrive;
 
     ElapsedTime timer = new ElapsedTime();
 
@@ -39,20 +42,22 @@ public class OpModeBase extends CommandOpMode
         // The gyro automatically starts calibrating. This takes a few seconds.
         telemetry.log().add("Gyro Calibrating. Do Not Move!");
 
-        leftFront = hardwareMap.get(DcMotorEx.class, "Fl/Re");
-        leftRearLeftEncoder = hardwareMap.get(DcMotorEx.class, "Bl/Le");
-        rightRearFrontEncoder = hardwareMap.get(DcMotorEx.class, "Br/Fe");
-        rightFront = hardwareMap.get(DcMotorEx.class, "Fr");
-        scoringSlideMotor = hardwareMap.get(DcMotorEx.class, "Score");
-        intakeSlideMotor = hardwareMap.get(DcMotorEx.class, "Intake");
+        leftFront = hardwareMap.get(MotorEx.class, "Fl/Re");
+        leftRearLeftEncoder = hardwareMap.get(MotorEx.class, "Bl/Le");
+        rightRearFrontEncoder = hardwareMap.get(MotorEx.class, "Br/Fe");
+        rightFront = hardwareMap.get(MotorEx.class, "Fr");
+        scoringSlideMotor = hardwareMap.get(MotorEx.class, "Score");
+        intakeSlideMotor = hardwareMap.get(MotorEx.class, "Intake");
         navxMicro = hardwareMap.get(NavxMicroNavigationSensor.class, "navx");
         distanceSensor = hardwareMap.get(DistanceSensor.class, "distSensor");
-        scoringSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        scoringSlideMotor.setZeroPowerBehavior(MotorEx.ZeroPowerBehavior.BRAKE);
+        intakeSlideMotor.setZeroPowerBehavior(MotorEx.ZeroPowerBehavior.BRAKE);
+        /*scoringSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         intakeSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         scoringSlideMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         intakeSlideMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         scoringSlideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        intakeSlideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        intakeSlideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE); */
 
         gamepadEx1 = new GamepadEx(gamepad1);
         gamepadEx2 = new GamepadEx(gamepad2);
@@ -60,8 +65,10 @@ public class OpModeBase extends CommandOpMode
         //(Declare vision pipelines here)
 
         //Initialize subsystems
-        intakeSlides = new IntakeSlideSubsystem();
-        outtakeSlides = new ScoringSlideSubsystem();
+        intakeSlides = new IntakeSlideSubsystem((DcMotorEx) intakeSlideMotor);
+        outtakeSlides = new ScoringSlideSubsystem((DcMotorEx) scoringSlideMotor);
+        mecanumDrive = new MecanumDriveSubsystem(leftFront, leftRearLeftEncoder, rightFront, rightRearFrontEncoder, navxMicro);
+        roadrunnerMecanumDrive = new SampleMecanumDrive(hardwareMap);
 
         // Wait until the gyro calibration is complete
         timer.reset();

@@ -19,7 +19,7 @@ public class SlideBaseSubsystem extends SubsystemBase
     ElapsedTime timer = new ElapsedTime();
     double integralSum = 0;
     private double lastError = 0;
-    public SlideBaseSubsystem(double P, double I, double D, boolean reverseMotor)
+    public SlideBaseSubsystem(double P, double I, double D, boolean reverseMotor, DcMotorEx motor)
     {
         Kp = P;
         Ki = I;
