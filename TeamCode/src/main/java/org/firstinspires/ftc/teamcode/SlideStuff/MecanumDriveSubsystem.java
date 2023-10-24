@@ -32,7 +32,9 @@ public class MecanumDriveSubsystem extends SubsystemBase
         drive = new MecanumDrive(false, FL, FR, BL, BR);
     }
 
-    //Then put commands here:
+    /**
+     * Then put commands here:
+     * */
 
     //to be honest, I don't know why it needs a DoubleSupplier instead of just a double. I think it's just because the gamepad gives them.
     public Command fieldCentric(DoubleSupplier strafeSpeed, DoubleSupplier forwardSpeed, DoubleSupplier turnSpeed, double navxAngle)

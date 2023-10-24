@@ -15,24 +15,28 @@ import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
 @TeleOp
 public class TeleOpTest2 extends OpModeBase
 {
-    SampleMecanumDrive drive;
+    MecanumDriveSubsystem teleOpDrive;
     @Override
     public void initialize()
     {
         super.initialize();
 
-        drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
         //(add the listeners for button inputs that lead to commands here)
 
-        mecanumDrive.fieldCentric(gamepadEx1::getLeftX, gamepadEx1::getLeftY, gamepadEx1::getRightX, navxMicro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle);
-        telemetry.log().add("TeleOpTest has initialized.");
+        teleOpDrive.setDefaultCommand(teleOpDrive.fieldCentric(gamepadEx1::getLeftX, gamepadEx1::getLeftY, gamepadEx1::getRightX, navxMicro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle));
+        telemetry.log().add("TeleOpTest2 has initialized.");
         telemetry.update();
     }
 
     public void run()
     {
         super.run();
+        //roadrunnerMecanumDrive.update();
+        telemetry.addData("LeftStickX", gamepadEx1.getLeftX());
+        telemetry.addData("LeftStickY", gamepadEx1.getLeftY());
+        telemetry.addData("RightStickX", gamepadEx1.getRightX());
+        telemetry.addData("Gyro Heading", navxMicro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle);
+        telemetry.update();
 
     }
 }
