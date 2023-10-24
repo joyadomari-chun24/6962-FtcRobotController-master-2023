@@ -31,11 +31,19 @@ public class TeleOpTest2 extends OpModeBase
     public void run()
     {
         super.run();
-        //roadrunnerMecanumDrive.update();
+
+        //Update the roadrunner chassis code so that it can create the pose estimate (but we're not using it to drive)
+        roadrunnerMecanumDrive.update();
+        Pose2d poseEstimate = roadrunnerMecanumDrive.getPoseEstimate();
+
+        //Telemetry :)
         telemetry.addData("LeftStickX", gamepadEx1.getLeftX());
         telemetry.addData("LeftStickY", gamepadEx1.getLeftY());
         telemetry.addData("RightStickX", gamepadEx1.getRightX());
         telemetry.addData("Gyro Heading", navxMicro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle);
+        telemetry.addData("x cord", poseEstimate.getX());
+        telemetry.addData("y cord", poseEstimate.getY());
+        telemetry.addData("roadrunner predicted heading", poseEstimate.getHeading());
         telemetry.update();
 
     }

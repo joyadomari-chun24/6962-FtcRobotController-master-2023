@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opModeStuff;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.RunCommand;
@@ -14,6 +15,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.SlideStuff.IntakeSlideSubsystem;
 import org.firstinspires.ftc.teamcode.SlideStuff.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.SlideStuff.ScoringSlideSubsystem;
+import org.firstinspires.ftc.teamcode.VisionStuff.PropDetectionPipeline;
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
 
 public class OpModeBase extends CommandOpMode
@@ -34,6 +36,7 @@ public class OpModeBase extends CommandOpMode
     protected IntakeSlideSubsystem intakeSlides;
     protected ScoringSlideSubsystem outtakeSlides;
     protected MecanumDriveSubsystem mecanumDrive;
+    protected PropDetectionPipeline propDetectionPipeline;
 
     ElapsedTime timer = new ElapsedTime();
 
@@ -62,13 +65,15 @@ public class OpModeBase extends CommandOpMode
         gamepadEx1 = new GamepadEx(gamepad1);
         gamepadEx2 = new GamepadEx(gamepad2);
 
-        //(Declare vision pipelines here)
+        //Declare vision pipelines here
+        propDetectionPipeline = new PropDetectionPipeline();
 
         //Initialize subsystems
         intakeSlides = new IntakeSlideSubsystem((DcMotorEx) intakeSlideMotor);
         outtakeSlides = new ScoringSlideSubsystem((DcMotorEx) scoringSlideMotor);
         mecanumDrive = new MecanumDriveSubsystem(leftFront, leftRearLeftEncoder, rightFront, rightRearFrontEncoder, navxMicro);
         roadrunnerMecanumDrive = new SampleMecanumDrive(hardwareMap);
+        //roadrunnerMecanumDrive.setPoseEstimate(new Pose2d(0, 0, 0));
 
         // Wait until the gyro calibration is complete
         timer.reset();

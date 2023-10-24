@@ -50,7 +50,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 @TeleOp(name = "navX test", group = "Sensor")
-public class ActiveNavx extends LinearOpMode {
+public class ActiveNavxTest extends LinearOpMode {
 
     /** In this sample, for illustration purposes we use two interfaces on the one gyro object.
      * That's likely atypical: you'll probably use one or the other in any given situation,

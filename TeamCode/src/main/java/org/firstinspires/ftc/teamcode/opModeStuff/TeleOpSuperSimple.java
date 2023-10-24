@@ -1,12 +1,13 @@
 package org.firstinspires.ftc.teamcode.opModeStuff;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
 
-
+@Disabled
 @TeleOp
 public class TeleOpSuperSimple extends OpModeBase
 {
