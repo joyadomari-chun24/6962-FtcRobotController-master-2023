@@ -74,14 +74,18 @@ public class PixelBalance extends LinearOpMode { // switch to iterative later
                 // rotates four bar back down to pick up pixels
                 leftPlatformServo.setPosition(0);
                 rightPlatformServo.setPosition(1);
-                platformServo.setPosition(platformServo.getPosition()+0.1);
+
+                // only necessary if current method is inconsistent
+                // platformServo.setPosition(platformServo.getPosition()+0.5);
             }
             // check if button pressed and in up position
             else if (gamepad1.b && (platformServo.getPosition() < 0.2 && platformServo.getPosition() > 0)) {
                 // rotates four bar up to score pixels
                 leftPlatformServo.setPosition(1);
                 rightPlatformServo.setPosition(0);
-                platformServo.setPosition(platformServo.getPosition()-0.1);
+
+                // only necessary if current method is inconsistent
+                // platformServo.setPosition(platformServo.getPosition()-0.5);
             }
         }
     }
