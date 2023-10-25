@@ -1,11 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;// switch to iterative later
-import com.qualcomm.robotcore.hardware.CRServo;
+// import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class PixelBalance extends LinearOpMode { // switch to iterative later
-
+    /* for platform and four bar
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -51,6 +51,37 @@ public class PixelBalance extends LinearOpMode { // switch to iterative later
                 // stops rotating platform
                 leftPlatformServo.setPower(0);
                 rightPlatformServo.setPower(0);
+            }
+        }
+    }*/
+
+    // for claw and four bar
+    @Override
+    public void runOpMode() throws InterruptedException {
+
+        waitForStart();
+
+        Servo leftPlatformServo = hardwareMap.servo.get("leftPlatformServo");
+        Servo rightPlatformServo = hardwareMap.servo.get("rightPlatformServo");
+        Servo platformServo = hardwareMap.servo.get("platformServo");
+        leftPlatformServo.setPosition(0);
+        rightPlatformServo.setPosition(1);
+
+        // ALL + AND - NEED TO BE TESTED
+        while (opModeIsActive()) {
+            // check if button pressed and in up position
+            if (gamepad1.a && (leftPlatformServo.getPosition() < 1 && leftPlatformServo.getPosition() > 0.8)) {
+                // rotates four bar back down to pick up pixels
+                leftPlatformServo.setPosition(0);
+                rightPlatformServo.setPosition(1);
+                platformServo.setPosition(platformServo.getPosition()+0.1);
+            }
+            // check if button pressed and in up position
+            else if (gamepad1.b && (platformServo.getPosition() < 0.2 && platformServo.getPosition() > 0)) {
+                // rotates four bar up to score pixels
+                leftPlatformServo.setPosition(1);
+                rightPlatformServo.setPosition(0);
+                platformServo.setPosition(platformServo.getPosition()-0.1);
             }
         }
     }
