@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.SlideStuff;
+package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.arcrobotics.ftclib.command.Command;
@@ -17,6 +17,7 @@ import java.util.function.DoubleSupplier;
 public class MecanumDriveSubsystem extends SubsystemBase
 {
     private NavxMicroNavigationSensor navx;
+    private int slowModeFactor = 2;
     private static double kP = 0;
     private static double kI = 0;
     private static double kD = 0;
@@ -40,5 +41,10 @@ public class MecanumDriveSubsystem extends SubsystemBase
     public Command fieldCentric(DoubleSupplier strafeSpeed, DoubleSupplier forwardSpeed, DoubleSupplier turnSpeed, double navxAngle)
     {
         return new RunCommand(() -> drive.driveFieldCentric(strafeSpeed.getAsDouble(), forwardSpeed.getAsDouble(), turnSpeed.getAsDouble(), navxAngle), this);
+    }
+
+    public Command slowFieldCentric(DoubleSupplier strafeSpeed, DoubleSupplier forwardSpeed, DoubleSupplier turnSpeed, double navxAngle)
+    {
+        return new RunCommand(() -> drive.driveFieldCentric(strafeSpeed.getAsDouble()/slowModeFactor, forwardSpeed.getAsDouble()/slowModeFactor, turnSpeed.getAsDouble()/slowModeFactor, navxAngle), this);
     }
 }
