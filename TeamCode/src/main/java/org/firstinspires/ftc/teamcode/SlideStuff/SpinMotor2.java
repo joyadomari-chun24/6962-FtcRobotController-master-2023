@@ -24,8 +24,8 @@ public class SpinMotor2 extends LinearOpMode {
         waitForStart();
         if (opModeIsActive()) {
             while (opModeIsActive()) {
-                Intake.setPower(gamepad1.left_stick_y);
-                Score.setPower(gamepad1.right_stick_y);
+//                Intake.setPower(gamepad1.left_stick_y);
+                Score.setPower(gamepad2.right_stick_y);
                 if (gamepad1.a) {
                     claw.setPosition(claw.getPosition() + 0.25);
                 }
