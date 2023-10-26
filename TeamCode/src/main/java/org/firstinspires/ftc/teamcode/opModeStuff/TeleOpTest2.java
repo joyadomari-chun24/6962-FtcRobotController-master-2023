@@ -6,7 +6,12 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.teamcode.MecanumDriveSubsystem;
+
+import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.A;
+import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.B;
 import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.LEFT_BUMPER;
+import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.RIGHT_BUMPER;
+import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.RIGHT_STICK_BUTTON;
 
 
 @TeleOp
@@ -22,19 +27,18 @@ public class TeleOpTest2 extends OpModeBase
         //Todo: figure out the gyro thing for field oriented
         //I think that the problem is that it's only calling the angle once and using that as the robot's heading.
 
-
-        //(add the listeners for button inputs that lead to commands here)
-
-        //This slow mode code definitely doesn't work
-        if (gamepadEx1.getButton(LEFT_BUMPER))
-            mecanumDrive.slowFieldCentric(gamepadEx1::getLeftX, gamepadEx1::getLeftY, gamepadEx1::getRightX, gyroAngle);
+        gamepadEx1.getGamepadButton(LEFT_BUMPER).whileHeld(mecanumDrive.slowFieldCentric(gamepadEx1::getLeftX, gamepadEx1::getLeftY, gamepadEx1::getRightX, gyroAngle, telemetry));
+        gamepadEx1.getGamepadButton(A).whileHeld(claw.openClaw());
+        gamepadEx1.getGamepadButton(B).whileHeld(claw.closeClaw());
 
         //even though it's being set, it doesn't drive field oriented for some reason
-        mecanumDrive.setDefaultCommand(mecanumDrive.fieldCentric(gamepadEx1::getLeftX, gamepadEx1::getLeftY, gamepadEx1::getRightX, gyroAngle));
+        mecanumDrive.setDefaultCommand(mecanumDrive.fieldCentric(gamepadEx1::getLeftX, gamepadEx1::getLeftY, gamepadEx1::getRightX, gyroAngle, telemetry));
+        telemetry.log().clear();
         telemetry.log().add("TeleOpTest2 has initialized.");
         telemetry.update();
     }
 
+    @Override
     public void run()
     {
         super.run();
@@ -45,7 +49,7 @@ public class TeleOpTest2 extends OpModeBase
         roadrunnerMecanumDrive.update();
         Pose2d poseEstimate = roadrunnerMecanumDrive.getPoseEstimate();
 
-        //Telemetry :)
+        //Telemetry
         telemetry.addData("LeftStickX", gamepadEx1.getLeftX());
         telemetry.addData("LeftStickY", gamepadEx1.getLeftY());
         telemetry.addData("RightStickX", gamepadEx1.getRightX());
@@ -53,6 +57,8 @@ public class TeleOpTest2 extends OpModeBase
         telemetry.addData("x cord", poseEstimate.getX());
         telemetry.addData("y cord", poseEstimate.getY());
         telemetry.addData("roadrunner predicted heading", poseEstimate.getHeading());
+        telemetry.addData("Claw Position", clawServo.getPosition());
+        telemetry.addData("Slow mode pressed? ", gamepadEx1.getGamepadButton(LEFT_BUMPER));
         telemetry.update();
 
     }

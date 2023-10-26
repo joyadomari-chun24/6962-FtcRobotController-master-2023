@@ -20,17 +20,12 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class PropDetectionPipeline implements VisionProcessor
 {
-
-    //I'm pretty sure this isn't correct. Will do more research before implementing.
-
     private final AtomicReference<Bitmap> lastFrame = new AtomicReference<>(Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565));
     double largestContourArea;
     MatOfPoint largestContour;
     double minArea;
     double largestContourX;
     double largestContourY;
-    Paint propLines = new Paint();
-
     boolean propIsBlue = false;
     Scalar lowRedHSV = new Scalar(0, 70, 50);
     Scalar highRedHSV = new Scalar(10, 255, 255);
@@ -40,12 +35,15 @@ public class PropDetectionPipeline implements VisionProcessor
     Scalar highBlueHSV = new Scalar(140, 255, 255);
     Scalar strictLowBlueHSV = new Scalar(100, 150, 0);
     Scalar strictHighBlueHSV = new Scalar(140, 255, 255);
-    Scalar highHSV = highBlueHSV;
-    Scalar lowHSV = lowBlueHSV;
-    Scalar strictHighHSV = strictHighBlueHSV;
-    Scalar strictLowHSV = strictLowBlueHSV;
+    Scalar highHSV = propIsBlue ? highBlueHSV : highRedHSV;
+    Scalar lowHSV = propIsBlue ? lowBlueHSV : lowRedHSV;
+    Scalar strictHighHSV = propIsBlue ? strictHighBlueHSV : strictHighRedHSV;
+    Scalar strictLowHSV = propIsBlue ? strictLowBlueHSV : strictLowRedHSV;
     @Override
-    public void init(int x, int y, CameraCalibration z){}
+    public void init(int width, int height, CameraCalibration calibration)
+    {
+        lastFrame.set(Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565));
+    }
 
     @Override
     public Object processFrame(Mat frame, long captureTimeNanos)
@@ -127,5 +125,8 @@ public class PropDetectionPipeline implements VisionProcessor
     }
 
     @Override
-    public void onDrawFrame(Canvas x, int y, int z, float a, float b, Object c) {}
+    public void onDrawFrame(Canvas canvas, int onscreenWidth, int onscreenHeight, float scaleBmpPxToCanvasPx, float scaleCanvasDensity, Object userContext)
+    {
+        // do nothing
+    }
 }

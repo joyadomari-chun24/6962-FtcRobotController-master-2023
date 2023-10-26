@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opModeStuff;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
@@ -7,8 +8,10 @@ import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.ClawSubsystem;
 import org.firstinspires.ftc.teamcode.SlideStuff.IntakeSlideSubsystem;
 import org.firstinspires.ftc.teamcode.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.SlideStuff.ScoringSlideSubsystem;
@@ -35,11 +38,15 @@ public class OpModeBase extends CommandOpMode
     protected ScoringSlideSubsystem outtakeSlides;
     protected MecanumDriveSubsystem mecanumDrive;
     protected PropDetectionPipeline propDetectionPipeline;
+    protected Servo droneServo, ArmServoL, ArmServoR;
+    protected Servo clawServo, wristServo;
+    protected ClawSubsystem claw;
 
-    ElapsedTime timer = new ElapsedTime();
+    ElapsedTime navxCalibrationTimer = new ElapsedTime();
 
     @Override
-    public void initialize() {
+    public void initialize()
+    {
         // The gyro automatically starts calibrating. This takes a few seconds.
         telemetry.log().add("Gyro Calibrating. Do Not Move!");
 
@@ -48,9 +55,11 @@ public class OpModeBase extends CommandOpMode
         rightRearFrontEncoder = new MotorEx(hardwareMap, "Br/Fe");
         rightFront = new MotorEx(hardwareMap, "Fr");
         scoringSlideMotor = hardwareMap.get(DcMotorEx.class, "Score");
-        intakeSlideMotor = hardwareMap.get(DcMotorEx.class, "Intake");
+        //intakeSlideMotor = hardwareMap.get(DcMotorEx.class, "Intake");
         navxMicro = hardwareMap.get(NavxMicroNavigationSensor.class, "navx");
         distanceSensor = hardwareMap.get(DistanceSensor.class, "distSensor");
+        //wristServo = hardwareMap.get(Servo.class, "wrist");
+        clawServo = hardwareMap.get(Servo.class, "claw");
         /*scoringSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         intakeSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         scoringSlideMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
@@ -62,23 +71,27 @@ public class OpModeBase extends CommandOpMode
         gamepadEx2 = new GamepadEx(gamepad2);
 
         //Declare vision pipelines here
-        propDetectionPipeline = new PropDetectionPipeline();
+        //propDetectionPipeline = new PropDetectionPipeline();
 
         //Initialize subsystems
         mecanumDrive = new MecanumDriveSubsystem(leftFront, leftRearLeftEncoder, rightFront, rightRearFrontEncoder, navxMicro);
-        intakeSlides = new IntakeSlideSubsystem(intakeSlideMotor);
+        //intakeSlides = new IntakeSlideSubsystem(intakeSlideMotor);
         outtakeSlides = new ScoringSlideSubsystem(scoringSlideMotor);
         roadrunnerMecanumDrive = new SampleMecanumDrive(hardwareMap);
+        claw = new ClawSubsystem(clawServo);
+
+
         //roadrunnerMecanumDrive.setPoseEstimate(new Pose2d(0, 0, 0));
 
         // Wait until the gyro calibration is complete
-        timer.reset();
-        while (navxMicro.isCalibrating()) {
-            telemetry.addData("calibrating", "%s", Math.round(timer.seconds()) % 2 == 0 ? "|.." : "..|");
+        navxCalibrationTimer.reset();
+        while (navxMicro.isCalibrating())
+        {
+            telemetry.addData("calibrating", "%s", Math.round(navxCalibrationTimer.seconds()) % 2 == 0 ? "|.." : "..|");
             telemetry.update();
         }
         telemetry.log().clear();
-        telemetry.log().add("Initialization Complete. Good luck!");
+        telemetry.log().add("Base Initialization Complete. Good luck!");
         telemetry.clear();
         telemetry.update();
     }

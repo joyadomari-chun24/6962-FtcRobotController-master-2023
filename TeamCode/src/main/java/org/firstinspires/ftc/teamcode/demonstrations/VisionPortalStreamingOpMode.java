@@ -53,10 +53,10 @@ public class VisionPortalStreamingOpMode extends LinearOpMode {
         Scalar highBlueHSV = new Scalar(140, 255, 255);
         Scalar strictLowBlueHSV = new Scalar(100, 150, 0);
         Scalar strictHighBlueHSV = new Scalar(140, 255, 255);
-        Scalar highHSV = highBlueHSV;
-        Scalar lowHSV = lowBlueHSV;
-        Scalar strictHighHSV = strictHighBlueHSV;
-        Scalar strictLowHSV = strictLowBlueHSV;
+        Scalar highHSV = propIsBlue ? highBlueHSV : highRedHSV;
+        Scalar lowHSV = propIsBlue ? lowBlueHSV : lowRedHSV;
+        Scalar strictHighHSV = propIsBlue ? strictHighBlueHSV : strictHighRedHSV;
+        Scalar strictLowHSV = propIsBlue ? strictLowBlueHSV : strictLowRedHSV;
 
         @Override
         public void init(int width, int height, CameraCalibration calibration) {

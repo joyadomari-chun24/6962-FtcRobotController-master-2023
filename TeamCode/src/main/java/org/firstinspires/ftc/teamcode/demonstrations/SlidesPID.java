@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.SlideStuff;
+package org.firstinspires.ftc.teamcode.demonstrations;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotorEx;

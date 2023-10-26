@@ -26,11 +26,6 @@ public class CVmaster implements CameraStreamSource
 {
     private final AtomicReference<Bitmap> lastFrame = new AtomicReference<>(Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565));
 
-    //@Override
-    public void init(int width, int height, CameraCalibration calibration) {
-        lastFrame.set(Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565));
-    }
-
     //Something to do with dashboard
     @Override
     public void getFrameBitmap(Continuation<? extends Consumer<Bitmap>> continuation) {

@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
 
-@Disabled
 @TeleOp
 public class TeleOpSuperSimple extends OpModeBase
 {
@@ -30,7 +29,8 @@ public class TeleOpSuperSimple extends OpModeBase
     public void run()
     {
         super.run();
-        if (!isStopRequested()) {
+        if (!isStopRequested())
+        {
             drive.setWeightedDrivePower(
                     new Pose2d(
                             -gamepad1.left_stick_y,
