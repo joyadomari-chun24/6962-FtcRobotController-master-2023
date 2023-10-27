@@ -45,13 +45,19 @@ public class MecanumDriveSubsystem extends SubsystemBase
     {
         telemetry = infoThing;
         telemetry.addLine("Driving field oriented!");
-        return new RunCommand(() -> drive.driveFieldCentric(strafeSpeed.getAsDouble(), forwardSpeed.getAsDouble(), turnSpeed.getAsDouble(), navxAngle), this);
+        return new InstantCommand(() -> drive.driveFieldCentric(strafeSpeed.getAsDouble(), forwardSpeed.getAsDouble(), turnSpeed.getAsDouble(), navxAngle), this);
     }
 
-    public Command slowFieldCentric(DoubleSupplier strafeSpeed, DoubleSupplier forwardSpeed, DoubleSupplier turnSpeed, double navxAngle, Telemetry infoThing2)
+    //A test from discord
+    public void fieldCentric2(DoubleSupplier strafeSpeed, DoubleSupplier forwardSpeed, DoubleSupplier turnSpeed, double navxAngle)
+    {
+        drive.driveFieldCentric(strafeSpeed.getAsDouble(), forwardSpeed.getAsDouble(), turnSpeed.getAsDouble(), navxAngle);
+    }
+
+    public Command slowFieldCentric(double strafeSpeed, double forwardSpeed, double turnSpeed, double navxAngle, Telemetry infoThing2)
     {
         telemetry = infoThing2;
         telemetry.addLine("Driving slow!");
-        return new RunCommand(() -> drive.driveFieldCentric(strafeSpeed.getAsDouble()/slowModeFactor, forwardSpeed.getAsDouble()/slowModeFactor, turnSpeed.getAsDouble()/slowModeFactor, navxAngle), this);
+        return new RunCommand(() -> drive.driveFieldCentric(strafeSpeed/slowModeFactor, forwardSpeed/slowModeFactor, turnSpeed/slowModeFactor, navxAngle), this);
     }
 }

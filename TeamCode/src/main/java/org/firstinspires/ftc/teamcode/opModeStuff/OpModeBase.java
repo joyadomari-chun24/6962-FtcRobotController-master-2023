@@ -11,6 +11,9 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.teamcode.ClawSubsystem;
 import org.firstinspires.ftc.teamcode.SlideStuff.IntakeSlideSubsystem;
 import org.firstinspires.ftc.teamcode.MecanumDriveSubsystem;
@@ -97,4 +100,10 @@ public class OpModeBase extends CommandOpMode
     }
 
     //(Put methods and stuff here)
+
+    //idk man
+    public double getHeading()
+    {
+        return navxMicro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
+    }
 }
