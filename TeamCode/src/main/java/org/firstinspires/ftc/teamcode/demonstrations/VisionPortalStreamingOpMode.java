@@ -46,7 +46,7 @@ public class VisionPortalStreamingOpMode extends LinearOpMode {
         public double largestContourY;
         Paint propLines = new Paint();
 
-        public static boolean propIsBlue = false;
+        public static boolean propIsBlue = false; //Made public static to be changed by dashboard
         Scalar lowRedHSV = new Scalar(0, 70, 50);
         Scalar highRedHSV = new Scalar(10, 255, 255);
         Scalar strictLowRedHSV = new Scalar(0, 150, 50);

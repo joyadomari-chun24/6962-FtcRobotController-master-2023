@@ -23,6 +23,7 @@ public class RapidAutoOp extends OpModeBase
      * Use FTC dashboard to change red/blue boolean in between games so that it detects the right color (is under VisionPortalStreamingOpMode)
      */
 
+    //These two variables are measured in pixels on the x axis of the camera's view. 0 is the farthest left. 640 is the farthest right.
     double leftZone = 100;
     double rightZone = 500;
 
