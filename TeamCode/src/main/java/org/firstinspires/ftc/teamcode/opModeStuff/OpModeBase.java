@@ -65,7 +65,7 @@ public class OpModeBase extends CommandOpMode
         scoringSlideMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         intakeSlideMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);*/
         scoringSlideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        intakeSlideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //intakeSlideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         gamepadEx1 = new GamepadEx(gamepad1);
         gamepadEx2 = new GamepadEx(gamepad2);
