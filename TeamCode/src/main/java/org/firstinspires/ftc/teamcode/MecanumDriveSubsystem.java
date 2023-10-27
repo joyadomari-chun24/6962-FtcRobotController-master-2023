@@ -45,7 +45,7 @@ public class MecanumDriveSubsystem extends SubsystemBase
     {
         telemetry = infoThing;
         telemetry.addLine("Driving field oriented!");
-        return new InstantCommand(() -> drive.driveFieldCentric(strafeSpeed.getAsDouble(), forwardSpeed.getAsDouble(), turnSpeed.getAsDouble(), navxAngle), this);
+        return new RunCommand(() -> drive.driveFieldCentric(strafeSpeed.getAsDouble(), forwardSpeed.getAsDouble(), turnSpeed.getAsDouble(), navxAngle), this);
     }
 
     //A test from discord

@@ -37,7 +37,7 @@ public class TeleOpTest2 extends OpModeBase
         new GamepadButton(gamepadEx1, GamepadKeys.Button.RIGHT_BUMPER).whenPressed(claw.openClaw());
         new GamepadButton(gamepadEx1, GamepadKeys.Button.RIGHT_STICK_BUTTON).whenPressed(claw.closeClaw());
 
-        //even though it's being set, it doesn't drive field oriented for some reason;
+        //even though it's being set, it doesn't drive field oriented for some reason
         mecanumDrive.setDefaultCommand(mecanumDrive.fieldCentric(gamepadEx1::getLeftX, gamepadEx1::getLeftY, gamepadEx1::getRightX, getHeading(), telemetry));
         telemetry.log().clear();
         telemetry.log().add("TeleOpTest2 has initialized.");
