@@ -10,6 +10,9 @@ import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
 @TeleOp
 public class TeleOpSuperSimple extends OpModeBase
 {
+    /**
+     * Literally all it does is drive.
+     */
     SampleMecanumDrive drive;
     @Override
     public void initialize()

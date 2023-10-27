@@ -85,9 +85,6 @@ public class OpModeBase extends CommandOpMode
         claw = new ClawSubsystem(clawServo);
         arm = new ArmSubsystem(leftPlatformServo, rightPlatformServo, wristServo);
 
-
-        //roadrunnerMecanumDrive.setPoseEstimate(new Pose2d(0, 0, 0));
-
         // Wait until the gyro calibration is complete
         navxCalibrationTimer.reset();
         while (navxMicro.isCalibrating())

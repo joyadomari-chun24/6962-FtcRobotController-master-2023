@@ -54,6 +54,9 @@ public class TeleOpTest2 extends OpModeBase
         /*
         * Gamepad 1:
         *
+        * Left joystick - strafe
+        *
+        * Right joystick - turn
         *
         * */
 
@@ -104,6 +107,9 @@ public class TeleOpTest2 extends OpModeBase
         //Update the roadrunner chassis code so that it can create the pose estimate (but we're not using it to drive)
         roadrunnerMecanumDrive.update();
         Pose2d poseEstimate = roadrunnerMecanumDrive.getPoseEstimate();
+
+        //Temp until I figure out how to use the PID loop
+        scoringSlideMotor.setPower(gamepadEx2.getLeftY());
 
         //Telemetry
         telemetry.addData("LeftStickX", gamepadEx1.getLeftX());

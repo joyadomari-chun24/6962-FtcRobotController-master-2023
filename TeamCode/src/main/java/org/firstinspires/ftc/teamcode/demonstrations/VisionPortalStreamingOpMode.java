@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
+@Config
 @Autonomous
 public class VisionPortalStreamingOpMode extends LinearOpMode {
     //Zones to dertermine the prop's position on the 640x400 image
@@ -40,11 +42,11 @@ public class VisionPortalStreamingOpMode extends LinearOpMode {
         double largestContourArea;
         MatOfPoint largestContour;
         double minArea;
-        double largestContourX;
-        double largestContourY;
+        public double largestContourX;
+        public double largestContourY;
         Paint propLines = new Paint();
 
-        boolean propIsBlue = false;
+        public static boolean propIsBlue = false;
         Scalar lowRedHSV = new Scalar(0, 70, 50);
         Scalar highRedHSV = new Scalar(10, 255, 255);
         Scalar strictLowRedHSV = new Scalar(0, 150, 50);
@@ -168,6 +170,7 @@ public class VisionPortalStreamingOpMode extends LinearOpMode {
         else
             return "Center (or none I haven't figured that out)";
     }
+
     @Override
     public void runOpMode() throws InterruptedException {
         //Creates an instance of the processor above
