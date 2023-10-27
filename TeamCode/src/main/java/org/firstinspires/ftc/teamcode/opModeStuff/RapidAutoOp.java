@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.opModeStuff;
 
-import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilder;
@@ -69,14 +68,19 @@ public class RapidAutoOp extends OpModeBase
         roadrunnerMecanumDrive.setPoseEstimate(new Pose2d(0, 0, 0));
 
         //Set the trajectory here. For example. Something like this:
-        Trajectory traj1 = drive.trajectoryBuilder(new Pose2d())
-                .strafeRight(10).build();
-        Trajectory traj2 = drive.trajectoryBuilder(new Pose2d())
-                .forward(5).build();
+        if (GetPropLocation(processor.largestContourX, processor.largestContourY).equals("Right"))
+        {
+            Trajectory traj1 = drive.trajectoryBuilder(new Pose2d())
+                    .strafeRight(10).build();
+            Trajectory traj2 = drive.trajectoryBuilder(new Pose2d())
+                    .forward(5).build();
 
-        //Then get the bot to run the path.
-        drive.followTrajectory(traj1);
-        drive.followTrajectory(traj2);
+            //Then get the bot to run the path.
+            drive.followTrajectory(traj1);
+            drive.followTrajectory(traj2);
+        }
+
+        idle();
     }
 
 
