@@ -10,10 +10,6 @@ import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
 @TeleOp
 public class TeleOpSuperSimple extends OpModeBase
 {
-    /**
-     * This is a last resort opmode that definitely works. All it does is drive right now.
-     */
-
     SampleMecanumDrive drive;
     @Override
     public void initialize()

@@ -11,9 +11,7 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.teamcode.ArmSubsystem;
 import org.firstinspires.ftc.teamcode.ClawSubsystem;
 import org.firstinspires.ftc.teamcode.SlideStuff.IntakeSlideSubsystem;
 import org.firstinspires.ftc.teamcode.MecanumDriveSubsystem;
@@ -42,8 +40,9 @@ public class OpModeBase extends CommandOpMode
     protected MecanumDriveSubsystem mecanumDrive;
     protected PropDetectionPipeline propDetectionPipeline;
     protected Servo droneServo, ArmServoL, ArmServoR;
-    protected Servo clawServo, wristServo;
+    protected Servo clawServo, wristServo, leftPlatformServo, rightPlatformServo;
     protected ClawSubsystem claw;
+    protected ArmSubsystem arm;
 
     ElapsedTime navxCalibrationTimer = new ElapsedTime();
 
@@ -61,8 +60,10 @@ public class OpModeBase extends CommandOpMode
         //intakeSlideMotor = hardwareMap.get(DcMotorEx.class, "Intake");
         navxMicro = hardwareMap.get(NavxMicroNavigationSensor.class, "navx");
         distanceSensor = hardwareMap.get(DistanceSensor.class, "distSensor");
-        //wristServo = hardwareMap.get(Servo.class, "wrist");
+        wristServo = hardwareMap.get(Servo.class, "platformServo");
         clawServo = hardwareMap.get(Servo.class, "claw");
+        leftPlatformServo = hardwareMap.servo.get("leftPlatformServo");
+        rightPlatformServo = hardwareMap.servo.get("rightPlatformServo");
         /*scoringSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         intakeSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         scoringSlideMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
@@ -82,6 +83,7 @@ public class OpModeBase extends CommandOpMode
         outtakeSlides = new ScoringSlideSubsystem(scoringSlideMotor);
         roadrunnerMecanumDrive = new SampleMecanumDrive(hardwareMap);
         claw = new ClawSubsystem(clawServo);
+        arm = new ArmSubsystem(leftPlatformServo, rightPlatformServo, wristServo);
 
 
         //roadrunnerMecanumDrive.setPoseEstimate(new Pose2d(0, 0, 0));
@@ -100,10 +102,4 @@ public class OpModeBase extends CommandOpMode
     }
 
     //(Put methods and stuff here)
-
-    //idk man
-    public double getHeading()
-    {
-        return navxMicro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
-    }
 }
