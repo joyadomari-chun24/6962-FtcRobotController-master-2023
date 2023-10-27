@@ -19,7 +19,7 @@ import java.util.function.DoubleSupplier;
 public class MecanumDriveSubsystem extends SubsystemBase
 {
     private NavxMicroNavigationSensor navx;
-    private int slowModeFactor = 2;
+    private int slowModeFactor = 4;
     private static double kP = 0;
     private static double kI = 0;
     private static double kD = 0;
@@ -40,18 +40,15 @@ public class MecanumDriveSubsystem extends SubsystemBase
      * Then put commands here:
      * */
 
-    //to be honest, I don't know why it needs a DoubleSupplier instead of just a double. I think it's just because the gamepad gives them.
+    //I don't know why it needs a DoubleSupplier instead of just a double. I think it's just because the gamepad gives them.
     public Command fieldCentric(DoubleSupplier strafeSpeed, DoubleSupplier forwardSpeed, DoubleSupplier turnSpeed, double navxAngle, Telemetry infoThing)
     {
-        telemetry = infoThing;
-        telemetry.addLine("Driving field oriented!");
         return new RunCommand(() -> drive.driveFieldCentric(strafeSpeed.getAsDouble(), forwardSpeed.getAsDouble(), turnSpeed.getAsDouble(), navxAngle), this);
     }
 
+    //'Telemetry' is a parameter so that I can print telemetry from this method for debugging
     public Command slowFieldCentric(DoubleSupplier strafeSpeed, DoubleSupplier forwardSpeed, DoubleSupplier turnSpeed, double navxAngle, Telemetry infoThing2)
     {
-        telemetry = infoThing2;
-        telemetry.addLine("Driving slow!");
         return new RunCommand(() -> drive.driveFieldCentric(strafeSpeed.getAsDouble()/slowModeFactor, forwardSpeed.getAsDouble()/slowModeFactor, turnSpeed.getAsDouble()/slowModeFactor, navxAngle), this);
     }
 }
