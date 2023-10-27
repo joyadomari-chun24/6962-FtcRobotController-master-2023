@@ -62,8 +62,8 @@ public class TwoWheelTrackingLocalize extends TwoTrackingWheelLocalizer {
 
         this.drive = drive;
 
-        parallelEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "Renc"));
-        perpendicularEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "Benc"));
+        parallelEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "Bl/Le"));
+        perpendicularEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "Br/Fe"));
 
         // TODO: reverse any encoders using Encoder.setDirection(Encoder.Direction.REVERSE)
     }
