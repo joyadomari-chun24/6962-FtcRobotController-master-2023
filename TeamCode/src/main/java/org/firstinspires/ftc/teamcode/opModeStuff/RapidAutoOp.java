@@ -11,6 +11,7 @@ import org.firstinspires.ftc.teamcode.demonstrations.VisionPortalStreamingOpMode
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.vision.VisionPortal;
 
+//There should probably be an auto for each of the four starting positions on the field and
 @Autonomous(name = "CloseToBackDropLeftOrSomethingLikeThat")
 public class RapidAutoOp extends OpModeBase
 {
@@ -40,7 +41,7 @@ public class RapidAutoOp extends OpModeBase
         //VISION STUFF:
 
         //Use FTC dashboard to change red/blue boolean in between games so that it detects the right color (is under VisionPortalStreamingOpMode)
-        
+
         //Creates an instance of the processor from the demonstration
         final VisionPortalStreamingOpMode.CameraStreamProcessor processor = new VisionPortalStreamingOpMode.CameraStreamProcessor();
 
@@ -62,7 +63,7 @@ public class RapidAutoOp extends OpModeBase
         telemetry.addData("Prop Location", GetPropLocation(processor.largestContourX, processor.largestContourY));
         telemetry.update();
 
-        //Todo: Change the x, y, heading to what the robot will be stopped at
+        //Change the x, y, heading to what the robot will be started at, or not. If you don't and this stays at 0, 0, 0, just know that the robot's positon will start at 0,0.
         //This sets the location of the bot on the field.
         roadrunnerMecanumDrive.setPoseEstimate(new Pose2d(0, 0, 0));
 
