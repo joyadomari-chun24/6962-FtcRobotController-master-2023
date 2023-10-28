@@ -71,12 +71,12 @@ public class ArmSubsystem
         return new InstantCommand(() -> {moveArm(left_deployBack); moveWrist(w_deployBack);});
     }
 
-    public Command incrementalWrist(int increment)
+    public Command incrementalWrist(double increment)
     {
         return  (servoForWrist.getPosition() + increment > 0 && servoForWrist.getPosition() < 1) ? new InstantCommand(() -> {moveWrist(servoForWrist.getPosition() + increment);}) : null;
     }
 
-    public Command incrementalArm(int increment)
+    public Command incrementalArm(double increment)
     {
         return (ArmL.getPosition() + increment > 0 && ArmL.getPosition() < 1) ? new InstantCommand(() -> {moveArm(ArmL.getPosition() + increment);}) : null;
     }

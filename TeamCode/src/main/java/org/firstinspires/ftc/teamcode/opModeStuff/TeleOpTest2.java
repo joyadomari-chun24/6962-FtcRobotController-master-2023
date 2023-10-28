@@ -85,8 +85,8 @@ public class TeleOpTest2 extends OpModeBase
         gamepadEx2.getGamepadButton(X).whileHeld(arm.topDown());
 
         //Adjustable arm (not sure if this'll work)
-        gamepadEx2.getGamepadButton(DPAD_UP).whileHeld(arm.incrementalArm(5));
-        gamepadEx2.getGamepadButton(DPAD_DOWN).whileHeld(arm.incrementalArm(-5));
+        gamepadEx2.getGamepadButton(DPAD_UP).whileHeld(arm.incrementalArm(0.05));
+        gamepadEx2.getGamepadButton(DPAD_DOWN).whileHeld(arm.incrementalArm(-0.05));
 
 
         //To do: get slides to work
@@ -94,7 +94,7 @@ public class TeleOpTest2 extends OpModeBase
         //outtakeSlides.setDefaultCommand(outtakeSlides.slideMovement(gamepadEx2::getLeftY));
 
         //even though it's being set, it doesn't drive field oriented for some reason
-        mecanumDrive.setDefaultCommand(mecanumDrive.fieldCentric(gamepadEx1::getLeftX, gamepadEx1::getLeftY, gamepadEx1::getRightX, gyroAngle, telemetry));
+        mecanumDrive.setDefaultCommand(mecanumDrive.fieldCentric(gamepadEx1::getLeftX, gamepadEx1::getLeftY, gamepadEx1::getRightX,gyroAngle, telemetry));
         telemetry.log().clear();
         telemetry.log().add("TeleOpTest2 has initialized.");
         telemetry.update();
