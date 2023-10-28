@@ -94,8 +94,8 @@ public class TeleOpTest2 extends OpModeBase
         gamepadEx2.getGamepadButton(DPAD_DOWN).whileHeld(arm.incrementalArm(armIncrement));
 
         //Adjustable wrist
-        gamepadEx2.getGamepadButton(DPAD_LEFT).whileHeld(arm.incrementalWrist(-1*wristIncrement));
-        gamepadEx2.getGamepadButton(DPAD_RIGHT).whileHeld(arm.incrementalWrist(wristIncrement));
+        gamepadEx2.getGamepadButton(DPAD_LEFT).whileHeld(arm.incrementalWrist(wristIncrement));
+        gamepadEx2.getGamepadButton(DPAD_RIGHT).whileHeld(arm.incrementalWrist(-1*wristIncrement));
 
         //Slides
         //???
