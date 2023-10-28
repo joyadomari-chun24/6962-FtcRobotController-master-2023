@@ -75,18 +75,30 @@ public class TeleOpTest2 extends OpModeBase
         gamepadEx2.getGamepadButton(RIGHT_BUMPER).whenPressed(new ConditionalCommand(new InstantCommand(claw::openClaw), new InstantCommand(claw::closeClaw), () -> {return claw.toggle();}));
 
         //Debugging arm/wrist
-        gamepadEx1.getGamepadButton(Y).whileHeld(arm.position1());
-        gamepadEx1.getGamepadButton(X).whileHeld(arm.positionW());
+        //gamepadEx1.getGamepadButton(Y).whileHeld(arm.position1());
+        //gamepadEx1.getGamepadButton(X).whileHeld(arm.positionW());
 
         //Arm/wrist positions
         gamepadEx2.getGamepadButton(A).whileHeld(arm.pickupFront());
-        gamepadEx2.getGamepadButton(B).whileHeld(arm.deployBack());
         gamepadEx2.getGamepadButton(Y).whileHeld(arm.deployFront());
         gamepadEx2.getGamepadButton(X).whileHeld(arm.topDown());
+        // no need yet
+        //gamepadEx2.getGamepadButton(B).whileHeld(arm.deployBack());
+
 
         //Adjustable arm (not sure if this'll work)
         gamepadEx2.getGamepadButton(DPAD_UP).whileHeld(arm.incrementalArm(0.05));
         gamepadEx2.getGamepadButton(DPAD_DOWN).whileHeld(arm.incrementalArm(-0.05));
+
+        //gamepadEx2.getGamepadButton(DPAD_UP).whileHeld(arm.incrementalArm(5));
+        //gamepadEx2.getGamepadButton(DPAD_DOWN).whileHeld(arm.incrementalArm(-5));
+
+        //Adjustable arm (not sure if this'll work)
+        gamepadEx2.getGamepadButton(DPAD_UP).whileHeld(arm.incrementalWrist(0.05));
+        gamepadEx2.getGamepadButton(DPAD_DOWN).whileHeld(arm.incrementalWrist(-0.05));
+
+        //gamepadEx2.getGamepadButton(DPAD_UP).whileHeld(arm.incrementalArm(0.05));
+        //gamepadEx2.getGamepadButton(DPAD_DOWN).whileHeld(arm.incrementalArm(-0.05));
 
 
         //To do: get slides to work

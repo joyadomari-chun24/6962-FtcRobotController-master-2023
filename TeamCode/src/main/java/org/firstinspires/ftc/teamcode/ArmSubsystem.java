@@ -8,15 +8,16 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class ArmSubsystem
 {
     //Servo positions
-    public static double left_pickupFront = 1;
-    public static double left_topDownFront = 0;
-    public static double left_deployFront = 0;
+    public static double left_pickupFront = 0.32;
+    public static double left_topDownFront = 0.71;
+    public static double left_deployFront = 0.9;
     public static double left_deployBack = 1;
 
-    public static double w_topDownFront = 0.1;
-    public static double w_pickupFront = 0;
+    public static double w_topDownFront = 0.6;
+    public static double w_pickupFront = 0.2;
     public static double w_deployBack = 0;
-    public static double w_deployFront = 0;
+    //manually adjustable, so no need
+    //public static double w_deployFront = 0;
     private Servo ArmL, ArmR, servoForWrist;
     public ArmSubsystem(Servo leftServo, Servo rightServo, Servo wristServo)
     {
@@ -37,15 +38,6 @@ public class ArmSubsystem
     }
 
     //Debug method
-    public Command position1()
-    {
-        return new InstantCommand(() ->
-        {
-            ArmL.setPosition(left_pickupFront);
-            ArmR.setPosition(1-left_pickupFront);
-        });
-    }
-    //Debug method
     public Command positionW()
     {
         return new InstantCommand(() -> {servoForWrist.setPosition(w_pickupFront);});
@@ -63,7 +55,8 @@ public class ArmSubsystem
 
     public Command deployFront()
     {
-        return new InstantCommand(() -> {moveArm(left_deployFront); moveWrist(w_deployFront);});
+        return new InstantCommand(() -> {moveArm(left_deployFront);});
+        //return new InstantCommand(() -> {moveArm(left_deployFront); moveWrist(w_deployFront);});
     }
 
     public Command deployBack()

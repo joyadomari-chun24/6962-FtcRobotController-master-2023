@@ -1,4 +1,4 @@
-//package com.example.meepmeeptesting;
-//
-//public class MeepMeepTesting {
-//}
+package com.example.meepmeeptesting;
+
+public class MeepMeepTesting {
+}
