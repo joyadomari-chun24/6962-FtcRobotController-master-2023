@@ -123,7 +123,7 @@ public class TeleOpTest2 extends OpModeBase
         Pose2d poseEstimate = roadrunnerMecanumDrive.getPoseEstimate();
 
         //Temp until I figure out how to use the PID loop (apparently this doesn't work)
-        scoringSlideMotor.setPower(gamepadEx2.getLeftY());
+        scoringSlideMotor.setPower(gamepad2.left_stick_y);
 
         //Telemetry
         telemetry.addData("LeftStickX", gamepadEx1.getLeftX());
