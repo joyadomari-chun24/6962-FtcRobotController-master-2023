@@ -66,7 +66,6 @@ public class TeleOpTest2 extends OpModeBase
 
         //Todo: figure out the gyro thing for field oriented
         //I think that the problem is that it's only calling the angle once and using that as the robot's heading.
-        //ToggleButtonReader clawToggle = new ToggleButtonReader(gamepadEx2, RIGHT_BUMPER);
 
         //Slow mode
         gamepadEx1.getGamepadButton(LEFT_BUMPER).whileHeld(mecanumDrive.slowFieldCentric(gamepadEx1::getLeftX, gamepadEx1::getLeftY, gamepadEx1::getRightX, gyroAngle, telemetry));
@@ -87,21 +86,9 @@ public class TeleOpTest2 extends OpModeBase
         // no need yet
         //gamepadEx2.getGamepadButton(B).whileHeld(arm.deployBack());
 
-
         //Adjustable arm
         gamepadEx2.getGamepadButton(DPAD_UP).whileHeld(arm.incrementalArm(armIncrement));
         gamepadEx2.getGamepadButton(DPAD_DOWN).whileHeld(arm.incrementalArm(-1*armIncrement));
-
-        //gamepadEx2.getGamepadButton(DPAD_UP).whileHeld(arm.incrementalArm(5));
-        //gamepadEx2.getGamepadButton(DPAD_DOWN).whileHeld(arm.incrementalArm(-5));
-
-        //Adjustable arm (not sure if this'll work)
-        gamepadEx2.getGamepadButton(DPAD_UP).whileHeld(arm.incrementalWrist(0.05));
-        gamepadEx2.getGamepadButton(DPAD_DOWN).whileHeld(arm.incrementalWrist(-0.05));
-
-        //gamepadEx2.getGamepadButton(DPAD_UP).whileHeld(arm.incrementalArm(0.05));
-        //gamepadEx2.getGamepadButton(DPAD_DOWN).whileHeld(arm.incrementalArm(-0.05));
-
 
         //To do: get slides to work
         //Not sure why this keeps on sending the error "default command requires the subsystem!" ???

@@ -21,7 +21,7 @@ public class ArmSubsystem extends SubsystemBase
     public static double w_topDownFront = 0.6;
     public static double w_pickupFront = 0.2;
     public static double w_deployBack = 0;
-    //manually adjustable, so no need
+    //manually adjustable, so no need for now
     //public static double w_deployFront = 0;
     private Servo ArmL, ArmR, servoForWrist;
     public ArmSubsystem(Servo leftServo, Servo rightServo, Servo wristServo)
@@ -72,7 +72,7 @@ public class ArmSubsystem extends SubsystemBase
     //If the servo reaches its limit, there could potentially be an error with the method returning null
     public Command incrementalWrist(DoubleSupplier increment)
     {
-        return  (servoForWrist.getPosition() + increment.getAsDouble() > 0 && servoForWrist.getPosition() < 1) ? new RunCommand(() -> {moveWrist(servoForWrist.getPosition() + increment.getAsDouble());}, this) : null;
+        return  (servoForWrist.getPosition() + increment.getAsDouble()/100 > 0 && servoForWrist.getPosition() + increment.getAsDouble()/100 < 1) ? new RunCommand(() -> {moveWrist(servoForWrist.getPosition() + increment.getAsDouble()/100);}, this) : null;
     }
 
     public Command incrementalArm(double increment)
