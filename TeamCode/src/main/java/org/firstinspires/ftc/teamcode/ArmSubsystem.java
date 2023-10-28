@@ -70,13 +70,22 @@ public class ArmSubsystem extends SubsystemBase
     }
 
     //If the servo reaches its limit, there could potentially be an error with the method returning null
-    public Command incrementalWrist(DoubleSupplier increment)
+    public Command incrementalWrist(double increment)
     {
-        return  (servoForWrist.getPosition() + increment.getAsDouble()/100 > 0 && servoForWrist.getPosition() + increment.getAsDouble()/100 < 1) ? new RunCommand(() -> {moveWrist(servoForWrist.getPosition() + increment.getAsDouble()/100);}, this) : null;
+        return  new InstantCommand(() -> {
+            if(servoForWrist.getPosition() + increment > 0 && servoForWrist.getPosition() + increment < 1)
+            {
+                moveWrist(servoForWrist.getPosition() + increment);
+            }}, this);
     }
 
     public Command incrementalArm(double increment)
     {
-        return (ArmL.getPosition() + increment > 0 && ArmL.getPosition() < 1) ? new InstantCommand(() -> {moveArm(ArmL.getPosition() + increment);}, this) : null;
+        return new InstantCommand(() -> {
+            if(ArmR.getPosition() - increment > 0 && ArmR.getPosition() - increment < 1 && ArmL.getPosition() + increment > 0 && ArmL.getPosition() + increment < 1)
+            {
+                moveArm(ArmL.getPosition() + increment);
+            }
+        });
     }
 }

@@ -32,8 +32,6 @@ public class RapidAutoOp extends OpModeBase
     {
         super.initialize();
 
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-
         telemetry.log().add("This auto has initialized!");
         waitForStart();
 
@@ -72,14 +70,14 @@ public class RapidAutoOp extends OpModeBase
         {
             telemetry.log().add("Prop Detected RIGHT");
             telemetry.update();
-            Trajectory traj1 = drive.trajectoryBuilder(new Pose2d())
+            Trajectory traj1 = roadrunnerMecanumDrive.trajectoryBuilder(new Pose2d())
                     .strafeRight(10).build();
-            Trajectory traj2 = drive.trajectoryBuilder(new Pose2d())
+            Trajectory traj2 = roadrunnerMecanumDrive.trajectoryBuilder(new Pose2d())
                     .forward(5).build();
 
             //Then get the bot to run the path.
-            drive.followTrajectory(traj1);
-            drive.followTrajectory(traj2);
+            roadrunnerMecanumDrive.followTrajectory(traj1);
+            roadrunnerMecanumDrive.followTrajectory(traj2);
         }
         else if (GetPropLocation(processor.largestContourX, processor.largestContourY).equals("LEFT"))
         {

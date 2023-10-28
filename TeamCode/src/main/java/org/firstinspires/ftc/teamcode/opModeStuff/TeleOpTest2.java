@@ -15,6 +15,8 @@ import org.firstinspires.ftc.teamcode.MecanumDriveSubsystem;
 import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.A;
 import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.B;
 import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.DPAD_DOWN;
+import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.DPAD_LEFT;
+import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.DPAD_RIGHT;
 import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.DPAD_UP;
 import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.LEFT_BUMPER;
 import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.RIGHT_BUMPER;
@@ -28,6 +30,7 @@ public class TeleOpTest2 extends OpModeBase
 {
     private double gyroAngle;
     private double armIncrement = 0.005;
+    private double wristIncrement = 0.005;
 
     @Override
     public void initialize()
@@ -37,7 +40,7 @@ public class TeleOpTest2 extends OpModeBase
         /*
         * Gamepad 2:
         *
-        * Left joystick - Scoring Slides
+        * Left joystick - Scoring Slides (currently bound to triggers)
         *
         * D-Pad - Adjustable Arm
         *
@@ -86,14 +89,20 @@ public class TeleOpTest2 extends OpModeBase
         // no need yet
         //gamepadEx2.getGamepadButton(B).whileHeld(arm.deployBack());
 
-        //Adjustable arm
+        //Adjustable arm (NEEDS WORK)
         gamepadEx2.getGamepadButton(DPAD_UP).whileHeld(arm.incrementalArm(armIncrement));
         gamepadEx2.getGamepadButton(DPAD_DOWN).whileHeld(arm.incrementalArm(-1*armIncrement));
 
+        //Adjustable wrist
+        gamepadEx2.getGamepadButton(DPAD_LEFT).whileHeld(arm.incrementalWrist(wristIncrement));
+        gamepadEx2.getGamepadButton(DPAD_RIGHT).whileHeld(arm.incrementalWrist(-1*wristIncrement));
+
+        //Slides
+        //???
+
         //To do: get slides to work
         //Not sure why this keeps on sending the error "default command requires the subsystem!" ???
-        outtakeSlides.setDefaultCommand(outtakeSlides.slideMovement(gamepadEx2::getLeftY));
-        arm.setDefaultCommand(arm.incrementalWrist(gamepadEx2::getLeftY));
+        //outtakeSlides.setDefaultCommand(outtakeSlides.slideMovement(gamepadEx2::getLeftY));
 
         //even though it's being set, it doesn't drive field oriented for some reason
         mecanumDrive.setDefaultCommand(mecanumDrive.fieldCentric(gamepadEx1::getLeftX, gamepadEx1::getLeftY, gamepadEx1::getRightX,gyroAngle, telemetry));
@@ -114,7 +123,7 @@ public class TeleOpTest2 extends OpModeBase
         Pose2d poseEstimate = roadrunnerMecanumDrive.getPoseEstimate();
 
         //Temp until I figure out how to use the PID loop (apparently this doesn't work)
-        //scoringSlideMotor.setPower(gamepadEx2.getLeftY());
+        scoringSlideMotor.setPower(gamepadEx2.getLeftY());
 
         //Telemetry
         telemetry.addData("LeftStickX", gamepadEx1.getLeftX());
