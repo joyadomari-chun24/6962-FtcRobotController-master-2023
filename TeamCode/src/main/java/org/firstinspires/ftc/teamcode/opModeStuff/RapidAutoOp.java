@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.demonstrations.VisionPortalStreamingOpMode
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.vision.VisionPortal;
 
-//There should probably be an auto for each of the four starting positions on the field and
+//There should probably be an auto for each of the four starting positions on the field
 @Autonomous(name = "CloseToBackDropLeftOrSomethingLikeThat")
 public class RapidAutoOp extends OpModeBase
 {
@@ -68,8 +68,10 @@ public class RapidAutoOp extends OpModeBase
         roadrunnerMecanumDrive.setPoseEstimate(new Pose2d(0, 0, 0));
 
         //Set the trajectory here. For example. Something like this:
-        if (GetPropLocation(processor.largestContourX, processor.largestContourY).equals("Right"))
+        if (GetPropLocation(processor.largestContourX, processor.largestContourY).equals("RIGHT"))
         {
+            telemetry.log().add("Prop Detected RIGHT");
+            telemetry.update();
             Trajectory traj1 = drive.trajectoryBuilder(new Pose2d())
                     .strafeRight(10).build();
             Trajectory traj2 = drive.trajectoryBuilder(new Pose2d())
