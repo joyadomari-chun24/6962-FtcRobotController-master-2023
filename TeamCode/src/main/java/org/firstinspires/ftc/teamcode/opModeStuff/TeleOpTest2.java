@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.opModeStuff;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.arcrobotics.ftclib.command.ConditionalCommand;
 import com.arcrobotics.ftclib.command.InstantCommand;
+import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.gamepad.ToggleButtonReader;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -26,6 +27,7 @@ import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.Y;
 public class TeleOpTest2 extends OpModeBase
 {
     private double gyroAngle;
+    private double armIncrement = 0.005;
 
     @Override
     public void initialize()
@@ -86,9 +88,9 @@ public class TeleOpTest2 extends OpModeBase
         //gamepadEx2.getGamepadButton(B).whileHeld(arm.deployBack());
 
 
-        //Adjustable arm (not sure if this'll work)
-        gamepadEx2.getGamepadButton(DPAD_UP).whileHeld(arm.incrementalArm(0.05));
-        gamepadEx2.getGamepadButton(DPAD_DOWN).whileHeld(arm.incrementalArm(-0.05));
+        //Adjustable arm
+        gamepadEx2.getGamepadButton(DPAD_UP).whileHeld(arm.incrementalArm(armIncrement));
+        gamepadEx2.getGamepadButton(DPAD_DOWN).whileHeld(arm.incrementalArm(-1*armIncrement));
 
         //gamepadEx2.getGamepadButton(DPAD_UP).whileHeld(arm.incrementalArm(5));
         //gamepadEx2.getGamepadButton(DPAD_DOWN).whileHeld(arm.incrementalArm(-5));
@@ -103,7 +105,8 @@ public class TeleOpTest2 extends OpModeBase
 
         //To do: get slides to work
         //Not sure why this keeps on sending the error "default command requires the subsystem!" ???
-        //outtakeSlides.setDefaultCommand(outtakeSlides.slideMovement(gamepadEx2::getLeftY));
+        outtakeSlides.setDefaultCommand(outtakeSlides.slideMovement(gamepadEx2::getLeftY));
+        arm.setDefaultCommand(arm.incrementalWrist(gamepadEx2::getLeftY));
 
         //even though it's being set, it doesn't drive field oriented for some reason
         mecanumDrive.setDefaultCommand(mecanumDrive.fieldCentric(gamepadEx1::getLeftX, gamepadEx1::getLeftY, gamepadEx1::getRightX,gyroAngle, telemetry));
@@ -123,8 +126,8 @@ public class TeleOpTest2 extends OpModeBase
         roadrunnerMecanumDrive.update();
         Pose2d poseEstimate = roadrunnerMecanumDrive.getPoseEstimate();
 
-        //Temp until I figure out how to use the PID loop
-        scoringSlideMotor.setPower(gamepadEx2.getLeftY());
+        //Temp until I figure out how to use the PID loop (apparently this doesn't work)
+        //scoringSlideMotor.setPower(gamepadEx2.getLeftY());
 
         //Telemetry
         telemetry.addData("LeftStickX", gamepadEx1.getLeftX());

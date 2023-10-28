@@ -63,7 +63,7 @@ public class RapidAutoOp extends OpModeBase
         telemetry.addData("Prop Location", GetPropLocation(processor.largestContourX, processor.largestContourY));
         telemetry.update();
 
-        //Change the x, y, heading to what the robot will be started at, or not. If you don't and this stays at 0, 0, 0, just know that the robot's positon will start at 0,0.
+        //Change the (x, y, heading) to what the robot will be started at, or not. If you don't just know that the robot's positon will start at 0,0,0.
         //This sets the location of the bot on the field.
         roadrunnerMecanumDrive.setPoseEstimate(new Pose2d(0, 0, 0));
 
@@ -80,6 +80,18 @@ public class RapidAutoOp extends OpModeBase
             //Then get the bot to run the path.
             drive.followTrajectory(traj1);
             drive.followTrajectory(traj2);
+        }
+        else if (GetPropLocation(processor.largestContourX, processor.largestContourY).equals("LEFT"))
+        {
+            telemetry.log().add("Prop Detected LEFT");
+            telemetry.update();
+            //
+        }
+        else
+        {
+            telemetry.log().add("Prop Detected CENTER");
+            telemetry.update();
+            //
         }
 
         idle();

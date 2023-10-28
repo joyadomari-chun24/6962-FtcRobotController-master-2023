@@ -25,6 +25,6 @@ public class ScoringSlideSubsystem extends SlideBaseSubsystem
 
     public Command slideMovement(DoubleSupplier motorPower)
     {
-        return new RunCommand(() -> {motorForScoring.setPower(motorPower.getAsDouble());});
+        return new RunCommand(() -> {motorForScoring.setPower(motorPower.getAsDouble());}, this);
     }
 }

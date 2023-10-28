@@ -3,9 +3,14 @@ package org.firstinspires.ftc.teamcode;
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.InstantCommand;
+import com.arcrobotics.ftclib.command.RunCommand;
+import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.Servo;
+
+import java.util.function.DoubleSupplier;
+
 @Config
-public class ArmSubsystem
+public class ArmSubsystem extends SubsystemBase
 {
     //Servo positions
     public static double left_pickupFront = 0.32;
@@ -64,13 +69,14 @@ public class ArmSubsystem
         return new InstantCommand(() -> {moveArm(left_deployBack); moveWrist(w_deployBack);});
     }
 
-    public Command incrementalWrist(double increment)
+    //If the servo reaches its limit, there could potentially be an error with the method returning null
+    public Command incrementalWrist(DoubleSupplier increment)
     {
-        return  (servoForWrist.getPosition() + increment > 0 && servoForWrist.getPosition() < 1) ? new InstantCommand(() -> {moveWrist(servoForWrist.getPosition() + increment);}) : null;
+        return  (servoForWrist.getPosition() + increment.getAsDouble() > 0 && servoForWrist.getPosition() < 1) ? new RunCommand(() -> {moveWrist(servoForWrist.getPosition() + increment.getAsDouble());}, this) : null;
     }
 
     public Command incrementalArm(double increment)
     {
-        return (ArmL.getPosition() + increment > 0 && ArmL.getPosition() < 1) ? new InstantCommand(() -> {moveArm(ArmL.getPosition() + increment);}) : null;
+        return (ArmL.getPosition() + increment > 0 && ArmL.getPosition() < 1) ? new InstantCommand(() -> {moveArm(ArmL.getPosition() + increment);}, this) : null;
     }
 }
