@@ -61,7 +61,7 @@ public class OpModeBase extends CommandOpMode
         leftRearLeftEncoder = new MotorEx(hardwareMap, "Bl/Le");
         rightRearFrontEncoder = new MotorEx(hardwareMap, "Br/Fe");
         rightFront = new MotorEx(hardwareMap, "Fr");
-        scoringSlideMotor = hardwareMap.get(DcMotorEx.class, "Score");
+        //scoringSlideMotor = hardwareMap.get(DcMotorEx.class, "Score");
         //intakeSlideMotor = hardwareMap.get(DcMotorEx.class, "Intake");
         navxMicro = hardwareMap.get(NavxMicroNavigationSensor.class, "navx");
         distanceSensor = hardwareMap.get(DistanceSensor.class, "distSensor");
@@ -85,7 +85,7 @@ public class OpModeBase extends CommandOpMode
         //Initialize subsystems
         mecanumDrive = new MecanumDriveSubsystem(leftFront, leftRearLeftEncoder, rightFront, rightRearFrontEncoder, navxMicro);
         //intakeSlides = new IntakeSlideSubsystem(intakeSlideMotor);
-        outtakeSlides = new ScoringSlideSubsystem(scoringSlideMotor);
+        //outtakeSlides = new ScoringSlideSubsystem(scoringSlideMotor);
         roadrunnerMecanumDrive = new SampleMecanumDrive(hardwareMap);
         claw = new ClawSubsystem(clawServo);
         arm = new ArmSubsystem(leftPlatformServo, rightPlatformServo, wristServo);

@@ -31,10 +31,10 @@ public class ArmSubsystem extends SubsystemBase
         servoForWrist = wristServo;
     }
 
-    private void moveArm(double leftVal)
+    private void moveArm(double leftVal, double rightVal)
     {
         ArmL.setPosition(leftVal);
-        ArmR.setPosition(1-leftVal);
+        ArmR.setPosition(rightVal);
     }
 
     private void moveWrist(double position)
@@ -50,23 +50,23 @@ public class ArmSubsystem extends SubsystemBase
 
     public Command pickupFront()
     {
-        return new InstantCommand(() -> {moveArm(left_pickupFront); moveWrist(w_pickupFront);});
+        return new InstantCommand(() -> {moveArm(left_pickupFront, 1-left_pickupFront); moveWrist(w_pickupFront);});
     }
 
     public Command topDown()
     {
-        return new InstantCommand(() -> {moveArm(left_topDownFront); moveWrist(w_topDownFront);});
+        return new InstantCommand(() -> {moveArm(left_topDownFront, 1-left_topDownFront); moveWrist(w_topDownFront);});
     }
 
     public Command deployFront()
     {
-        return new InstantCommand(() -> {moveArm(left_deployFront);});
+        return new InstantCommand(() -> {moveArm(left_deployFront, 1-left_deployFront);});
         //return new InstantCommand(() -> {moveArm(left_deployFront); moveWrist(w_deployFront);});
     }
 
     public Command deployBack()
     {
-        return new InstantCommand(() -> {moveArm(left_deployBack); moveWrist(w_deployBack);});
+        return new InstantCommand(() -> {moveArm(left_deployBack, 1-left_deployBack); moveWrist(w_deployBack);});
     }
 
     //If the servo reaches its limit, there could potentially be an error with the method returning null
@@ -82,10 +82,10 @@ public class ArmSubsystem extends SubsystemBase
     public Command incrementalArm(double increment)
     {
         return new InstantCommand(() -> {
-            if(ArmR.getPosition() - increment > 0 && ArmR.getPosition() - increment < 1 && ArmL.getPosition() + increment > 0 && ArmL.getPosition() + increment < 1)
-            {
-                moveArm(ArmL.getPosition() + increment);
-            }
+            //if(ArmR.getPosition() - increment > 0 && ArmR.getPosition() - increment < 1 && ArmL.getPosition() + increment > 0 && ArmL.getPosition() + increment < 1)
+            //{
+                moveArm(ArmL.getPosition() + increment, ArmR.getPosition() + increment);
+            //}
         });
     }
 }

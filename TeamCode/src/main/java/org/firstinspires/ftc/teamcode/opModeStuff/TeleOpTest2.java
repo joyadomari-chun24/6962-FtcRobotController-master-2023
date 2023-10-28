@@ -29,7 +29,7 @@ import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.Y;
 public class TeleOpTest2 extends OpModeBase
 {
     private double gyroAngle;
-    private double armIncrement = 0.01;
+    private double armIncrement = 0.005;
     private double wristIncrement = 0.005;
 
     @Override
@@ -74,8 +74,8 @@ public class TeleOpTest2 extends OpModeBase
         gamepadEx1.getGamepadButton(LEFT_BUMPER).whileHeld(mecanumDrive.slowFieldCentric(gamepadEx1::getLeftX, gamepadEx1::getLeftY, gamepadEx1::getRightX, gyroAngle, telemetry));
 
         //Claw
-        gamepadEx1.getGamepadButton(A).whileHeld(claw.openClaw());
-        gamepadEx1.getGamepadButton(B).whileHeld(claw.closeClaw());
+        gamepadEx1.getGamepadButton(LEFT_BUMPER).whileHeld(claw.openClaw());
+        gamepadEx1.getGamepadButton(RIGHT_BUMPER).whileHeld(claw.closeClaw());
         gamepadEx2.getGamepadButton(RIGHT_BUMPER).whenPressed(new ConditionalCommand(new InstantCommand(claw::openClaw), new InstantCommand(claw::closeClaw), () -> {return claw.toggle();}));
 
         //Debugging arm/wrist
@@ -91,7 +91,7 @@ public class TeleOpTest2 extends OpModeBase
 
         //Adjustable arm (NEEDS WORK)
         gamepadEx2.getGamepadButton(DPAD_UP).whileHeld(arm.incrementalArm(armIncrement));
-        gamepadEx2.getGamepadButton(DPAD_DOWN).whileHeld(arm.incrementalArm(armIncrement));
+        gamepadEx2.getGamepadButton(DPAD_DOWN).whileHeld(arm.incrementalArm(-1*armIncrement));
 
         //Adjustable wrist
         gamepadEx2.getGamepadButton(DPAD_LEFT).whileHeld(arm.incrementalWrist(wristIncrement));
