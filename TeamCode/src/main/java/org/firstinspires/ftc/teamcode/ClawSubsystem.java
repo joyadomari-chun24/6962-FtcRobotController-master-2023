@@ -12,11 +12,17 @@ public class ClawSubsystem extends SubsystemBase
     private Servo claw;
     private double closedPosition = 0;
     private double openPosition = 1;
+    private boolean clawToggle = false;
     public ClawSubsystem(Servo theClaw)
     {
         claw = theClaw;
     }
 
+    public boolean toggle()
+    {
+        clawToggle = !clawToggle;
+        return clawToggle;
+    }
     public Command closeClaw()
     {
         return new InstantCommand(() -> {claw.setPosition(closedPosition);});

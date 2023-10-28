@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.opModeStuff;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.arcrobotics.ftclib.command.ConditionalCommand;
+import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.gamepad.ToggleButtonReader;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -20,7 +22,7 @@ import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.X;
 import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.Y;
 
 
-@TeleOp
+@TeleOp(name="Use This TeleOp")
 public class TeleOpTest2 extends OpModeBase
 {
     private double gyroAngle;
@@ -47,7 +49,7 @@ public class TeleOpTest2 extends OpModeBase
         *
         * X - Top Down Position
         *
-        * Right joystick - Adjustable Wrist
+        * Right joystick - Adjustable Wrist (not implemented yet)
         *
         * */
 
@@ -70,6 +72,7 @@ public class TeleOpTest2 extends OpModeBase
         //Claw
         gamepadEx1.getGamepadButton(A).whileHeld(claw.openClaw());
         gamepadEx1.getGamepadButton(B).whileHeld(claw.closeClaw());
+        gamepadEx2.getGamepadButton(RIGHT_BUMPER).whenPressed(new ConditionalCommand(new InstantCommand(claw::openClaw), new InstantCommand(claw::closeClaw), () -> {return claw.toggle();}));
 
         //Debugging arm/wrist
         gamepadEx1.getGamepadButton(Y).whileHeld(arm.position1());
