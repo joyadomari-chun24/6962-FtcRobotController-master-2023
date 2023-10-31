@@ -16,6 +16,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.teamcode.ArmSubsystem;
 import org.firstinspires.ftc.teamcode.ClawSubsystem;
+import org.firstinspires.ftc.teamcode.DroneLaunchSubsystem;
 import org.firstinspires.ftc.teamcode.GyroExperiementalSubsystem;
 import org.firstinspires.ftc.teamcode.SlideStuff.IntakeSlideSubsystem;
 import org.firstinspires.ftc.teamcode.MecanumDriveSubsystem;
@@ -47,6 +48,7 @@ public class OpModeBase extends CommandOpMode
     protected Servo clawServo, wristServo, leftPlatformServo, rightPlatformServo;
     protected ClawSubsystem claw;
     protected ArmSubsystem arm;
+    protected DroneLaunchSubsystem launcher;
     protected GyroExperiementalSubsystem gyroSubsystem;
 
     ElapsedTime navxCalibrationTimer = new ElapsedTime();
@@ -65,6 +67,7 @@ public class OpModeBase extends CommandOpMode
         //intakeSlideMotor = hardwareMap.get(DcMotorEx.class, "Intake");
         navxMicro = hardwareMap.get(NavxMicroNavigationSensor.class, "navx");
         distanceSensor = hardwareMap.get(DistanceSensor.class, "distSensor");
+        droneServo = hardwareMap.get(Servo.class, "droneLauncher");
         wristServo = hardwareMap.get(Servo.class, "platformServo");
         clawServo = hardwareMap.get(Servo.class, "claw");
         leftPlatformServo = hardwareMap.servo.get("leftPlatformServo");
@@ -89,6 +92,7 @@ public class OpModeBase extends CommandOpMode
         roadrunnerMecanumDrive = new SampleMecanumDrive(hardwareMap);
         claw = new ClawSubsystem(clawServo);
         arm = new ArmSubsystem(leftPlatformServo, rightPlatformServo, wristServo);
+        launcher = new DroneLaunchSubsystem(droneServo);
         gyroSubsystem = new GyroExperiementalSubsystem(navxMicro);
 
         // Wait until the gyro calibration is complete

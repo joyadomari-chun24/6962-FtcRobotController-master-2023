@@ -65,6 +65,8 @@ public class TeleOpTest2 extends OpModeBase
         *
         * Right joystick - turn
         *
+        * X - Drone launch
+        *
         * */
 
         //Todo: figure out the gyro thing for field oriented
@@ -73,14 +75,13 @@ public class TeleOpTest2 extends OpModeBase
         //Slow mode
         gamepadEx1.getGamepadButton(LEFT_BUMPER).whileHeld(mecanumDrive.slowFieldCentric(gamepadEx1::getLeftX, gamepadEx1::getLeftY, gamepadEx1::getRightX, gyroAngle, telemetry));
 
+        //Drone launcher
+        gamepadEx1.getGamepadButton(X).and(gamepadEx1.getGamepadButton(Y)).whileActiveOnce(launcher.fireDrone());
+
         //Claw
         gamepadEx1.getGamepadButton(LEFT_BUMPER).whileHeld(claw.openClaw());
         gamepadEx1.getGamepadButton(RIGHT_BUMPER).whileHeld(claw.closeClaw());
         gamepadEx2.getGamepadButton(RIGHT_BUMPER).whenPressed(new ConditionalCommand(new InstantCommand(claw::openClaw), new InstantCommand(claw::closeClaw), () -> {return claw.toggle();}));
-
-        //Debugging arm/wrist
-        //gamepadEx1.getGamepadButton(Y).whileHeld(arm.position1());
-        //gamepadEx1.getGamepadButton(X).whileHeld(arm.positionW());
 
         //Arm/wrist positions
         gamepadEx2.getGamepadButton(A).whileHeld(arm.pickupFront());
