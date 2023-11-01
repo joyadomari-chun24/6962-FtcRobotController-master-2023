@@ -42,7 +42,10 @@ public class TeleOpTest2 extends OpModeBase
         *
         * Left joystick - Scoring Slides (currently bound to triggers)
         *
-        * D-Pad - Adjustable Arm
+        * Right joystick - Adjustable Wrist (currently bound to dpad)
+        * D-Pad Left and Right - Adjustable Wrist
+        *
+        * D-Pad Up and Down - Adjustable Arm
         *
         * Right bumper - Claw
         *
@@ -54,8 +57,6 @@ public class TeleOpTest2 extends OpModeBase
         *
         * X - Top Down Position
         *
-        * Right joystick - Adjustable Wrist (not implemented yet)
-        *
         * */
 
         /*
@@ -64,6 +65,8 @@ public class TeleOpTest2 extends OpModeBase
         * Left joystick - strafe
         *
         * Right joystick - turn
+        *
+        * Left Bumper - slow mode
         *
         * X - Drone launch
         *
@@ -79,8 +82,10 @@ public class TeleOpTest2 extends OpModeBase
         gamepadEx1.getGamepadButton(X).and(gamepadEx1.getGamepadButton(Y)).whileActiveOnce(launcher.fireDrone());
 
         //Claw
-        gamepadEx1.getGamepadButton(LEFT_BUMPER).whileHeld(claw.openClaw());
-        gamepadEx1.getGamepadButton(RIGHT_BUMPER).whileHeld(claw.closeClaw());
+        //non-toggleable claw
+        //gamepadEx1.getGamepadButton(LEFT_BUMPER).whileHeld(claw.openClaw());
+        //gamepadEx1.getGamepadButton(RIGHT_BUMPER).whileHeld(claw.closeClaw());
+        //toggleable claw
         gamepadEx2.getGamepadButton(RIGHT_BUMPER).whenPressed(new ConditionalCommand(new InstantCommand(claw::openClaw), new InstantCommand(claw::closeClaw), () -> {return claw.toggle();}));
 
         //Arm/wrist positions
