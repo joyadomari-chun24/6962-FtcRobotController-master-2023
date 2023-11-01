@@ -37,13 +37,13 @@ public class MecanumDriveSubsystem extends SubsystemBase
     }
 
     /**
-     * Then put commands here:
+     * Then put methods here:
      * */
 
     //I don't know why it needs a DoubleSupplier instead of just a double. I think it's just because the gamepad gives them.
-    public Command fieldCentric(DoubleSupplier strafeSpeed, DoubleSupplier forwardSpeed, DoubleSupplier turnSpeed, double navxAngle, Telemetry infoThing)
+    public Command fieldCentric(DoubleSupplier strafeSpeed, DoubleSupplier forwardSpeed, DoubleSupplier turnSpeed, DoubleSupplier navxAngle, Telemetry infoThing)
     {
-        return new RunCommand(() -> drive.driveFieldCentric(strafeSpeed.getAsDouble(), forwardSpeed.getAsDouble(), turnSpeed.getAsDouble(), navxAngle), this);
+        return new RunCommand(() -> drive.driveFieldCentric(strafeSpeed.getAsDouble(), forwardSpeed.getAsDouble(), turnSpeed.getAsDouble(), navxAngle.getAsDouble()), this);
     }
 
     //'Telemetry' is a parameter so that I can print telemetry from this method for debugging

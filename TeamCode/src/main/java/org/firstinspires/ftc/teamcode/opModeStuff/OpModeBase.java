@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.opModeStuff;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.hardware.GyroEx;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -34,14 +35,14 @@ public class OpModeBase extends CommandOpMode
      *
      * */
     protected MotorEx leftFront, leftRearLeftEncoder, rightRearFrontEncoder, rightFront;
-    protected DcMotorEx scoringSlideMotor, intakeSlideMotor;
+    protected DcMotorEx scoringSlideMotorL, scoringSlideMotorR, intakeSlideMotor;
     protected NavxMicroNavigationSensor navxMicro;
     protected DistanceSensor distanceSensor;
     protected SampleMecanumDrive roadrunnerMecanumDrive;
     protected GamepadEx gamepadEx1;
     protected GamepadEx gamepadEx2;
     protected IntakeSlideSubsystem intakeSlides;
-    protected ScoringSlideSubsystem outtakeSlides;
+    protected ScoringSlideSubsystem scoringSlides;
     protected MecanumDriveSubsystem mecanumDrive;
     protected PropDetectionPipeline propDetectionPipeline;
     protected Servo droneServo, ArmServoL, ArmServoR;
@@ -76,7 +77,8 @@ public class OpModeBase extends CommandOpMode
         intakeSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         scoringSlideMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         intakeSlideMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);*/
-        scoringSlideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        scoringSlideMotorL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        scoringSlideMotorR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         //intakeSlideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         gamepadEx1 = new GamepadEx(gamepad1);
@@ -88,7 +90,7 @@ public class OpModeBase extends CommandOpMode
         //Initialize subsystems
         mecanumDrive = new MecanumDriveSubsystem(leftFront, leftRearLeftEncoder, rightFront, rightRearFrontEncoder, navxMicro);
         //intakeSlides = new IntakeSlideSubsystem(intakeSlideMotor);
-        //outtakeSlides = new ScoringSlideSubsystem(scoringSlideMotor);
+        scoringSlides = new ScoringSlideSubsystem(scoringSlideMotorL, scoringSlideMotorR);
         roadrunnerMecanumDrive = new SampleMecanumDrive(hardwareMap);
         claw = new ClawSubsystem(clawServo);
         arm = new ArmSubsystem(leftPlatformServo, rightPlatformServo, wristServo);

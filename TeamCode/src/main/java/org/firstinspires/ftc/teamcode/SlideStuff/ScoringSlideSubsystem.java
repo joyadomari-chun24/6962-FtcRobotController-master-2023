@@ -10,24 +10,28 @@ import java.util.function.DoubleSupplier;
 
 public class ScoringSlideSubsystem extends SlideBaseSubsystem
 {
-    private DcMotorEx motorForScoring;
+    private DcMotorEx motorLeft, motorRight;
     private double slidePower;
-    public ScoringSlideSubsystem(DcMotorEx scoringMotor)
+    public ScoringSlideSubsystem(DcMotorEx scoringMotorL, DcMotorEx scoringMotorR)
     {
-        super(0, 0, 0, true, scoringMotor);
-        motorForScoring = scoringMotor;
+        super(0, 0, 0, true, false, scoringMotorL, scoringMotorR);
+        motorLeft = scoringMotorL;
+        motorRight = scoringMotorR;
     }
     @Override
     public void periodic()
     {
 //        double power = PIDControl(700, motor.getCurrentPosition());
-//        motor.setPower(power);
-        motorForScoring.setPower(slidePower);
+//        motorLeft.setPower(power);
+        motorLeft.setPower(slidePower);
+        motorRight.setPower(slidePower);
         super.periodic();
+        motorLeft.setPower(slidePower);
+        motorRight.setPower(slidePower);
     }
 
     public Command slideMovement(DoubleSupplier motorPower)
     {
-        return new RunCommand(() -> {slidePower = motorPower.getAsDouble();}, this);
+        return new InstantCommand(() -> {slidePower = motorPower.getAsDouble();}, this);
     }
 }
