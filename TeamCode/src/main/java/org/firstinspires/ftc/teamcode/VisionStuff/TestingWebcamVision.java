@@ -45,11 +45,12 @@ public class TestingWebcamVision extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         //Creates an instance of the processor above
+        //I don't understand how the CameraStreamProcessor and VisionProcessor work together yet
         final CameraStreamProcessor processor = new CameraStreamProcessor();
 
         //Builds a vision portal with the processor we just made and sets the webcam (if we use .addProcessors, we can add multiple processors to the frame. See double vision example)
         new VisionPortal.Builder()
-                .addProcessor(visionProcessorTest-)
+                .addProcessor(visionProcessorTest)
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
                 .build();
 
@@ -59,9 +60,9 @@ public class TestingWebcamVision extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            telemetry.addData("LargestContourX: ", processor.largestContourX);
-            telemetry.addData("LargestContourY: ", processor.largestContourY);
-            telemetry.addLine(GetPropLocation(processor.largestContourX, processor.largestContourY));
+//            telemetry.addData("LargestContourX: ", visionProcessorTest.largestContourX);
+//            telemetry.addData("LargestContourY: ", visionProcessorTest.largestContourY);
+//            telemetry.addLine(GetPropLocation(visionProcessorTest.largestContourX, visionProcessorTest.largestContourY));
             telemetry.update();
 
             sleep(100L);
