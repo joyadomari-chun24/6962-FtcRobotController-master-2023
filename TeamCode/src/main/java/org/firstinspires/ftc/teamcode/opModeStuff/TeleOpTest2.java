@@ -29,7 +29,7 @@ import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.Y;
 public class TeleOpTest2 extends OpModeBase
 {
     private double gyroAngle;
-    private double armIncrement = 0.0005;
+    private double armIncrement = 0.005;
     private double wristIncrement = 0.005;
 
     @Override
@@ -92,8 +92,8 @@ public class TeleOpTest2 extends OpModeBase
         gamepadEx2.getGamepadButton(B).whileHeld(arm.deployBack());
 
         //Adjustable arm (NEEDS WORK)
-        gamepadEx2.getGamepadButton(DPAD_UP).whileHeld(arm.incrementalArm(armIncrement));
-        gamepadEx2.getGamepadButton(DPAD_DOWN).whileHeld(arm.incrementalArm(-1*armIncrement));
+        gamepadEx2.getGamepadButton(DPAD_UP).whenPressed(arm.incrementalArm(armIncrement));
+        gamepadEx2.getGamepadButton(DPAD_DOWN).whenPressed(arm.incrementalArm(-1*armIncrement));
 
         //Adjustable wrist
         gamepadEx2.getGamepadButton(DPAD_LEFT).whileHeld(arm.incrementalWrist(wristIncrement));
