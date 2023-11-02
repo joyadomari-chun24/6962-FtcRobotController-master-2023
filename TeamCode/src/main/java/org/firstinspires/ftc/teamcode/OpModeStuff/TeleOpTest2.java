@@ -65,7 +65,7 @@ public class TeleOpTest2 extends OpModeBase
         * */
 
         //Slow mode
-        gamepadEx1.getGamepadButton(LEFT_BUMPER).whileHeld(mecanumDrive.slowFieldCentric(gamepadEx1::getLeftX, gamepadEx1::getLeftY, gamepadEx1::getRightX, gyroSubsystem::getHeading, telemetry));
+        gamepadEx1.getGamepadButton(LEFT_BUMPER).whileHeld(mecanumDrive.slowFieldCentric(gamepadEx1::getLeftX, gamepadEx1::getLeftY, gamepadEx1::getRightX, gyroManager::getHeading, telemetry));
 
         //Drone launcher
         gamepadEx1.getGamepadButton(X).and(gamepadEx1.getGamepadButton(Y)).whileActiveOnce(launcher.fireDrone());
@@ -97,7 +97,7 @@ public class TeleOpTest2 extends OpModeBase
         scoringSlides.setDefaultCommand(scoringSlides.slideMovement(gamepadEx2::getLeftY));
 
         //even though it's being set, it doesn't drive field oriented for some reason
-        mecanumDrive.setDefaultCommand(mecanumDrive.fieldCentric(gamepadEx1::getLeftX, gamepadEx1::getLeftY, gamepadEx1::getRightX, gyroSubsystem::getHeading, telemetry));
+        mecanumDrive.setDefaultCommand(mecanumDrive.fieldCentric(gamepadEx1::getLeftX, gamepadEx1::getLeftY, gamepadEx1::getRightX, gyroManager::getHeading, telemetry));
         telemetry.log().clear();
         telemetry.log().add("TeleOpTest2 has initialized.");
         telemetry.update();
@@ -116,7 +116,7 @@ public class TeleOpTest2 extends OpModeBase
         telemetry.addData("LeftStickX", gamepadEx1.getLeftX());
         telemetry.addData("LeftStickY", gamepadEx1.getLeftY());
         telemetry.addData("RightStickX", gamepadEx1.getRightX());
-        telemetry.addData("Gyro Heading (.getHeading)", gyroSubsystem.getHeading());
+        telemetry.addData("Gyro Heading (.getHeading)", gyroManager.getHeading());
         telemetry.addData("x cord", poseEstimate.getX());
         telemetry.addData("y cord", poseEstimate.getY());
         telemetry.addData("roadrunner predicted heading", poseEstimate.getHeading());

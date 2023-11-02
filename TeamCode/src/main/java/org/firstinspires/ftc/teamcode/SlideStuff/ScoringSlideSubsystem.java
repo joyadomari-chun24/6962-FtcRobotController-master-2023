@@ -12,6 +12,7 @@ public class ScoringSlideSubsystem extends SlideBaseSubsystem
 {
     private DcMotorEx motorLeft, motorRight;
     private double slidePower;
+    public int target = 0;
     public ScoringSlideSubsystem(DcMotorEx scoringMotorL, DcMotorEx scoringMotorR)
     {
         super(0, 0, 0, true, false, scoringMotorL, scoringMotorR);
@@ -22,10 +23,19 @@ public class ScoringSlideSubsystem extends SlideBaseSubsystem
     @Override
     public void periodic()
     {
-//        double power = PIDControl(700, motor.getCurrentPosition());
-//        motorLeft.setPower(power);
-        motorLeft.setPower(slidePower);
-        motorRight.setPower(slidePower);
+        double powerL = PIDControl(target, motorLeft.getCurrentPosition());
+        double powerR = PIDControl(target, motorRight.getCurrentPosition());
+        if (slidePower != 0)
+        {
+            motorLeft.setPower(slidePower);
+            motorRight.setPower(slidePower);
+            target = motorLeft.getCurrentPosition();
+        }
+        else
+        {
+            motorLeft.setPower(powerL);
+            motorRight.setPower(powerR);
+        }
         super.periodic();
     }
 

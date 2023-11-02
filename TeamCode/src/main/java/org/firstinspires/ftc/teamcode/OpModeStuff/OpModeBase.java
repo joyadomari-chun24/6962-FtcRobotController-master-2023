@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.ScoringStuff.ArmSubsystem;
 import org.firstinspires.ftc.teamcode.ScoringStuff.ClawSubsystem;
-import org.firstinspires.ftc.teamcode.DriveStuff.NavxSubsystem;
+import org.firstinspires.ftc.teamcode.DriveStuff.NavxManager;
 import org.firstinspires.ftc.teamcode.DroneLaunchSubsystem;
 import org.firstinspires.ftc.teamcode.SlideStuff.IntakeSlideSubsystem;
 import org.firstinspires.ftc.teamcode.DriveStuff.MecanumDriveSubsystem;
@@ -45,7 +45,7 @@ public class OpModeBase extends CommandOpMode
     protected ClawSubsystem claw;
     protected ArmSubsystem arm;
     protected DroneLaunchSubsystem launcher;
-    protected NavxSubsystem gyroSubsystem;
+    protected NavxManager gyroManager;
 
     ElapsedTime navxCalibrationTimer = new ElapsedTime();
 
@@ -90,7 +90,7 @@ public class OpModeBase extends CommandOpMode
         claw = new ClawSubsystem(clawServo);
         arm = new ArmSubsystem(leftPlatformServo, rightPlatformServo, wristServo);
         launcher = new DroneLaunchSubsystem(droneServo);
-        gyroSubsystem = new NavxSubsystem(navxMicro);
+        gyroManager = new NavxManager(navxMicro);
 
         // Wait until the gyro calibration is complete
         navxCalibrationTimer.reset();

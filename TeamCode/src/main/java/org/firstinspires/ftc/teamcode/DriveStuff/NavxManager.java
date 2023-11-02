@@ -9,15 +9,21 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-public class NavxSubsystem extends GyroEx
+public class NavxManager extends GyroEx
 {
+    /**
+     * This was initially called 'NavxSubsystem' because it functions like a subsystem-ish, but renamed
+     * because it isn't a subsystem per se (doesn't extend SubsystemBase and doesn't have the same init/periodic
+     * loops). Anyway, it has all the Navx methods and info that you could need in here. I created this
+     * by reverse engineering RevIMU from the FTClib library. -Josh
+     * */
     private NavxMicroNavigationSensor gyro;
     double globalHeading;
     double relativeHeading;
     //Diff between global and relative heading
     double offset;
 
-    public NavxSubsystem(NavxMicroNavigationSensor navx)
+    public NavxManager(NavxMicroNavigationSensor navx)
     {
         gyro = navx;
         NavxMicroNavigationSensor.Parameters parameters = new NavxMicroNavigationSensor.Parameters();

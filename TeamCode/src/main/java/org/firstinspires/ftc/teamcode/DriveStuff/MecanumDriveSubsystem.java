@@ -19,7 +19,7 @@ import java.util.function.DoubleSupplier;
 public class MecanumDriveSubsystem extends SubsystemBase
 {
     private NavxMicroNavigationSensor navx;
-    private int slowModeFactor = 4;
+    private int slowModeFactor = 2;
     private static double kP = 0;
     private static double kI = 0;
     private static double kD = 0;
