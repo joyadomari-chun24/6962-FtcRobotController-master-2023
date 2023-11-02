@@ -21,8 +21,8 @@ import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.Y;
 public class TeleOpTest2 extends OpModeBase
 {
     private double gyroAngle;
-    private double armIncrement = 0.005;
-    private double wristIncrement = 0.005;
+    private double armIncrement = 0.025;
+    private double wristIncrement = 0.01;
 
     @Override
     public void initialize()
@@ -32,9 +32,9 @@ public class TeleOpTest2 extends OpModeBase
         /*
         * Gamepad 2:
         *
-        * Left joystick - Scoring Slides (currently bound to triggers)
+        * Right joystick - Scoring Slides
         *
-        * Right joystick - Adjustable Wrist (currently bound to dpad)
+        * Left joystick - Adjustable Wrist (currently bound to dpad)
         * D-Pad Left and Right - Adjustable Wrist
         *
         * D-Pad Up and Down - Adjustable Arm
@@ -84,8 +84,8 @@ public class TeleOpTest2 extends OpModeBase
         gamepadEx2.getGamepadButton(B).whileHeld(arm.deployBack());
 
         //Adjustable arm (NEEDS WORK)
-        gamepadEx2.getGamepadButton(DPAD_UP).whenPressed(arm.incrementalArm(armIncrement));
-        gamepadEx2.getGamepadButton(DPAD_DOWN).whenPressed(arm.incrementalArm(-1*armIncrement));
+        gamepadEx2.getGamepadButton(DPAD_UP).whileHeld(arm.incrementalArm(armIncrement));
+        gamepadEx2.getGamepadButton(DPAD_DOWN).whileHeld(arm.incrementalArm(-1*armIncrement));
 
         //Adjustable wrist
         gamepadEx2.getGamepadButton(DPAD_LEFT).whileHeld(arm.incrementalWrist(wristIncrement));
@@ -94,7 +94,7 @@ public class TeleOpTest2 extends OpModeBase
         //Slides
         //gamepadEx2.getGamepadButton(LEFT_BUMPER).whenPressed(scoringSlides.extendToPosition(1000, )));
         //Not sure why this keeps on sending the error "default command requires the subsystem!" ???
-        scoringSlides.setDefaultCommand(scoringSlides.slideMovement(gamepadEx2::getLeftY));
+        scoringSlides.setDefaultCommand(scoringSlides.slideMovement(gamepadEx2::getRightY));
 
         //even though it's being set, it doesn't drive field oriented for some reason
         mecanumDrive.setDefaultCommand(mecanumDrive.fieldCentric(gamepadEx1::getLeftX, gamepadEx1::getLeftY, gamepadEx1::getRightX, gyroManager::getHeading, telemetry));
