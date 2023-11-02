@@ -17,6 +17,7 @@ public class ScoringSlideSubsystem extends SlideBaseSubsystem
         super(0, 0, 0, true, false, scoringMotorL, scoringMotorR);
         motorLeft = scoringMotorL;
         motorRight = scoringMotorR;
+        //The slides still just fall down btw (need PID to hold)
     }
     @Override
     public void periodic()
@@ -26,8 +27,6 @@ public class ScoringSlideSubsystem extends SlideBaseSubsystem
         motorLeft.setPower(slidePower);
         motorRight.setPower(slidePower);
         super.periodic();
-        motorLeft.setPower(slidePower);
-        motorRight.setPower(slidePower);
     }
 
     public Command slideMovement(DoubleSupplier motorPower)

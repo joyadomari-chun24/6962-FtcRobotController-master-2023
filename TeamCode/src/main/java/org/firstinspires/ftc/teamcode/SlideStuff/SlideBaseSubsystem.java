@@ -82,8 +82,9 @@ public class SlideBaseSubsystem extends SubsystemBase
         return motor1.getCurrentPosition();
     }
 
+    //Not exactly sure how this will go yet
     public Command extendToPosition(int targetPos, int currentState)
     {
-        return new RunCommand(() -> PIDControl(targetPos, currentState));
+        return new RunCommand(() -> {while(Math.abs(targetPos-currentState) > 50) {PIDControl(targetPos, currentState);}});
     }
 }
