@@ -64,8 +64,8 @@ public class OpModeBase extends CommandOpMode
         leftRearLeftEncoder = new MotorEx(hardwareMap, "Bl/Le");
         rightRearFrontEncoder = new MotorEx(hardwareMap, "Br/Fe");
         rightFront = new MotorEx(hardwareMap, "Fr");
-        //scoringSlideMotor = hardwareMap.get(DcMotorEx.class, "Score");
-        //intakeSlideMotor = hardwareMap.get(DcMotorEx.class, "Intake");
+        scoringSlideMotorL = hardwareMap.get(DcMotorEx.class, "scoreSlideLeft");
+        scoringSlideMotorR = hardwareMap.get(DcMotorEx.class, "scoreSlideRight");
         navxMicro = hardwareMap.get(NavxMicroNavigationSensor.class, "navx");
         distanceSensor = hardwareMap.get(DistanceSensor.class, "distSensor");
         droneServo = hardwareMap.get(Servo.class, "droneLauncher");

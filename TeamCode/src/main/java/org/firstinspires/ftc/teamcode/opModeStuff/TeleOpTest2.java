@@ -29,7 +29,7 @@ import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.Y;
 public class TeleOpTest2 extends OpModeBase
 {
     private double gyroAngle;
-    private double armIncrement = 0.005;
+    private double armIncrement = 0.0005;
     private double wristIncrement = 0.005;
 
     @Override
@@ -130,7 +130,7 @@ public class TeleOpTest2 extends OpModeBase
         telemetry.addData("LeftStickY", gamepadEx1.getLeftY());
         telemetry.addData("RightStickX", gamepadEx1.getRightX());
         telemetry.addData("Gyro Heading (gyroAngle) ", gyroAngle);
-        telemetry.addData("Gyro Heading (::getHeading)", gyroSubsystem::getHeading);
+        //telemetry.addData("Gyro Heading (::getHeading)", gyroSubsystem::getHeading);
         telemetry.addData("Gyro Heading (.getHeading)", gyroSubsystem.getHeading());
         telemetry.addData("x cord", poseEstimate.getX());
         telemetry.addData("y cord", poseEstimate.getY());
