@@ -1,9 +1,7 @@
-package org.firstinspires.ftc.teamcode.opModeStuff;
+package org.firstinspires.ftc.teamcode.OpModeStuff;
 
-import com.acmerobotics.dashboard.FtcDashboard;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
-import com.arcrobotics.ftclib.hardware.GyroEx;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -12,15 +10,12 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.teamcode.ArmSubsystem;
-import org.firstinspires.ftc.teamcode.ClawSubsystem;
+import org.firstinspires.ftc.teamcode.ScoringStuff.ArmSubsystem;
+import org.firstinspires.ftc.teamcode.ScoringStuff.ClawSubsystem;
+import org.firstinspires.ftc.teamcode.DriveStuff.NavxSubsystem;
 import org.firstinspires.ftc.teamcode.DroneLaunchSubsystem;
-import org.firstinspires.ftc.teamcode.GyroExperiementalSubsystem;
 import org.firstinspires.ftc.teamcode.SlideStuff.IntakeSlideSubsystem;
-import org.firstinspires.ftc.teamcode.MecanumDriveSubsystem;
+import org.firstinspires.ftc.teamcode.DriveStuff.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.SlideStuff.ScoringSlideSubsystem;
 import org.firstinspires.ftc.teamcode.VisionStuff.PropDetectionPipeline;
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
@@ -50,7 +45,7 @@ public class OpModeBase extends CommandOpMode
     protected ClawSubsystem claw;
     protected ArmSubsystem arm;
     protected DroneLaunchSubsystem launcher;
-    protected GyroExperiementalSubsystem gyroSubsystem;
+    protected NavxSubsystem gyroSubsystem;
 
     ElapsedTime navxCalibrationTimer = new ElapsedTime();
 
@@ -95,7 +90,7 @@ public class OpModeBase extends CommandOpMode
         claw = new ClawSubsystem(clawServo);
         arm = new ArmSubsystem(leftPlatformServo, rightPlatformServo, wristServo);
         launcher = new DroneLaunchSubsystem(droneServo);
-        gyroSubsystem = new GyroExperiementalSubsystem(navxMicro);
+        gyroSubsystem = new NavxSubsystem(navxMicro);
 
         // Wait until the gyro calibration is complete
         navxCalibrationTimer.reset();

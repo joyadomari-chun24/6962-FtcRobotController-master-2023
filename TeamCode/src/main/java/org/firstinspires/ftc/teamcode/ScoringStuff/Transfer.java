@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.ScoringStuff;
 
 import com.qualcomm.robotcore.hardware.AnalogSensor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;// switch to iterative later

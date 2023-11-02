@@ -1,13 +1,11 @@
-package org.firstinspires.ftc.teamcode.opModeStuff;
+package org.firstinspires.ftc.teamcode.OpModeStuff;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
-import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilder;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.demonstrations.VisionPortalStreamingOpMode;
-import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 //There should probably be an auto for each of the four starting positions on the field

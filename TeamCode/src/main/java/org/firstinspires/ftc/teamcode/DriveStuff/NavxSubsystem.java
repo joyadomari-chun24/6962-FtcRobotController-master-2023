@@ -1,19 +1,15 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.DriveStuff;
 
-import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.geometry.Rotation2d;
 import com.arcrobotics.ftclib.hardware.GyroEx;
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-public class GyroExperiementalSubsystem extends GyroEx
+public class NavxSubsystem extends GyroEx
 {
     private NavxMicroNavigationSensor gyro;
     double globalHeading;
@@ -21,7 +17,7 @@ public class GyroExperiementalSubsystem extends GyroEx
     //Diff between global and relative heading
     double offset;
 
-    public GyroExperiementalSubsystem(NavxMicroNavigationSensor navx)
+    public NavxSubsystem(NavxMicroNavigationSensor navx)
     {
         gyro = navx;
         NavxMicroNavigationSensor.Parameters parameters = new NavxMicroNavigationSensor.Parameters();
