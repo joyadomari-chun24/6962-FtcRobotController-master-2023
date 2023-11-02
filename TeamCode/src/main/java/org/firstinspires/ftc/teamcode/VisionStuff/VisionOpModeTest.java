@@ -1,7 +1,8 @@
-package org.firstinspires.ftc.teamcode.demonstrations;
+package org.firstinspires.ftc.teamcode.VisionStuff;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -16,11 +17,9 @@ import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibra
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.VisionProcessor;
 import org.opencv.android.Utils;
-import org.opencv.core.Mat;
-
 import org.opencv.core.Core;
+import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
-import android.graphics.Paint;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
@@ -32,11 +31,10 @@ import java.util.concurrent.atomic.AtomicReference;
 
 @Config
 @Autonomous
-public class VisionPortalStreamingOpMode extends LinearOpMode {
+public class VisionOpModeTest extends LinearOpMode {
     //Zones to dertermine the prop's position on the 640x400 image
     double leftZone = 100;
     double rightZone = 500;
-    public static boolean propIsBlue = false; //Made public static to be changed by dashboard
 
     public static class CameraStreamProcessor implements VisionProcessor, CameraStreamSource {
         private final AtomicReference<Bitmap> lastFrame = new AtomicReference<>(Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565));
@@ -45,8 +43,9 @@ public class VisionPortalStreamingOpMode extends LinearOpMode {
         double minArea;
         public double largestContourX;
         public double largestContourY;
-        Paint propLines = new Paint();
+        VisionProcessor visionProcessorTest = new PropDetectionPipeline();
 
+        public static boolean propIsBlue = false; //Made public static to be changed by dashboard
         Scalar lowRedHSV = new Scalar(0, 70, 50);
         Scalar highRedHSV = new Scalar(10, 255, 255);
         Scalar strictLowRedHSV = new Scalar(0, 150, 50);
@@ -178,7 +177,7 @@ public class VisionPortalStreamingOpMode extends LinearOpMode {
 
         //Builds a vision portal with the processor we just made and sets the webcam (if we use .addProcessors, we can add multiple processors to the frame. See double vision example)
         new VisionPortal.Builder()
-                .addProcessor(processor)
+                .addProcessor(processor.visionProcessorTest)
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
                 .build();
 

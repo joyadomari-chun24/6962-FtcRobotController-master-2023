@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class PropDetectionPipeline implements VisionProcessor
 {
-    private final AtomicReference<Bitmap> lastFrame = new AtomicReference<>(Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565));
+    //private final AtomicReference<Bitmap> lastFrame = new AtomicReference<>(Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565));
     double largestContourArea;
     MatOfPoint largestContour;
     double minArea;
@@ -42,7 +42,7 @@ public class PropDetectionPipeline implements VisionProcessor
     @Override
     public void init(int width, int height, CameraCalibration calibration)
     {
-        lastFrame.set(Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565));
+        //lastFrame.set(Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565));
     }
 
     @Override
@@ -117,9 +117,9 @@ public class PropDetectionPipeline implements VisionProcessor
         finalMask.release();
 
         //Sends bitmap to be displayed on the dashboard
-        Bitmap b = Bitmap.createBitmap(frame.width(), frame.height(), Bitmap.Config.RGB_565);
-        Utils.matToBitmap(frame, b);
-        lastFrame.set(b);
+//        Bitmap b = Bitmap.createBitmap(frame.width(), frame.height(), Bitmap.Config.RGB_565);
+//        Utils.matToBitmap(frame, b);
+//        lastFrame.set(b);
 
         return null;
     }

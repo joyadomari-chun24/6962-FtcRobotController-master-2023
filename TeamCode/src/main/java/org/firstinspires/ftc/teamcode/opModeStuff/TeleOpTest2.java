@@ -72,11 +72,8 @@ public class TeleOpTest2 extends OpModeBase
         *
         * */
 
-        //Todo: figure out the gyro thing for field oriented
-        //I think that the problem is that it's only calling the angle once and using that as the robot's heading.
-
         //Slow mode
-        gamepadEx1.getGamepadButton(LEFT_BUMPER).whileHeld(mecanumDrive.slowFieldCentric(gamepadEx1::getLeftX, gamepadEx1::getLeftY, gamepadEx1::getRightX, gyroAngle, telemetry));
+        gamepadEx1.getGamepadButton(LEFT_BUMPER).whileHeld(mecanumDrive.slowFieldCentric(gamepadEx1::getLeftX, gamepadEx1::getLeftY, gamepadEx1::getRightX, gyroSubsystem::getHeading, telemetry));
 
         //Drone launcher
         gamepadEx1.getGamepadButton(X).and(gamepadEx1.getGamepadButton(Y)).whileActiveOnce(launcher.fireDrone());
@@ -119,8 +116,6 @@ public class TeleOpTest2 extends OpModeBase
     {
         super.run();
 
-        gyroAngle = navxMicro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
-
         //Update the roadrunner chassis code so that it can create the pose estimate (but we're not using it to drive)
         roadrunnerMecanumDrive.update();
         Pose2d poseEstimate = roadrunnerMecanumDrive.getPoseEstimate();
@@ -129,8 +124,6 @@ public class TeleOpTest2 extends OpModeBase
         telemetry.addData("LeftStickX", gamepadEx1.getLeftX());
         telemetry.addData("LeftStickY", gamepadEx1.getLeftY());
         telemetry.addData("RightStickX", gamepadEx1.getRightX());
-        telemetry.addData("Gyro Heading (gyroAngle) ", gyroAngle);
-        //telemetry.addData("Gyro Heading (::getHeading)", gyroSubsystem::getHeading);
         telemetry.addData("Gyro Heading (.getHeading)", gyroSubsystem.getHeading());
         telemetry.addData("x cord", poseEstimate.getX());
         telemetry.addData("y cord", poseEstimate.getY());

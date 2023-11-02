@@ -21,8 +21,7 @@ public class ArmSubsystem extends SubsystemBase
     public static double w_topDownFront = 0.6;
     public static double w_pickupFront = 0.2;
     public static double w_deployBack = 0;
-    //manually adjustable, so no need for now
-    //public static double w_deployFront = 0;
+    public static double w_deployFront = 0;
     private Servo ArmL, ArmR, servoForWrist;
     public ArmSubsystem(Servo leftServo, Servo rightServo, Servo wristServo)
     {
