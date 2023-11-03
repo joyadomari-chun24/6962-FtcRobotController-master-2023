@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Config
-@Autonomous
+@Autonomous(name = "Dashboard Vision", group = "tests")
 public class VisionPortalStreamingOpMode extends LinearOpMode {
     //Zones to dertermine the prop's position on the 640x400 image
     double leftZone = 100;

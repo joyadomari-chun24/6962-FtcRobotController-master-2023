@@ -34,8 +34,7 @@ public class TeleOpTest2 extends OpModeBase
         *
         * Right joystick - Scoring Slides
         *
-        * Left joystick - Adjustable Wrist (currently bound to dpad)
-        * D-Pad Left and Right - Adjustable Wrist
+        * Left joystick - Adjustable Wrist (Currently D-Pad Left and Right)
         *
         * D-Pad Up and Down - Adjustable Arm
         *
@@ -60,7 +59,7 @@ public class TeleOpTest2 extends OpModeBase
         *
         * Left Bumper - slow mode
         *
-        * X - Drone launch
+        * X and Y - Drone launch
         *
         * */
 
@@ -75,15 +74,15 @@ public class TeleOpTest2 extends OpModeBase
         //gamepadEx1.getGamepadButton(LEFT_BUMPER).whileHeld(claw.openClaw());
         //gamepadEx1.getGamepadButton(RIGHT_BUMPER).whileHeld(claw.closeClaw());
         //toggleable claw
-        gamepadEx2.getGamepadButton(RIGHT_BUMPER).whenPressed(new ConditionalCommand(new InstantCommand(claw::openClaw), new InstantCommand(claw::closeClaw), () -> {return claw.toggle();}));
+        gamepadEx2.getGamepadButton(RIGHT_BUMPER).toggleWhenPressed(new InstantCommand(claw::openClaw), new InstantCommand(claw::closeClaw));
 
         //Arm/wrist positions
-        gamepadEx2.getGamepadButton(A).whileHeld(arm.pickupFront());
-        gamepadEx2.getGamepadButton(Y).whileHeld(arm.deployFront());
-        gamepadEx2.getGamepadButton(X).whileHeld(arm.topDown());
+        gamepadEx2.getGamepadButton(A).whenActive(arm.pickupFront());
+        gamepadEx2.getGamepadButton(Y).whenActive(arm.deployFront());
+        gamepadEx2.getGamepadButton(X).whenActive(arm.topDown());
         gamepadEx2.getGamepadButton(B).whileHeld(arm.deployBack());
 
-        //Adjustable arm (NEEDS WORK)
+        //Adjustable arm
         gamepadEx2.getGamepadButton(DPAD_UP).whileHeld(arm.incrementalArm(armIncrement));
         gamepadEx2.getGamepadButton(DPAD_DOWN).whileHeld(arm.incrementalArm(-1*armIncrement));
 
@@ -93,10 +92,8 @@ public class TeleOpTest2 extends OpModeBase
 
         //Slides
         //gamepadEx2.getGamepadButton(LEFT_BUMPER).whenPressed(scoringSlides.extendToPosition(1000, )));
-        //Not sure why this keeps on sending the error "default command requires the subsystem!" ???
         scoringSlides.setDefaultCommand(scoringSlides.slideMovement(gamepadEx2::getRightY));
 
-        //even though it's being set, it doesn't drive field oriented for some reason
         mecanumDrive.setDefaultCommand(mecanumDrive.fieldCentric(gamepadEx1::getLeftX, gamepadEx1::getLeftY, gamepadEx1::getRightX, gyroManager::getHeading, telemetry));
         telemetry.log().clear();
         telemetry.log().add("TeleOpTest2 has initialized.");
@@ -116,8 +113,8 @@ public class TeleOpTest2 extends OpModeBase
         telemetry.addData("LeftStickX", gamepadEx1.getLeftX());
         telemetry.addData("LeftStickY", gamepadEx1.getLeftY());
         telemetry.addData("RightStickX", gamepadEx1.getRightX());
-        telemetry.addData("L Slide Position", scoringSlideMotorL.getCurrentPosition());
-        telemetry.addData("R Slide Position", scoringSlideMotorR.getCurrentPosition());
+        telemetry.addData("L Slide Position", scoringSlides.getPosition("LEFT"));
+        telemetry.addData("R Slide Position", scoringSlides.getPosition("RIGHT"));
         telemetry.addData("Gyro Heading (.getHeading)", gyroManager.getHeading());
         telemetry.addData("x cord", poseEstimate.getX());
         telemetry.addData("y cord", poseEstimate.getY());

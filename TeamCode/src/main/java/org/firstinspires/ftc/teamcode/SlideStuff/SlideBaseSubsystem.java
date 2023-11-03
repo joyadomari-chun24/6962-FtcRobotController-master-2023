@@ -51,11 +51,11 @@ public class SlideBaseSubsystem extends SubsystemBase
         motor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
-    public double PIDControl(double target, double state)
+    public double PIDControl(double target, double state, DcMotorEx motor)
     {
         // PID logic and then return the output
         // obtain the encoder position
-        double encoderPosition = motor1.getCurrentPosition();
+        double encoderPosition = motor.getCurrentPosition();
 
         // calculate the error
         double error = target - encoderPosition;
@@ -77,14 +77,14 @@ public class SlideBaseSubsystem extends SubsystemBase
         return output;
     }
 
-    private int getEncoderPosition()
+    private int getEncoderPosition(DcMotorEx motor)
     {
-        return motor1.getCurrentPosition();
+        return motor.getCurrentPosition();
     }
 
     //Not exactly sure how this will go yet
-    public Command extendToPosition(int targetPos, int currentState)
+    public Command extendToPosition(int targetPos, int currentState, DcMotorEx motor)
     {
-        return new RunCommand(() -> {while(Math.abs(targetPos-currentState) > 50) {PIDControl(targetPos, currentState);}});
+        return new RunCommand(() -> {while(Math.abs(targetPos-currentState) > 50) {PIDControl(targetPos, currentState, motor);}});
     }
 }
