@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode.VisionStuff;
 
+import android.graphics.Camera;
 import android.graphics.Canvas;
 
+import org.firstinspires.ftc.robotcore.internal.camera.CameraState;
 import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
 import org.firstinspires.ftc.vision.VisionProcessor;
 import org.opencv.core.Core;
@@ -137,4 +139,15 @@ public class PropDetectionProcessor implements VisionProcessor
         else
             return "Center (or none I haven't figured that out)";
     }
+
+    public double GetContourX()
+    {
+        return largestContourX;
+    }
+
+    public double GetContourY()
+    {
+        return largestContourY;
+    }
+
 }

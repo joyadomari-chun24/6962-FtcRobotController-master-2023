@@ -116,6 +116,8 @@ public class TeleOpTest2 extends OpModeBase
         telemetry.addData("LeftStickX", gamepadEx1.getLeftX());
         telemetry.addData("LeftStickY", gamepadEx1.getLeftY());
         telemetry.addData("RightStickX", gamepadEx1.getRightX());
+        telemetry.addData("L Slide Position", scoringSlideMotorL.getCurrentPosition());
+        telemetry.addData("R Slide Position", scoringSlideMotorR.getCurrentPosition());
         telemetry.addData("Gyro Heading (.getHeading)", gyroManager.getHeading());
         telemetry.addData("x cord", poseEstimate.getX());
         telemetry.addData("y cord", poseEstimate.getY());

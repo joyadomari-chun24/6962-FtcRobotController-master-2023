@@ -18,6 +18,8 @@ public class RapidAutoOp extends OpModeBase
      * Just copy this file for each opmode and change the name.
      *
      * Use FTC dashboard to change red/blue boolean in between games so that it detects the right color (is under VisionPortalStreamingOpMode)
+     *
+     * DO NOT USE
      */
 
     //These two variables are measured in pixels on the x axis of the camera's view. 0 is the farthest left. 640 is the farthest right.
