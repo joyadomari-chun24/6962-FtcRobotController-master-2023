@@ -1,12 +1,9 @@
 package org.firstinspires.ftc.teamcode.VisionStuff;
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 
 import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
 import org.firstinspires.ftc.vision.VisionProcessor;
-import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -16,9 +13,8 @@ import org.opencv.imgproc.Moments;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
-public class PropDetectionPipeline implements VisionProcessor
+public class PropDetectionProcessor implements VisionProcessor
 {
     //private final AtomicReference<Bitmap> lastFrame = new AtomicReference<>(Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565));
     double largestContourArea;
@@ -39,6 +35,8 @@ public class PropDetectionPipeline implements VisionProcessor
     Scalar lowHSV = propIsBlue ? lowBlueHSV : lowRedHSV;
     Scalar strictHighHSV = propIsBlue ? strictHighBlueHSV : strictHighRedHSV;
     Scalar strictLowHSV = propIsBlue ? strictLowBlueHSV : strictLowRedHSV;
+    double leftZone = 100;
+    double rightZone = 500;
     @Override
     public void init(int width, int height, CameraCalibration calibration)
     {
@@ -128,5 +126,15 @@ public class PropDetectionPipeline implements VisionProcessor
     public void onDrawFrame(Canvas canvas, int onscreenWidth, int onscreenHeight, float scaleBmpPxToCanvasPx, float scaleCanvasDensity, Object userContext)
     {
         // do nothing
+    }
+
+    public String GetPropLocation()
+    {
+        if(largestContourX < leftZone)
+            return "Left";
+        else if (largestContourX > rightZone)
+            return "Right";
+        else
+            return "Center (or none I haven't figured that out)";
     }
 }

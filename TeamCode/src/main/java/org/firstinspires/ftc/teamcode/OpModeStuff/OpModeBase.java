@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.DroneLaunchSubsystem;
 import org.firstinspires.ftc.teamcode.SlideStuff.IntakeSlideSubsystem;
 import org.firstinspires.ftc.teamcode.DriveStuff.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.SlideStuff.ScoringSlideSubsystem;
-import org.firstinspires.ftc.teamcode.VisionStuff.PropDetectionPipeline;
+import org.firstinspires.ftc.teamcode.VisionStuff.PropDetectionProcessor;
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
 
 public class OpModeBase extends CommandOpMode
@@ -39,7 +39,7 @@ public class OpModeBase extends CommandOpMode
     protected IntakeSlideSubsystem intakeSlides;
     protected ScoringSlideSubsystem scoringSlides;
     protected MecanumDriveSubsystem mecanumDrive;
-    protected PropDetectionPipeline propDetectionPipeline;
+    protected PropDetectionProcessor propDetectionPipeline;
     protected Servo droneServo, ArmServoL, ArmServoR;
     protected Servo clawServo, wristServo, leftPlatformServo, rightPlatformServo;
     protected ClawSubsystem claw;
