@@ -10,7 +10,7 @@ import org.firstinspires.ftc.vision.VisionPortal;
 @Autonomous
 public class TrueAutoOp extends OpModeBase
 {
-    PropDetectionProcessor processor = new PropDetectionProcessor();
+    PropDetectionProcessor processor = new PropDetectionProcessor(true);
     @Override
     public void initialize()
     {

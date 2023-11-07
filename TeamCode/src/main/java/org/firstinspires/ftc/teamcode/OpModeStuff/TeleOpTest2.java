@@ -72,7 +72,7 @@ public class TeleOpTest2 extends OpModeBase
         //Drone launcher
         gamepadEx1.getGamepadButton(X).and(gamepadEx1.getGamepadButton(Y)).whileActiveOnce(launcher.fireDrone());
 
-        //Claw
+        //Claw (still needs 3 positions)
         //non-toggleable claw
         //gamepadEx1.getGamepadButton(LEFT_BUMPER).whileHeld(claw.openClaw());
         //gamepadEx1.getGamepadButton(RIGHT_BUMPER).whileHeld(claw.closeClaw());

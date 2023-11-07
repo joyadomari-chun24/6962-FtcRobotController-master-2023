@@ -39,6 +39,12 @@ public class PropDetectionProcessor implements VisionProcessor
     Scalar strictLowHSV = propIsBlue ? strictLowBlueHSV : strictLowRedHSV;
     double leftZone = 100;
     double rightZone = 500;
+
+    public PropDetectionProcessor(boolean propIsBlue)
+    {
+        this.propIsBlue = propIsBlue;
+    }
+
     @Override
     public void init(int width, int height, CameraCalibration calibration)
     {
