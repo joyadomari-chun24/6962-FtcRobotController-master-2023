@@ -59,7 +59,6 @@ public class SlideBaseSubsystem extends SubsystemBase
 
         // calculate the error
         double error = target - encoderPosition;
-
         // rate of change of the error
         double derivative = (error - lastError) / timer.seconds();
 
@@ -77,14 +76,15 @@ public class SlideBaseSubsystem extends SubsystemBase
         return output;
     }
 
-    private int getEncoderPosition(DcMotorEx motor)
-    {
-        return motor.getCurrentPosition();
-    }
+    //Not sure if this works, so I commented it out for now to avoid confusion
+//    private int getEncoderPosition(DcMotorEx motor)
+//    {
+//        return motor.getCurrentPosition();
+//    }
 
-    //Not exactly sure how this will go yet
-    public Command extendToPosition(int targetPos, int currentState, DcMotorEx motor)
-    {
-        return new RunCommand(() -> {while(Math.abs(targetPos-currentState) > 50) {PIDControl(targetPos, currentState, motor);}});
-    }
+    //Commented out for testing in more specific subsystems
+//    public Command extendToPosition(int targetPos, int currentState, DcMotorEx motor)
+//    {
+//        return new RunCommand(() -> {while(Math.abs(targetPos-currentState) > 50) {PIDControl(targetPos, currentState, motor);}});
+//    }
 }

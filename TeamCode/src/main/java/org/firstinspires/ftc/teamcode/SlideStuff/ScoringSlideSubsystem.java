@@ -12,7 +12,9 @@ public class ScoringSlideSubsystem extends SlideBaseSubsystem
 {
     private DcMotorEx motorLeft, motorRight;
     private double slidePower;
-    public int target = 0;
+    private int joystickScalar = 1;
+    private int target = 0;
+    public enum motorSide {LEFT, RIGHT}
     public ScoringSlideSubsystem(DcMotorEx scoringMotorL, DcMotorEx scoringMotorR)
     {
         super(0, 0, 0, true, false, scoringMotorL, scoringMotorR);
@@ -24,16 +26,24 @@ public class ScoringSlideSubsystem extends SlideBaseSubsystem
     {
         double powerL = PIDControl(target, motorLeft.getCurrentPosition(), motorLeft);
         double powerR = PIDControl(target, motorRight.getCurrentPosition(), motorRight);
-        //The slides still just fall down right now (need PID to hold, which is what this is trying to do)
-        if (slidePower != 0)
+        // First part sets motors to the joystick if the joystick is moving and sets target to it so slides stay when let go
+        if (Math.abs(slidePower) > 0.05)
         {
             motorLeft.setPower(slidePower);
             motorRight.setPower(slidePower);
-            target = motorLeft.getCurrentPosition();
+            target = motorLeft.getCurrentPosition() + (int) slidePower * joystickScalar;
         }
+        else //If not, move slides to target (current pos from joystick or a button's set position)
+        {
             motorLeft.setPower(powerL);
             motorRight.setPower(powerR);
+        }
         super.periodic();
+    }
+
+    public Command extendToPosition(int targetPos)
+    {
+        return new InstantCommand(() -> target = targetPos);
     }
 
     public Command slideMovement(DoubleSupplier motorPower)
@@ -41,8 +51,8 @@ public class ScoringSlideSubsystem extends SlideBaseSubsystem
         return new RunCommand(() -> {slidePower = motorPower.getAsDouble();}, this);
     }
 
-    public double getPosition(String allCapsMotorSide)
+    public double getPosition(motorSide allCapsMotorSide)
     {
-        return allCapsMotorSide.equals("LEFT") ? motorLeft.getCurrentPosition() : motorRight.getCurrentPosition();
+        return allCapsMotorSide == motorSide.LEFT ? motorLeft.getCurrentPosition() : motorRight.getCurrentPosition();
     }
 }

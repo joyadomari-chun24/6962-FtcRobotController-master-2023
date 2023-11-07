@@ -17,6 +17,8 @@ import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.RIGHT_BUMPER;
 import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.X;
 import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.Y;
 
+import org.firstinspires.ftc.teamcode.SlideStuff.ScoringSlideSubsystem;
+
 
 @TeleOp(name="Use This TeleOp")
 public class TeleOpTest2 extends OpModeBase
@@ -78,9 +80,10 @@ public class TeleOpTest2 extends OpModeBase
         gamepadEx2.getGamepadButton(RIGHT_BUMPER).toggleWhenPressed(new InstantCommand(claw::openClaw), new InstantCommand(claw::closeClaw));
 
         //Arm/wrist positions
+        //whenActive and whileHeld seem like they should both work, so they're split rn to test
         gamepadEx2.getGamepadButton(A).whenActive(arm.pickupFront());
         gamepadEx2.getGamepadButton(Y).whenActive(arm.deployFront());
-        gamepadEx2.getGamepadButton(X).whenActive(arm.topDown());
+        gamepadEx2.getGamepadButton(X).whileHeld(arm.topDown());
         gamepadEx2.getGamepadButton(B).whileHeld(arm.deployBack());
 
         //Adjustable arm
@@ -91,8 +94,8 @@ public class TeleOpTest2 extends OpModeBase
         gamepadEx2.getGamepadButton(DPAD_LEFT).whileHeld(arm.incrementalWrist(wristIncrement));
         gamepadEx2.getGamepadButton(DPAD_RIGHT).whileHeld(arm.incrementalWrist(-1*wristIncrement));
 
-        //Slides
-        //gamepadEx2.getGamepadButton(LEFT_STICK_BUTTON).toggleWhenPressed(scoringSlides.extendToPosition(500, intakeSlideMotor.getCurrentPosition(), intakeSlideMotor), scoringSlides.extendToPosition(0, intakeSlideMotor.getCurrentPosition(), intakeSlideMotor));
+        //Slides (set position needs work)
+        gamepadEx2.getGamepadButton(LEFT_STICK_BUTTON).toggleWhenPressed(scoringSlides.extendToPosition(500), scoringSlides.extendToPosition(0));
         scoringSlides.setDefaultCommand(scoringSlides.slideMovement(gamepadEx2::getRightY));
 
         mecanumDrive.setDefaultCommand(mecanumDrive.fieldCentric(gamepadEx1::getLeftX, gamepadEx1::getLeftY, gamepadEx1::getRightX, gyroManager::getHeading, telemetry));
@@ -111,16 +114,18 @@ public class TeleOpTest2 extends OpModeBase
         Pose2d poseEstimate = roadrunnerMecanumDrive.getPoseEstimate();
 
         //Telemetry
-        telemetry.addData("LeftStickX", gamepadEx1.getLeftX());
-        telemetry.addData("LeftStickY", gamepadEx1.getLeftY());
-        telemetry.addData("RightStickX", gamepadEx1.getRightX());
-        telemetry.addData("L Slide Position", scoringSlides.getPosition("LEFT"));
-        telemetry.addData("R Slide Position", scoringSlides.getPosition("RIGHT"));
-        telemetry.addData("Gyro Heading (.getHeading)", gyroManager.getHeading());
+        telemetry.addData("LeftStickX (pad1)", gamepadEx1.getLeftX());
+        telemetry.addData("LeftStickY (pad1)", gamepadEx1.getLeftY());
+        telemetry.addData("RightStickX (pad1)", gamepadEx1.getRightX());
+        telemetry.addData("L Slide Position (method)", scoringSlides.getPosition(ScoringSlideSubsystem.motorSide.LEFT));
+        telemetry.addData("R Slide Position (method)", scoringSlides.getPosition(ScoringSlideSubsystem.motorSide.RIGHT));
+        telemetry.addData("L Slide Position (straight)", scoringSlideMotorL.getCurrentPosition());
+        telemetry.addData("R Slide Position (straight)", scoringSlideMotorR.getCurrentPosition());
+        telemetry.addData("Gyro Heading ", gyroManager.getHeading());
         telemetry.addData("x cord", poseEstimate.getX());
         telemetry.addData("y cord", poseEstimate.getY());
         telemetry.addData("roadrunner predicted heading", poseEstimate.getHeading());
-        telemetry.addData("Claw Position", clawServo.getPosition());
+        telemetry.addData("Claw Target Position", clawServo.getPosition());
         telemetry.addData("Left Arm Position", leftPlatformServo.getPosition());
         telemetry.addData("Right Arm Position", rightPlatformServo.getPosition());
         telemetry.addData("Wrist Position", wristServo.getPosition());
