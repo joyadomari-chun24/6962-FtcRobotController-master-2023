@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.OpModeStuff;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.arcrobotics.ftclib.command.ConditionalCommand;
 import com.arcrobotics.ftclib.command.InstantCommand;
+import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.A;
@@ -16,6 +17,8 @@ import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.LEFT_STICK_BUTTO
 import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.RIGHT_BUMPER;
 import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.X;
 import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.Y;
+import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Trigger.LEFT_TRIGGER;
+import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Trigger.RIGHT_TRIGGER;
 
 import org.firstinspires.ftc.teamcode.SlideStuff.ScoringSlideSubsystem;
 
@@ -29,7 +32,6 @@ public class TeleOpTest2 extends OpModeBase
 
         super.initialize();
         arm.pickupFront();
-
 
         /*
         * Gamepad 2:
@@ -94,6 +96,7 @@ public class TeleOpTest2 extends OpModeBase
         //Adjustable wrist
         gamepadEx2.getGamepadButton(DPAD_LEFT).whileHeld(arm.incrementalWrist(1));
         gamepadEx2.getGamepadButton(DPAD_RIGHT).whileHeld(arm.incrementalWrist(-1));
+        //still needs to be bound to left stick Y
 
         //Slides (set position needs work)
         gamepadEx2.getGamepadButton(LEFT_STICK_BUTTON).toggleWhenPressed(scoringSlides.extendToPosition(500), scoringSlides.extendToPosition(0));

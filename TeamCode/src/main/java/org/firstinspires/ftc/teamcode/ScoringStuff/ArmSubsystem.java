@@ -15,13 +15,13 @@ public class ArmSubsystem extends SubsystemBase
     //Servo positions
     public static double left_pickupFront = 0.1;
     public static double left_topDownFront = 0.3;
-    public static double left_deployFront = 0.4;
+    public static double left_deployFront = 0.6;
     public static double left_deployBack = 0.6;
 
     public static double w_topDownFront = 0.6;
     public static double w_pickupFront = 0.2;
-    public static double w_deployBack = 0;
-    public static double w_deployFront = 0;
+    public static double w_deployBack = 0.12;
+    public static double w_deployFront = 0.12;
 
     // incremental arm and wrist values
     private double armIncrement = 0.025;
@@ -78,6 +78,7 @@ public class ArmSubsystem extends SubsystemBase
                 moveWrist(servoForWrist.getPosition() + sign * wristIncrement);
             }, this);
     }
+
 
     public Command incrementalArm(int sign)
     {
