@@ -32,7 +32,7 @@ public class TeleOpTest2 extends OpModeBase
     public void initialize()
     {
         super.initialize();
-
+        arm.pickupFront();
         /*
         * Gamepad 2:
         *

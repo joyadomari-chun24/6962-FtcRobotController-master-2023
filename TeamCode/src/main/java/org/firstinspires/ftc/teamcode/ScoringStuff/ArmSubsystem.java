@@ -13,10 +13,10 @@ import java.util.function.DoubleSupplier;
 public class ArmSubsystem extends SubsystemBase
 {
     //Servo positions
-    public static double left_pickupFront = 0.32;
-    public static double left_topDownFront = 0.71;
-    public static double left_deployFront = 0.9;
-    public static double left_deployBack = 1;
+    public static double left_pickupFront = 0.1;
+    public static double left_topDownFront = 0.3;
+    public static double left_deployFront = 0.4;
+    public static double left_deployBack = 0.6;
 
     public static double w_topDownFront = 0.6;
     public static double w_pickupFront = 0.2;
