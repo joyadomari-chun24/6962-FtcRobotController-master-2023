@@ -31,8 +31,11 @@ public class TeleOpTest2 extends OpModeBase
     @Override
     public void initialize()
     {
+
         super.initialize();
         arm.pickupFront();
+
+
         /*
         * Gamepad 2:
         *
@@ -88,6 +91,7 @@ public class TeleOpTest2 extends OpModeBase
         gamepadEx2.getGamepadButton(B).whileHeld(arm.deployBack());
 
         //Adjustable arm
+
         gamepadEx2.getGamepadButton(DPAD_UP).whileHeld(arm.incrementalArm(armIncrement));
         gamepadEx2.getGamepadButton(DPAD_DOWN).whileHeld(arm.incrementalArm(-1*armIncrement));
 
