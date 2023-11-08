@@ -81,7 +81,7 @@ public class TeleOpTest2 extends OpModeBase
         gamepadEx2.getGamepadButton(LEFT_BUMPER).whileHeld(claw.openClaw());
         gamepadEx2.getGamepadButton(RIGHT_BUMPER).whileHeld(claw.closeClaw());
         //toggleable claw
-        //gamepadEx2.getGamepadButton(RIGHT_BUMPER).toggleWhenPressed(new InstantCommand(claw::openClaw), new InstantCommand(claw::closeClaw));
+        //gamepadEx2.getGamepadButton(RIGHT_BUMPER).toggleWhenPressed(claw.openClaw(), claw.closeClaw());
 
         //Arm/wrist positions
         //whenActive and whileHeld seem like they should both work, so they're split rn to test
@@ -91,7 +91,6 @@ public class TeleOpTest2 extends OpModeBase
         gamepadEx2.getGamepadButton(B).whileHeld(arm.deployBack());
 
         //Adjustable arm
-
         gamepadEx2.getGamepadButton(DPAD_UP).whileHeld(arm.incrementalArm(armIncrement));
         gamepadEx2.getGamepadButton(DPAD_DOWN).whileHeld(arm.incrementalArm(-1*armIncrement));
 

@@ -10,6 +10,7 @@ import org.firstinspires.ftc.vision.VisionPortal;
 @Autonomous
 public class TrueAutoOp extends OpModeBase
 {
+    String propLocation;
     PropDetectionProcessor processor = new PropDetectionProcessor(true);
     @Override
     public void initialize()
@@ -23,10 +24,17 @@ public class TrueAutoOp extends OpModeBase
 
         waitForStart();
 
+        propLocation = processor.GetPropLocation();
+
         if (visionPortal.getCameraState() == VisionPortal.CameraState.STREAMING)
         {
             visionPortal.stopLiveView();
             visionPortal.stopStreaming();
+        }
+
+        if(propLocation.equals("LEFT"))
+        {
+            //
         }
     }
 
