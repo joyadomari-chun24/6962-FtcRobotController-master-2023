@@ -23,11 +23,6 @@ import org.firstinspires.ftc.teamcode.SlideStuff.ScoringSlideSubsystem;
 @TeleOp(name="Use This TeleOp")
 public class TeleOpTest2 extends OpModeBase
 {
-    //private double gyroAngle;
-    private double armIncrement = 0.025;
-    private double wristIncrement = 0.01;
-
-
     @Override
     public void initialize()
     {
@@ -93,12 +88,12 @@ public class TeleOpTest2 extends OpModeBase
         gamepadEx2.getGamepadButton(X).whileHeld(arm.topDown());
 
         //Adjustable arm
-        gamepadEx2.getGamepadButton(DPAD_UP).whileHeld(arm.incrementalArm(armIncrement));
-        gamepadEx2.getGamepadButton(DPAD_DOWN).whileHeld(arm.incrementalArm(-1*armIncrement));
+        gamepadEx2.getGamepadButton(DPAD_UP).whileHeld(arm.incrementalArm(1));
+        gamepadEx2.getGamepadButton(DPAD_DOWN).whileHeld(arm.incrementalArm(-1));
 
         //Adjustable wrist
-        gamepadEx2.getGamepadButton(DPAD_LEFT).whileHeld(arm.incrementalWrist(wristIncrement));
-        gamepadEx2.getGamepadButton(DPAD_RIGHT).whileHeld(arm.incrementalWrist(-1*wristIncrement));
+        gamepadEx2.getGamepadButton(DPAD_LEFT).whileHeld(arm.incrementalWrist(1));
+        gamepadEx2.getGamepadButton(DPAD_RIGHT).whileHeld(arm.incrementalWrist(-1));
 
         //Slides (set position needs work)
         gamepadEx2.getGamepadButton(LEFT_STICK_BUTTON).toggleWhenPressed(scoringSlides.extendToPosition(500), scoringSlides.extendToPosition(0));

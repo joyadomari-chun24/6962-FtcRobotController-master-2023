@@ -22,6 +22,11 @@ public class ArmSubsystem extends SubsystemBase
     public static double w_pickupFront = 0.2;
     public static double w_deployBack = 0;
     public static double w_deployFront = 0;
+
+    // incremental arm and wrist values
+    private double armIncrement = 0.025;
+    private double wristIncrement = 0.01;
+
     private Servo ArmL, ArmR, servoForWrist;
     public ArmSubsystem(Servo leftServo, Servo rightServo, Servo wristServo)
     {
@@ -67,32 +72,17 @@ public class ArmSubsystem extends SubsystemBase
         return new InstantCommand(() -> {moveArm(left_deployBack, 1-left_deployBack); moveWrist(w_deployBack);});
     }
 
-    public Command incrementalWrist(double increment)
+    public Command incrementalWrist(int sign)
     {
         return  new InstantCommand(() -> {
-            if(servoForWrist.getPosition() + increment > 0 && servoForWrist.getPosition() + increment < 1)
-            {
-                moveWrist(servoForWrist.getPosition() + increment);
-            }
-            else
-            {
-                moveWrist(servoForWrist.getPosition());
-            }
+                moveWrist(servoForWrist.getPosition() + sign * wristIncrement);
             }, this);
     }
 
-    public Command incrementalArm(double increment)
+    public Command incrementalArm(int sign)
     {
         return new InstantCommand(() -> {
-            moveArm(ArmL.getPosition() + increment, ArmR.getPosition() - increment);
-//            if((ArmL.getPosition() + increment > 0 && ArmL.getPosition() + increment < 1) && (ArmR.getPosition() + increment > 0 && ArmR.getPosition() + increment < 1))
-//            {
-//                moveArm(ArmL.getPosition() + increment, ArmR.getPosition() - increment);
-//            }
-//            else
-//            {
-//                moveArm(ArmL.getPosition(), ArmR.getPosition());
-//            }
+            moveArm(ArmL.getPosition() + sign * armIncrement, ArmR.getPosition() - sign * armIncrement);
         }, this);
     }
 }
