@@ -23,7 +23,7 @@ import org.firstinspires.ftc.teamcode.SlideStuff.ScoringSlideSubsystem;
 @TeleOp(name="Use This TeleOp")
 public class TeleOpTest2 extends OpModeBase
 {
-    private double gyroAngle;
+    //private double gyroAngle;
     private double armIncrement = 0.025;
     private double wristIncrement = 0.01;
 
@@ -45,7 +45,9 @@ public class TeleOpTest2 extends OpModeBase
         *
         * D-Pad Up and Down - Adjustable Arm
         *
-        * Right bumper - Claw
+        * Right bumper - Close Claw
+        *
+        * Left bumper - Open Claw
         *
         * A - Ground Pickup Position
         *
@@ -86,9 +88,9 @@ public class TeleOpTest2 extends OpModeBase
         //Arm/wrist positions
         //whenActive and whileHeld seem like they should both work, so they're split rn to test
         gamepadEx2.getGamepadButton(A).whenActive(arm.pickupFront());
+        gamepadEx2.getGamepadButton(B).whileHeld(arm.deployBack());
         gamepadEx2.getGamepadButton(Y).whenActive(arm.deployFront());
         gamepadEx2.getGamepadButton(X).whileHeld(arm.topDown());
-        gamepadEx2.getGamepadButton(B).whileHeld(arm.deployBack());
 
         //Adjustable arm
         gamepadEx2.getGamepadButton(DPAD_UP).whileHeld(arm.incrementalArm(armIncrement));

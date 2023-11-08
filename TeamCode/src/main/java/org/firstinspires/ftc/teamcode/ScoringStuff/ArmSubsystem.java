@@ -59,8 +59,7 @@ public class ArmSubsystem extends SubsystemBase
 
     public Command deployFront()
     {
-        return new InstantCommand(() -> {moveArm(left_deployFront, 1-left_deployFront);});
-        //return new InstantCommand(() -> {moveArm(left_deployFront); moveWrist(w_deployFront);});
+        return new InstantCommand(() -> {moveArm(left_deployFront, 1-left_deployFront); moveWrist(w_deployFront);});
     }
 
     public Command deployBack()
@@ -68,8 +67,6 @@ public class ArmSubsystem extends SubsystemBase
         return new InstantCommand(() -> {moveArm(left_deployBack, 1-left_deployBack); moveWrist(w_deployBack);});
     }
 
-    //If the servo reaches its limit, there could potentially be an error with the method returning null
-    //potentially fixed by just having it move to its current position, which would do nothing
     public Command incrementalWrist(double increment)
     {
         return  new InstantCommand(() -> {
