@@ -27,6 +27,7 @@ public class TeleOpTest2 extends OpModeBase
     private double armIncrement = 0.025;
     private double wristIncrement = 0.01;
 
+
     @Override
     public void initialize()
     {
@@ -74,10 +75,10 @@ public class TeleOpTest2 extends OpModeBase
 
         //Claw (still needs 3 positions)
         //non-toggleable claw
-        //gamepadEx1.getGamepadButton(LEFT_BUMPER).whileHeld(claw.openClaw());
-        //gamepadEx1.getGamepadButton(RIGHT_BUMPER).whileHeld(claw.closeClaw());
+        gamepadEx2.getGamepadButton(LEFT_BUMPER).whileHeld(claw.openClaw());
+        gamepadEx2.getGamepadButton(RIGHT_BUMPER).whileHeld(claw.closeClaw());
         //toggleable claw
-        gamepadEx2.getGamepadButton(RIGHT_BUMPER).toggleWhenPressed(new InstantCommand(claw::openClaw), new InstantCommand(claw::closeClaw));
+        //gamepadEx2.getGamepadButton(RIGHT_BUMPER).toggleWhenPressed(new InstantCommand(claw::openClaw), new InstantCommand(claw::closeClaw));
 
         //Arm/wrist positions
         //whenActive and whileHeld seem like they should both work, so they're split rn to test

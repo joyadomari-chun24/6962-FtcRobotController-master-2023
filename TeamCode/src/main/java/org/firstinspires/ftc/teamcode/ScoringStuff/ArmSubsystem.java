@@ -88,6 +88,14 @@ public class ArmSubsystem extends SubsystemBase
     {
         return new InstantCommand(() -> {
                 moveArm(ArmL.getPosition() + increment, ArmR.getPosition() - increment);
+//            if((ArmL.getPosition() + increment > 0 && ArmL.getPosition() + increment < 1) && (ArmR.getPosition() + increment > 0 && ArmR.getPosition() + increment < 1))
+//            {
+//                moveArm(ArmL.getPosition() + increment, ArmR.getPosition() - increment);
+//            }
+//            else
+//            {
+//                moveArm(ArmL.getPosition(), ArmR.getPosition());
+//            }
         }, this);
     }
 }
