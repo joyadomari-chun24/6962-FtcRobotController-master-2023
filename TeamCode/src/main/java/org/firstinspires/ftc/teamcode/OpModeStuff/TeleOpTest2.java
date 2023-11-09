@@ -95,9 +95,9 @@ public class TeleOpTest2 extends OpModeBase
         gamepadEx2.getGamepadButton(DPAD_DOWN).whileHeld(arm.incrementalArm(-1));
 
         //Adjustable wrist
-        /*gamepadEx2.getGamepadButton(DPAD_LEFT).whileHeld(arm.incrementalWrist(1));
-        gamepadEx2.getGamepadButton(DPAD_RIGHT).whileHeld(arm.incrementalWrist(-1));*/
-        arm.setDefaultCommand(arm.incrementalWrist(gamepadEx2::getRightY));
+        gamepadEx2.getGamepadButton(DPAD_LEFT).whileHeld(arm.incrementalWrist(1));
+        gamepadEx2.getGamepadButton(DPAD_RIGHT).whileHeld(arm.incrementalWrist(-1));
+        //arm.setDefaultCommand(arm.incrementalWrist(gamepadEx2::getRightY));
 
         //Gyro reset
         gamepadEx1.getGamepadButton(B).whenActive(gyroManager::reset);
