@@ -66,6 +66,10 @@ public class TeleOpTest2 extends OpModeBase
         *
         * B - reset gyro
         *
+        * D-Pad Up - drive to backboard (not implemented)
+        *
+        * D-Pad Down - drive to human player station (not implemented)
+        *
         * X and Y - Drone launch
         *
         * */
