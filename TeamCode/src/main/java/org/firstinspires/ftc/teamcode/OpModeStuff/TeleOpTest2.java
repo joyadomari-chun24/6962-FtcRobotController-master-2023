@@ -15,6 +15,7 @@ import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.DPAD_UP;
 import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.LEFT_BUMPER;
 import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.LEFT_STICK_BUTTON;
 import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.RIGHT_BUMPER;
+import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.RIGHT_STICK_BUTTON;
 import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.X;
 import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.Y;
 import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Trigger.LEFT_TRIGGER;
@@ -75,12 +76,8 @@ public class TeleOpTest2 extends OpModeBase
         //Drone launcher
         gamepadEx1.getGamepadButton(X).and(gamepadEx1.getGamepadButton(Y)).whileActiveOnce(launcher.fireDrone());
 
-        //Claw (still needs 3 positions)
-        //non-toggleable claw
-        gamepadEx2.getGamepadButton(LEFT_BUMPER).whileHeld(claw.openClaw());
-        gamepadEx2.getGamepadButton(RIGHT_BUMPER).whileHeld(claw.closeClaw());
-        //toggleable claw
-        //gamepadEx2.getGamepadButton(RIGHT_BUMPER).toggleWhenPressed(claw.openClaw(), claw.closeClaw());
+        //Claw
+        gamepadEx2.getGamepadButton(RIGHT_BUMPER).toggleWhenPressed(claw.openClaw(), claw.closeClaw());
 
         //Arm/wrist positions
         //whenActive and whileHeld seem like they should both work, so they're split rn to test
