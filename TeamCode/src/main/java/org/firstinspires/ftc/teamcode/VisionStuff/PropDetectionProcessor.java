@@ -139,11 +139,11 @@ public class PropDetectionProcessor implements VisionProcessor
     public String GetPropLocation()
     {
         if(largestContourX < leftZone)
-            return "Left";
+            return "LEFT";
         else if (largestContourX > rightZone)
-            return "Right";
+            return "RIGHT";
         else
-            return "Center (or none I haven't figured that out)";
+            return "CENTER";
     }
 
     public double GetContourX()
