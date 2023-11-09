@@ -36,12 +36,11 @@ public class TrueAutoOp extends OpModeBase
                 .build();
 
         Trajectory middleTrajectory = drive.trajectoryBuilder(new Pose2d())
-                .forward(10)
+                .splineTo(new Vector2d(1,1), Math.toRadians(45))
                 .build();
 
         Trajectory rightTrajectory = drive.trajectoryBuilder(new Pose2d())
-                .forward(10)
-                .strafeRight(2)
+                .splineTo(new Vector2d(1,1), Math.toRadians(45))
                 .build();
 
         waitForStart();
@@ -61,7 +60,7 @@ public class TrueAutoOp extends OpModeBase
             drive.followTrajectory(leftTrajectory);
         }
 
-        else if (propLocation.equals("MIDDLE"))
+        else if (propLocation.equals("CENTER"))
         {
             drive.followTrajectory(middleTrajectory);
         }
