@@ -27,20 +27,20 @@ public class TrueAutoOp extends OpModeBase
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
-        Pose2d startPose = new Pose2d(10, -8, Math.toRadians(90));
+        Pose2d startPose = new Pose2d(66, 12, Math.toRadians(-90));
 
         drive.setPoseEstimate(startPose);
 
         Trajectory leftTrajectory = drive.trajectoryBuilder(new Pose2d())
-                .splineTo(new Vector2d(1,1), Math.toRadians(45))
+                .splineTo(new Vector2d(30,10), Math.toRadians(-10))
                 .build();
 
         Trajectory middleTrajectory = drive.trajectoryBuilder(new Pose2d())
-                .splineTo(new Vector2d(1,1), Math.toRadians(45))
+                .splineTo(new Vector2d(20,12), Math.toRadians(0))
                 .build();
 
         Trajectory rightTrajectory = drive.trajectoryBuilder(new Pose2d())
-                .splineTo(new Vector2d(1,1), Math.toRadians(45))
+                .splineTo(new Vector2d(90,14), Math.toRadians(10))
                 .build();
 
         waitForStart();
