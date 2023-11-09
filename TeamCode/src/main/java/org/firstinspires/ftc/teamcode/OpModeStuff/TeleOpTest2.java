@@ -37,15 +37,13 @@ public class TeleOpTest2 extends OpModeBase
         /*
         * Gamepad 2:
         *
-        * Right joystick - Scoring Slides
+        * Left joystick - Scoring Slides
         *
-        * Left joystick - Adjustable Wrist (Currently D-Pad Left and Right)
+        * Right joystick - Adjustable Wrist (Currently D-Pad Left and Right)
         *
         * D-Pad Up and Down - Adjustable Arm
         *
-        * Right bumper - Close Claw
-        *
-        * Left bumper - Open Claw
+        * Right bumper - Claw Toggle
         *
         * A - Ground Pickup Position
         *
@@ -65,6 +63,8 @@ public class TeleOpTest2 extends OpModeBase
         * Right joystick - turn
         *
         * Left Bumper - slow mode
+        *
+        * B - reset gyro
         *
         * X and Y - Drone launch
         *
@@ -91,11 +91,14 @@ public class TeleOpTest2 extends OpModeBase
         gamepadEx2.getGamepadButton(DPAD_DOWN).whileHeld(arm.incrementalArm(-1));
 
         //Adjustable wrist
-        gamepadEx2.getGamepadButton(DPAD_LEFT).whileHeld(arm.incrementalWrist(1));
-        gamepadEx2.getGamepadButton(DPAD_RIGHT).whileHeld(arm.incrementalWrist(-1));
-        //still needs to be bound to left stick Y
+        /*gamepadEx2.getGamepadButton(DPAD_LEFT).whileHeld(arm.incrementalWrist(1));
+        gamepadEx2.getGamepadButton(DPAD_RIGHT).whileHeld(arm.incrementalWrist(-1));*/
+        arm.setDefaultCommand(arm.incrementalWrist(gamepadEx2::getRightY));
 
-        //Slides (set position needs work)
+        //Gyro reset
+        gamepadEx1.getGamepadButton(B).whenActive(gyroManager::reset);
+
+        //Slides
         gamepadEx2.getGamepadButton(LEFT_STICK_BUTTON).toggleWhenPressed(scoringSlides.extendToPosition(500), scoringSlides.extendToPosition(0));
         scoringSlides.setDefaultCommand(scoringSlides.slideMovement(gamepadEx2::getRightY));
 

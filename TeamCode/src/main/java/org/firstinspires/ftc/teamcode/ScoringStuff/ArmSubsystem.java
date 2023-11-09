@@ -8,6 +8,7 @@ import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import java.util.function.DoubleSupplier;
+import java.util.function.IntSupplier;
 
 @Config
 public class ArmSubsystem extends SubsystemBase
@@ -46,12 +47,6 @@ public class ArmSubsystem extends SubsystemBase
         servoForWrist.setPosition(position);
     }
 
-    //Debug method
-    public Command positionW()
-    {
-        return new InstantCommand(() -> {servoForWrist.setPosition(w_pickupFront);});
-    }
-
     public Command pickupFront()
     {
         return new InstantCommand(() -> {moveArm(left_pickupFront, 1-left_pickupFront); moveWrist(w_pickupFront);});
@@ -72,10 +67,10 @@ public class ArmSubsystem extends SubsystemBase
         return new InstantCommand(() -> {moveArm(left_deployBack, 1-left_deployBack); moveWrist(w_deployBack);});
     }
 
-    public Command incrementalWrist(int sign)
+    public Command incrementalWrist(DoubleSupplier sign)
     {
         return  new InstantCommand(() -> {
-                moveWrist(servoForWrist.getPosition() + sign * wristIncrement);
+                moveWrist(servoForWrist.getPosition() + sign.getAsDouble() * wristIncrement);
             }, this);
     }
 

@@ -20,6 +20,7 @@ public class NavxManager extends GyroEx
     private NavxMicroNavigationSensor gyro;
     double globalHeading;
     double relativeHeading;
+
     //Diff between global and relative heading
     double offset;
 
