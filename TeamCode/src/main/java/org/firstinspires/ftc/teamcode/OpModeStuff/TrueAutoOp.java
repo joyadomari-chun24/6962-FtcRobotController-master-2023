@@ -9,16 +9,21 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.VisionStuff.PropDetectionProcessor;
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.vision.VisionPortal;
+import com.qualcomm.robotcore.hardware.Servo;
 
+
+import org.firstinspires.ftc.teamcode.ScoringStuff.ClawSubsystem;
 @Autonomous
 public class TrueAutoOp extends OpModeBase
 {
+    private Servo claw;
     String propLocation;
     PropDetectionProcessor processor = new PropDetectionProcessor(true);
     @Override
     public void initialize()
     {
         super.initialize();
+
 
         VisionPortal visionPortal = new VisionPortal.Builder()
                 .addProcessor(processor)
@@ -27,20 +32,28 @@ public class TrueAutoOp extends OpModeBase
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
-        Pose2d startPose = new Pose2d(66, 12, Math.toRadians(-90));
+        Pose2d startPose = new Pose2d(12, -66, Math.toRadians(270));
 
         drive.setPoseEstimate(startPose);
 
-        Trajectory leftTrajectory = drive.trajectoryBuilder(new Pose2d())
-                .splineTo(new Vector2d(30,10), Math.toRadians(-10))
+        Trajectory leftTrajectory = drive.trajectoryBuilder(startPose)
+                .forward(30)
                 .build();
 
-        Trajectory middleTrajectory = drive.trajectoryBuilder(new Pose2d())
-                .splineTo(new Vector2d(20,12), Math.toRadians(0))
+        Trajectory middleTrajectory = drive.trajectoryBuilder(startPose)
+                .forward(30)
                 .build();
 
-        Trajectory rightTrajectory = drive.trajectoryBuilder(new Pose2d())
-                .splineTo(new Vector2d(90,14), Math.toRadians(10))
+        Trajectory rightTrajectory = drive.trajectoryBuilder(startPose)
+                .forward(30)
+                .build();
+
+        Trajectory scoreYellowPixel = drive.trajectoryBuilder(middleTrajectory.end())
+                .lineToLinearHeading(new Pose2d(-20, -100, Math.toRadians(180)))
+                        .build();
+
+        Trajectory parkScore = drive.trajectoryBuilder(scoreYellowPixel.end())
+                .lineToLinearHeading(new Pose2d(-30, -120, Math.toRadians(270)))
                 .build();
 
         waitForStart();
@@ -58,16 +71,24 @@ public class TrueAutoOp extends OpModeBase
         if(propLocation.equals("LEFT"))
         {
             drive.followTrajectory(leftTrajectory);
+            drive.followTrajectory(scoreYellowPixel);
+            drive.followTrajectory(parkScore);
+            claw.setPosition(0.4);
         }
 
         else if (propLocation.equals("CENTER"))
         {
             drive.followTrajectory(middleTrajectory);
+            drive.followTrajectory(scoreYellowPixel);
+            drive.followTrajectory(parkScore);
+            claw.setPosition(0.4);
         }
 
         else
         {
             drive.followTrajectory(rightTrajectory);
+            drive.followTrajectory(scoreYellowPixel);
+            drive.followTrajectory(parkScore);
         }
     }
 

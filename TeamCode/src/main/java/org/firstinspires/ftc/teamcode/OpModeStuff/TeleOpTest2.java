@@ -27,6 +27,12 @@ import org.firstinspires.ftc.teamcode.SlideStuff.ScoringSlideSubsystem;
 @TeleOp(name="Use This TeleOp")
 public class TeleOpTest2 extends OpModeBase
 {
+
+    private double gyroAngle;
+    private double armIncrement = 0.020;
+    private double wristIncrement = 0.01;
+
+
     @Override
     public void initialize()
     {
