@@ -4,23 +4,17 @@ import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
-import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
-import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.VisionStuff.PropDetectionProcessor;
-import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.vision.VisionPortal;
-import com.qualcomm.robotcore.hardware.Servo;
 
-
-import org.firstinspires.ftc.teamcode.ScoringStuff.ClawSubsystem;
 @Config
 @Autonomous
-public class TrueAutoOp extends OpModeBase
+public class TopRightAuto extends OpModeBase
 {
     String propLocation;
     PropDetectionProcessor processor = new PropDetectionProcessor(true);
