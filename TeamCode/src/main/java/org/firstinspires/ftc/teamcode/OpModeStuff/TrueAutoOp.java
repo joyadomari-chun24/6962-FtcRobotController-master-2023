@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.OpModeStuff;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
@@ -17,11 +18,34 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 
 import org.firstinspires.ftc.teamcode.ScoringStuff.ClawSubsystem;
+@Config
 @Autonomous
 public class TrueAutoOp extends OpModeBase
 {
     String propLocation;
     PropDetectionProcessor processor = new PropDetectionProcessor(true);
+
+    //Middle coordinates
+    public static int centerPurpleForward = 27; //good
+    public static int centerYellowX = 50;
+    public static int centerYellowY = -40;
+
+    //Left coordinates
+    public static int leftPurpleX = 27;
+    public static int leftPurpleY = 27;
+    public static int leftYellowX = 50; //good
+    public static int leftYellowY = -40; //good
+
+    //Right coordinates
+    public static int rightPurpleX = 27;
+    public static int rightPurpleY = 27;
+    public static int rightYellowX = 50; //good
+    public static int rightYellowY = -40;
+
+    //Parking coordinates
+    public static int parkX = 56;
+    public static int parkY = -14;
+    public static int parkTan = 0;
     @Override
     public void initialize()
     {
@@ -41,38 +65,40 @@ public class TrueAutoOp extends OpModeBase
 
         //Scoring purple pixel
         Trajectory leftPurpleScore = drive.trajectoryBuilder(startPose)
-                .forward(30)
+                .splineTo(new Vector2d(leftPurpleX, leftPurpleY), Math.toRadians(0))
                 .build();
 
         Trajectory middlePurpleScore = drive.trajectoryBuilder(startPose)
-                .forward(30)
+                .forward(centerPurpleForward)
                 .build();
 
         Trajectory rightPurpleScore = drive.trajectoryBuilder(startPose)
-                .forward(30)
+                .splineTo(new Vector2d(rightPurpleX, rightPurpleY), Math.toRadians(0))
                 .build();
 
         //Scoring yellow pixel
         Trajectory leftYellowScore = drive.trajectoryBuilder(leftPurpleScore.end())
-                .lineToLinearHeading(new Pose2d(50, -20, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(leftYellowX, leftYellowY, Math.toRadians(0)))
                         .build();
 
         Trajectory middleYellowScore = drive.trajectoryBuilder(middlePurpleScore.end())
-                .lineToLinearHeading(new Pose2d(50, -20, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(centerYellowX, centerYellowY, Math.toRadians(0)))
                 .build();
 
         Trajectory rightYellowScore = drive.trajectoryBuilder(rightPurpleScore.end())
-                .lineToLinearHeading(new Pose2d(50, -20, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(rightYellowX, rightYellowY, Math.toRadians(0)))
                 .build();
 
         //Parking
+        Trajectory parkBackup = drive.trajectoryBuilder(leftYellowScore.end())
+                .back(24)
+                .build();
         Trajectory parkScore = drive.trajectoryBuilder(leftYellowScore.end())
-                .lineToLinearHeading(new Pose2d(43, -46, Math.toRadians(0)))
+                .splineToSplineHeading(new Pose2d(parkX, parkY, Math.toRadians(0)), Math.toRadians(parkTan))
                 .build();
 
-        Trajectory parkStill = drive.trajectoryBuilder(leftYellowScore.end())
-                .lineToLinearHeading(new Pose2d(leftYellowScore.end().getX(), leftYellowScore.end().getY(), Math.toRadians(0)))
-                .build();
+//        Trajectory parkStill = drive.trajectoryBuilder(leftYellowScore.end())
+//                .build();
 
         while(!isStarted())
         {
@@ -97,27 +123,43 @@ public class TrueAutoOp extends OpModeBase
 
         if(propLocation.equals("LEFT"))
         {
-            drive.followTrajectory(leftPurpleScore);
-            drive.followTrajectory(leftYellowScore);
-            drive.followTrajectory(parkScore);
-            //claw.setPosition(0.4);
+            schedule(new SequentialCommandGroup(
+                    claw.closeClaw(),
+                    new InstantCommand(() -> drive.followTrajectory(leftPurpleScore)),
+                    arm.deployBack(), //I'm assuming deployBack is temporary
+                    new InstantCommand(() -> drive.followTrajectory(leftYellowScore)),
+                    claw.openClaw(),
+                    new InstantCommand(() -> drive.followTrajectory(parkBackup)),
+                    new InstantCommand(() -> drive.followTrajectory(parkScore)),
+                    arm.deployFront() //I'm assuming deployFront is temporary
+            ));
         }
         else if (propLocation.equals("CENTER"))
         {
             //Using the scheduler allows us to run commands in auto
             schedule(new SequentialCommandGroup(
+                    claw.closeClaw(),
                     new InstantCommand(() -> drive.followTrajectory(middlePurpleScore)),
-                    arm.deployFront(),
-                    new InstantCommand(() -> drive.followTrajectory(leftYellowScore)),
+                    arm.deployBack(), //I'm assuming deployBack is temporary
+                    new InstantCommand(() -> drive.followTrajectory(middleYellowScore)),
                     claw.openClaw(),
-                    new InstantCommand(() -> drive.followTrajectory(parkScore))
+                    new InstantCommand(() -> drive.followTrajectory(parkBackup)),
+                    new InstantCommand(() -> drive.followTrajectory(parkScore)),
+                    arm.deployFront() //I'm assuming deployFront is temporary
             ));
         }
         else
         {
-            drive.followTrajectory(rightPurpleScore);
-            drive.followTrajectory(leftYellowScore);
-            drive.followTrajectory(parkScore);
+            schedule(new SequentialCommandGroup(
+                    claw.closeClaw(),
+                    new InstantCommand(() -> drive.followTrajectory(rightPurpleScore)),
+                    arm.deployBack(), //I'm assuming deployBack is temporary
+                    new InstantCommand(() -> drive.followTrajectory(rightYellowScore)),
+                    claw.openClaw(),
+                    new InstantCommand(() -> drive.followTrajectory(parkBackup)),
+                    new InstantCommand(() -> drive.followTrajectory(parkScore)),
+                    arm.deployFront() //I'm assuming deployFront is temporary
+            ));
         }
     }
 
