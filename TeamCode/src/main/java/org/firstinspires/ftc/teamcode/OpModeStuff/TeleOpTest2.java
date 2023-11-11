@@ -53,11 +53,11 @@ public class TeleOpTest2 extends OpModeBase
         *
         * A - Ground Pickup Position
         *
-        * B - Back Scoring Position
+        * B - Retracted Position
         *
         * Y - Front Scoring Position
         *
-        * X - Top Down Position
+        * X - Transport Position
         *
         * */
 
@@ -94,7 +94,7 @@ public class TeleOpTest2 extends OpModeBase
         gamepadEx2.getGamepadButton(A).whenActive(arm.pickupFront());
         gamepadEx2.getGamepadButton(B).whileHeld(arm.deployBack());
         gamepadEx2.getGamepadButton(Y).whenActive(arm.deployFront());
-        gamepadEx2.getGamepadButton(X).whileHeld(arm.topDown());
+        gamepadEx2.getGamepadButton(X).whileHeld(arm.transport());
 
         //Adjustable arm
         gamepadEx2.getGamepadButton(DPAD_UP).whileHeld(arm.incrementalArm(1));

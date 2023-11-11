@@ -16,11 +16,6 @@ public class ClawSubsystem extends SubsystemBase
         claw = theClaw;
     }
 
-    public boolean toggle()
-    {
-        clawToggle = !clawToggle;
-        return clawToggle;
-    }
     public Command closeClaw()
     {
         return new InstantCommand(() -> {claw.setPosition(closedPosition);});
