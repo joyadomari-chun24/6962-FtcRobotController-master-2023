@@ -3,6 +3,10 @@ package org.firstinspires.ftc.teamcode.OpModeStuff;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
+import com.arcrobotics.ftclib.command.CommandScheduler;
+import com.arcrobotics.ftclib.command.InstantCommand;
+import com.arcrobotics.ftclib.command.RunCommand;
+import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -16,7 +20,6 @@ import org.firstinspires.ftc.teamcode.ScoringStuff.ClawSubsystem;
 @Autonomous
 public class TrueAutoOp extends OpModeBase
 {
-    private Servo claw;
     String propLocation;
     PropDetectionProcessor processor = new PropDetectionProcessor(true);
     @Override
@@ -32,36 +35,60 @@ public class TrueAutoOp extends OpModeBase
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
-        Pose2d startPose = new Pose2d(12, -66, Math.toRadians(270));
+        Pose2d startPose = new Pose2d(12, -66, Math.toRadians(90));
 
         drive.setPoseEstimate(startPose);
 
-        Trajectory leftTrajectory = drive.trajectoryBuilder(startPose)
+        //Scoring purple pixel
+        Trajectory leftPurpleScore = drive.trajectoryBuilder(startPose)
                 .forward(30)
                 .build();
 
-        Trajectory middleTrajectory = drive.trajectoryBuilder(startPose)
+        Trajectory middlePurpleScore = drive.trajectoryBuilder(startPose)
                 .forward(30)
                 .build();
 
-        Trajectory rightTrajectory = drive.trajectoryBuilder(startPose)
+        Trajectory rightPurpleScore = drive.trajectoryBuilder(startPose)
                 .forward(30)
                 .build();
 
-        Trajectory scoreYellowPixel = drive.trajectoryBuilder(middleTrajectory.end())
-                .lineToLinearHeading(new Pose2d(-20, -100, Math.toRadians(180)))
+        //Scoring yellow pixel
+        Trajectory leftYellowScore = drive.trajectoryBuilder(leftPurpleScore.end())
+                .lineToLinearHeading(new Pose2d(50, -20, Math.toRadians(0)))
                         .build();
 
-        Trajectory parkScore = drive.trajectoryBuilder(scoreYellowPixel.end())
-                .lineToLinearHeading(new Pose2d(-30, -120, Math.toRadians(270)))
+        Trajectory middleYellowScore = drive.trajectoryBuilder(middlePurpleScore.end())
+                .lineToLinearHeading(new Pose2d(50, -20, Math.toRadians(0)))
                 .build();
 
-        waitForStart();
+        Trajectory rightYellowScore = drive.trajectoryBuilder(rightPurpleScore.end())
+                .lineToLinearHeading(new Pose2d(50, -20, Math.toRadians(0)))
+                .build();
+
+        //Parking
+        Trajectory parkScore = drive.trajectoryBuilder(leftYellowScore.end())
+                .lineToLinearHeading(new Pose2d(43, -46, Math.toRadians(0)))
+                .build();
+
+        Trajectory parkStill = drive.trajectoryBuilder(leftYellowScore.end())
+                .lineToLinearHeading(new Pose2d(leftYellowScore.end().getX(), leftYellowScore.end().getY(), Math.toRadians(0)))
+                .build();
+
+        while(!isStarted())
+        {
+            /*
+             * The camera won't immediately detect a largest contour after being turned on, so it
+             * will be (0,0) for a bit, which falls in the LEFT range. After init, wait a few seconds
+             * before starting the OpMode so that it detects the right positon.
+             */
+            propLocation = processor.GetPropLocation();
+            telemetry.addData("Prop Location: ", propLocation);
+            telemetry.update();
+        }
 
         if(isStopRequested()) return;
 
-        propLocation = processor.GetPropLocation();
-
+        //Turns off camera
         if (visionPortal.getCameraState() == VisionPortal.CameraState.STREAMING)
         {
             visionPortal.stopLiveView();
@@ -70,24 +97,26 @@ public class TrueAutoOp extends OpModeBase
 
         if(propLocation.equals("LEFT"))
         {
-            drive.followTrajectory(leftTrajectory);
-            drive.followTrajectory(scoreYellowPixel);
+            drive.followTrajectory(leftPurpleScore);
+            drive.followTrajectory(leftYellowScore);
             drive.followTrajectory(parkScore);
-            claw.setPosition(0.4);
+            //claw.setPosition(0.4);
         }
-
         else if (propLocation.equals("CENTER"))
         {
-            drive.followTrajectory(middleTrajectory);
-            drive.followTrajectory(scoreYellowPixel);
-            drive.followTrajectory(parkScore);
-            claw.setPosition(0.4);
+            //Using the scheduler allows us to run commands in auto
+            schedule(new SequentialCommandGroup(
+                    new InstantCommand(() -> drive.followTrajectory(middlePurpleScore)),
+                    arm.deployFront(),
+                    new InstantCommand(() -> drive.followTrajectory(leftYellowScore)),
+                    claw.openClaw(),
+                    new InstantCommand(() -> drive.followTrajectory(parkScore))
+            ));
         }
-
         else
         {
-            drive.followTrajectory(rightTrajectory);
-            drive.followTrajectory(scoreYellowPixel);
+            drive.followTrajectory(rightPurpleScore);
+            drive.followTrajectory(leftYellowScore);
             drive.followTrajectory(parkScore);
         }
     }

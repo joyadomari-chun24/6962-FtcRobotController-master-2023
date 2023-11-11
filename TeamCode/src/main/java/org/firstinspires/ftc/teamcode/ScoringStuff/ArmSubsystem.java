@@ -14,15 +14,15 @@ import java.util.function.IntSupplier;
 public class ArmSubsystem extends SubsystemBase
 {
     //Servo positions
-    public static double left_pickupFront = 0.3;
+    public static double left_pickupFront = 0.1;
     public static double left_transport = 0.45; // not actually top down pickup, now used for transport position
-    public static double left_deployFront = 0.8; // deploy front and back are the same thing since slides no work
+    public static double left_deployFront = 0.3; // deploy front and back are the same thing since slides no work
     public static double left_deployBack = 0.8;
 
     public static double w_transport = 0;
-    public static double w_pickupFront = 0.12;
+    public static double w_pickupFront = 0.93;
     public static double w_deployBack = 0.15;
-    public static double w_deployFront = 0.15;
+    public static double w_deployFront = 0.93;
 
     // incremental arm and wrist values
     private double armIncrement = 0.025;
