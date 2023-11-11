@@ -21,7 +21,7 @@ public class ArmSubsystem extends SubsystemBase
 
     public static double w_pickupFront = 0.93;
     public static double w_transport = 0;
-    public static double w_deployFront = 0.93;
+    public static double w_deployFront = 0.96;
     public static double w_deployBack = 0.15;
 
     // incremental arm and wrist values

@@ -126,12 +126,12 @@ public class TrueAutoOp extends OpModeBase
             schedule(new SequentialCommandGroup(
                     claw.closeClaw(),
                     new InstantCommand(() -> drive.followTrajectory(leftPurpleScore)),
-                    arm.deployBack(), //I'm assuming deployBack is temporary
+                    arm.deployFront(),
                     new InstantCommand(() -> drive.followTrajectory(leftYellowScore)),
                     claw.openClaw(),
                     new InstantCommand(() -> drive.followTrajectory(parkBackup)),
                     new InstantCommand(() -> drive.followTrajectory(parkScore)),
-                    arm.deployFront() //I'm assuming deployFront is temporary
+                    arm.deployBack() //I'm assuming deployBack is temporary
             ));
         }
         else if (propLocation.equals("CENTER"))
@@ -140,12 +140,12 @@ public class TrueAutoOp extends OpModeBase
             schedule(new SequentialCommandGroup(
                     claw.closeClaw(),
                     new InstantCommand(() -> drive.followTrajectory(middlePurpleScore)),
-                    arm.deployBack(), //I'm assuming deployBack is temporary
+                    arm.deployFront(),
                     new InstantCommand(() -> drive.followTrajectory(middleYellowScore)),
                     claw.openClaw(),
                     new InstantCommand(() -> drive.followTrajectory(parkBackup)),
                     new InstantCommand(() -> drive.followTrajectory(parkScore)),
-                    arm.deployFront() //I'm assuming deployFront is temporary
+                    arm.deployBack() //I'm assuming deployBack is temporary
             ));
         }
         else
@@ -153,12 +153,12 @@ public class TrueAutoOp extends OpModeBase
             schedule(new SequentialCommandGroup(
                     claw.closeClaw(),
                     new InstantCommand(() -> drive.followTrajectory(rightPurpleScore)),
-                    arm.deployBack(), //I'm assuming deployBack is temporary
+                    arm.deployFront(),
                     new InstantCommand(() -> drive.followTrajectory(rightYellowScore)),
                     claw.openClaw(),
                     new InstantCommand(() -> drive.followTrajectory(parkBackup)),
                     new InstantCommand(() -> drive.followTrajectory(parkScore)),
-                    arm.deployFront() //I'm assuming deployFront is temporary
+                    arm.deployFront() //I'm assuming deployBack is temporary
             ));
         }
     }
