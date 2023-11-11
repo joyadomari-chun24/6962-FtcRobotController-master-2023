@@ -20,19 +20,19 @@ public class TopRightAuto extends OpModeBase
     PropDetectionProcessor processor = new PropDetectionProcessor(false);
 
     //Middle coordinates
-    public static int centerPurpleForward = 27;
+    public static int centerPurpleForward = 27 - 3;
     public static int centerYellowX = 53;
     public static int centerYellowY = -39;
 
     //Left coordinates
     public static int leftPurpleX = 0;
-    public static int leftPurpleY = -40;
+    public static int leftPurpleY = -40 - 3;
     public static int leftYellowX = 53;
     public static int leftYellowY = -35;
 
     //Right coordinates
     public static int rightPurpleX = 19;
-    public static int rightPurpleY = -40;
+    public static int rightPurpleY = -40 - 3;
     public static int rightYellowX = 53;
     public static int rightYellowY = -45;
     public static int rightBackup = 5;
@@ -68,12 +68,20 @@ public class TopRightAuto extends OpModeBase
                 .lineTo(new Vector2d(rightPurpleX, rightPurpleY))
                 .build();
 
+        Trajectory middlePostPurple = roadrunnerMecanumDrive.trajectoryBuilder(leftPurpleScore.end())
+                .back(rightBackup)
+                .build();
+
+        Trajectory leftPostPurple = roadrunnerMecanumDrive.trajectoryBuilder(rightPurpleScore.end())
+                .back(rightBackup)
+                .build();
+
         //Scoring yellow pixel
-        Trajectory leftYellowScore = roadrunnerMecanumDrive.trajectoryBuilder(leftPurpleScore.end())
+        Trajectory leftYellowScore = roadrunnerMecanumDrive.trajectoryBuilder(leftPostPurple.end())
                 .lineToLinearHeading(new Pose2d(leftYellowX, leftYellowY, Math.toRadians(0)))
                         .build();
 
-        Trajectory middleYellowScore = roadrunnerMecanumDrive.trajectoryBuilder(middlePurpleScore.end())
+        Trajectory middleYellowScore = roadrunnerMecanumDrive.trajectoryBuilder(middlePostPurple.end())
                 .lineToLinearHeading(new Pose2d(centerYellowX, centerYellowY, Math.toRadians(0)))
                 .build();
 
@@ -122,12 +130,13 @@ public class TopRightAuto extends OpModeBase
             schedule(new SequentialCommandGroup(
                     claw.closeClaw(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPurpleScore)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPostPurple)),
                     arm.deployBack(), //I'm assuming these positions are temporary
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftYellowScore)),
                     claw.openClaw(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
-                    arm.deployFront() //I'm assuming these positions are temporary
+                    arm.pickupFront() //I'm assuming these positions are temporary
             ));
         }
         else if (propLocation.equals("CENTER"))
@@ -136,12 +145,13 @@ public class TopRightAuto extends OpModeBase
             schedule(new SequentialCommandGroup(
                     claw.closeClaw(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middlePurpleScore)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middlePostPurple)),
                     arm.deployBack(), //I'm assuming these positions are temporary
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middleYellowScore)),
                     claw.openClaw(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
-                    arm.deployFront() //I'm assuming these positions are temporary
+                    arm.pickupFront() //I'm assuming these positions are temporary
             ));
         }
         else
@@ -149,13 +159,14 @@ public class TopRightAuto extends OpModeBase
             schedule(new SequentialCommandGroup(
                     claw.closeClaw(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightPurpleScore)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightPostPurple)),
                     arm.deployBack(), //I'm assuming these positions are temporary
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightPostPurple)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightYellowScore)),
                     claw.openClaw(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
-                    arm.deployFront() //I'm assuming deployFront is temporary
+                    arm.pickupFront() //I'm assuming deployFront is temporary
             ));
         }
     }
