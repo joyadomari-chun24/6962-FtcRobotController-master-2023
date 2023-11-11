@@ -14,14 +14,14 @@ import java.util.function.IntSupplier;
 public class ArmSubsystem extends SubsystemBase
 {
     //Servo positions
-    public static double left_pickupFront = 0.1; // arm is lowered, claw is parallel to ground
-    public static double left_transport = 0.45; // arm is parallel to ground, claw is pointing straight up
-    public static double left_deployFront = 0.3; // arm is raised, claw parallel to scoring board
-    public static double left_deployBack = 0.8; // arm is parallel to slides, claw is parallel to ground
+    public static double left_pickupFront = 0.02; // arm is lowered, claw is parallel to ground
+    public static double left_transport = 0.2; // arm is parallel to ground, claw is pointing straight up
+    public static double left_deployFront = 0.25; // arm is raised, claw parallel to scoring board
+    public static double left_deployBack = 0.5; // arm is parallel to slides, claw is parallel to ground
 
-    public static double w_pickupFront = 0.93;
+    public static double w_pickupFront = 0.94;
     public static double w_transport = 0;
-    public static double w_deployFront = 0.96;
+    public static double w_deployFront = 0.94;
     public static double w_deployBack = 0.88;
 
     // incremental arm and wrist values
