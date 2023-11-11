@@ -33,16 +33,24 @@ public class PropDetectionProcessor implements VisionProcessor
     Scalar highBlueHSV = new Scalar(140, 255, 255);
     Scalar strictLowBlueHSV = new Scalar(100, 150, 0);
     Scalar strictHighBlueHSV = new Scalar(140, 255, 255);
-    Scalar highHSV = propIsBlue ? highBlueHSV : highRedHSV;
-    Scalar lowHSV = propIsBlue ? lowBlueHSV : lowRedHSV;
-    Scalar strictHighHSV = propIsBlue ? strictHighBlueHSV : strictHighRedHSV;
-    Scalar strictLowHSV = propIsBlue ? strictLowBlueHSV : strictLowRedHSV;
+//    Scalar highHSV = propIsBlue ? highBlueHSV : highRedHSV;
+//    Scalar lowHSV = propIsBlue ? lowBlueHSV : lowRedHSV;
+//    Scalar strictHighHSV = propIsBlue ? strictHighBlueHSV : strictHighRedHSV;
+//    Scalar strictLowHSV = propIsBlue ? strictLowBlueHSV : strictLowRedHSV;
+    Scalar highHSV;
+    Scalar lowHSV;
+    Scalar strictHighHSV;
+    Scalar strictLowHSV;
     double leftZone = 100;
     double rightZone = 550;
 
     public PropDetectionProcessor(boolean propIsBlue)
     {
         this.propIsBlue = propIsBlue;
+        highHSV = propIsBlue ? highBlueHSV : highRedHSV;
+        lowHSV = propIsBlue ? lowBlueHSV : lowRedHSV;
+        strictHighHSV = propIsBlue ? strictHighBlueHSV : strictHighRedHSV;
+        strictLowHSV = propIsBlue ? strictLowBlueHSV : strictLowRedHSV;
     }
 
     @Override
