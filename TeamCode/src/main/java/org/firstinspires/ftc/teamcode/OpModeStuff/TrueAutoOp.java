@@ -26,26 +26,26 @@ public class TrueAutoOp extends OpModeBase
     PropDetectionProcessor processor = new PropDetectionProcessor(true);
 
     //Middle coordinates
-    public static int centerPurpleForward = 27; //good
-    public static int centerYellowX = 50;
-    public static int centerYellowY = -40;
+    public static int centerPurpleForward = 27;
+    public static int centerYellowX = 53;
+    public static int centerYellowY = -39;
 
     //Left coordinates
-    public static int leftPurpleX = 27;
-    public static int leftPurpleY = 27;
-    public static int leftYellowX = 50; //good
-    public static int leftYellowY = -40; //good
+    public static int leftPurpleX = 0;
+    public static int leftPurpleY = -40;
+    public static int leftYellowX = 53;
+    public static int leftYellowY = -35;
 
     //Right coordinates
-    public static int rightPurpleX = 27;
-    public static int rightPurpleY = 27;
-    public static int rightYellowX = 50; //good
-    public static int rightYellowY = -40;
+    public static int rightPurpleX = 19;
+    public static int rightPurpleY = -40;
+    public static int rightYellowX = 53;
+    public static int rightYellowY = -45;
+    public static int rightBackup = 5;
 
     //Parking coordinates
     public static int parkX = 56;
-    public static int parkY = -14;
-    public static int parkTan = 0;
+    public static int parkY = -17;
     @Override
     public void initialize()
     {
@@ -57,15 +57,13 @@ public class TrueAutoOp extends OpModeBase
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
                 .build();
 
-        //SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-
         Pose2d startPose = new Pose2d(12, -66, Math.toRadians(90));
 
         roadrunnerMecanumDrive.setPoseEstimate(startPose);
 
         //Scoring purple pixel
         Trajectory leftPurpleScore = roadrunnerMecanumDrive.trajectoryBuilder(startPose)
-                .splineTo(new Vector2d(leftPurpleX, leftPurpleY), Math.toRadians(0))
+                .lineTo(new Vector2d(leftPurpleX, leftPurpleY))
                 .build();
 
         Trajectory middlePurpleScore = roadrunnerMecanumDrive.trajectoryBuilder(startPose)
@@ -73,7 +71,7 @@ public class TrueAutoOp extends OpModeBase
                 .build();
 
         Trajectory rightPurpleScore = roadrunnerMecanumDrive.trajectoryBuilder(startPose)
-                .splineTo(new Vector2d(rightPurpleX, rightPurpleY), Math.toRadians(0))
+                .lineTo(new Vector2d(rightPurpleX, rightPurpleY))
                 .build();
 
         //Scoring yellow pixel
@@ -85,17 +83,20 @@ public class TrueAutoOp extends OpModeBase
                 .lineToLinearHeading(new Pose2d(centerYellowX, centerYellowY, Math.toRadians(0)))
                 .build();
 
-        Trajectory rightYellowScore = roadrunnerMecanumDrive.trajectoryBuilder(rightPurpleScore.end())
+        Trajectory rightPostPurple = roadrunnerMecanumDrive.trajectoryBuilder(rightPurpleScore.end())
+                .back(rightBackup)
+                .build();
+        Trajectory rightYellowScore = roadrunnerMecanumDrive.trajectoryBuilder(rightPostPurple.end())
                 .lineToLinearHeading(new Pose2d(rightYellowX, rightYellowY, Math.toRadians(0)))
                 .build();
 
         //Parking
         Trajectory parkBackup = roadrunnerMecanumDrive.trajectoryBuilder(leftYellowScore.end())
-                .back(24)
+                .back(22)
                 .build();
 
         Trajectory parkScore = roadrunnerMecanumDrive.trajectoryBuilder(leftYellowScore.end())
-                .splineToSplineHeading(new Pose2d(parkX, parkY, Math.toRadians(0)), Math.toRadians(parkTan))
+                .lineToLinearHeading(new Pose2d(parkX, parkY, Math.toRadians(0)))
                 .build();
 
 //        Trajectory parkStill = drive.trajectoryBuilder(leftYellowScore.end())
@@ -127,12 +128,12 @@ public class TrueAutoOp extends OpModeBase
             schedule(new SequentialCommandGroup(
                     claw.closeClaw(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPurpleScore)),
-                    arm.deployFront(),
+                    arm.deployBack(), //I'm assuming these positions are temporary
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftYellowScore)),
                     claw.openClaw(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
-                    arm.deployBack() //I'm assuming deployBack is temporary
+                    arm.deployFront() //I'm assuming these positions are temporary
             ));
         }
         else if (propLocation.equals("CENTER"))
@@ -141,12 +142,12 @@ public class TrueAutoOp extends OpModeBase
             schedule(new SequentialCommandGroup(
                     claw.closeClaw(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middlePurpleScore)),
-                    arm.deployFront(),
+                    arm.deployBack(), //I'm assuming these positions are temporary
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middleYellowScore)),
                     claw.openClaw(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
-                    arm.deployBack() //I'm assuming deployBack is temporary
+                    arm.deployFront() //I'm assuming these positions are temporary
             ));
         }
         else
@@ -154,7 +155,8 @@ public class TrueAutoOp extends OpModeBase
             schedule(new SequentialCommandGroup(
                     claw.closeClaw(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightPurpleScore)),
-                    arm.deployFront(),
+                    arm.deployBack(), //I'm assuming these positions are temporary
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightPostPurple)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightYellowScore)),
                     claw.openClaw(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
