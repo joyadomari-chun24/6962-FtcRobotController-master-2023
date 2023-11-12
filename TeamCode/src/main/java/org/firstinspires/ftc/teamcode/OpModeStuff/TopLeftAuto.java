@@ -20,19 +20,19 @@ public class TopLeftAuto extends OpModeBase
     PropDetectionProcessor processor = new PropDetectionProcessor(true);
 
     //Middle coordinates
-    public static int centerPurpleForward = 27 - 3;
+    public static int centerPurpleForward = 29;
     public static int centerYellowX = 53;
     public static int centerYellowY = 39;
 
     //Left coordinates
     public static int leftPurpleX = 19;
-    public static int leftPurpleY = 40 + 3;
+    public static int leftPurpleY = 40;
     public static int leftYellowX = 53;
     public static int leftYellowY = 45;
 
     //Right coordinates
     public static int rightPurpleX = 0;
-    public static int rightPurpleY = 40 + 3;
+    public static int rightPurpleY = 40;
     public static int rightYellowX = 53;
     public static int rightYellowY = 35;
     public static int rightBackup = 5;
@@ -130,9 +130,10 @@ public class TopLeftAuto extends OpModeBase
         {
             schedule(new SequentialCommandGroup(
                     claw.closeClaw(),
+                    arm.transport(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPurpleScore)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPostPurple)),
-                    arm.deployBack(), //I'm assuming these positions are temporary
+                    arm.deployFront(), //I'm assuming these positions are temporary
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftYellowScore)),
                     claw.openClaw(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
@@ -145,9 +146,10 @@ public class TopLeftAuto extends OpModeBase
             //Using the scheduler allows us to run commands in auto
             schedule(new SequentialCommandGroup(
                     claw.closeClaw(),
+                    arm.transport(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middlePurpleScore)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middlePostPurple)),
-                    arm.deployBack(), //I'm assuming these positions are temporary
+                    arm.deployFront(), //I'm assuming these positions are temporary
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middleYellowScore)),
                     claw.openClaw(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
@@ -159,15 +161,16 @@ public class TopLeftAuto extends OpModeBase
         {
             schedule(new SequentialCommandGroup(
                     claw.closeClaw(),
+                    arm.transport(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightPurpleScore)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightPostPurple)),
-                    arm.deployBack(), //I'm assuming these positions are temporary
+                    arm.deployFront(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightPostPurple)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightYellowScore)),
                     claw.openClaw(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
-                    arm.pickupFront() //I'm assuming deployFront is temporary
+                    arm.pickupFront()
             ));
         }
     }

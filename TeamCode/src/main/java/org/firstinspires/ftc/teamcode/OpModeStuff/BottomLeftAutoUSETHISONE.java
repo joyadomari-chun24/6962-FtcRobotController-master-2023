@@ -20,7 +20,7 @@ public class BottomLeftAutoUSETHISONE extends OpModeBase
     PropDetectionProcessor processor = new PropDetectionProcessor(true);
 
     //Middle coordinates
-    public static int centerPurpleForward = 27;
+    public static int centerPurpleForward = 29;
     public static int centerYellowX = 53;
     public static int centerYellowY = 39;
 
@@ -135,15 +135,16 @@ public class BottomLeftAutoUSETHISONE extends OpModeBase
         {
             schedule(new SequentialCommandGroup(
                     claw.closeClaw(),
+                    arm.transport(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPurpleScore)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPostPurple)),
-                    arm.deployBack(), //I'm assuming these positions are temporary
+                    arm.deployFront(),
 //                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(goToMiddle)),
 //                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftYellowScore)),
 //                    claw.openClaw(),
 //                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
 //                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
-                    arm.pickupFront() //I'm assuming these positions are temporary
+                    arm.pickupFront()
             ));
         }
         else if (propLocation.equals("CENTER"))
@@ -151,31 +152,33 @@ public class BottomLeftAutoUSETHISONE extends OpModeBase
             //Using the scheduler allows us to run commands in auto
             schedule(new SequentialCommandGroup(
                     claw.closeClaw(),
+                    arm.transport(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middlePurpleScore)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middlePostPurple)),
-                    arm.deployBack(), //I'm assuming these positions are temporary
+                    arm.deployFront(),
 //                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(goToMiddle)),
 //                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middleYellowScore)),
 //                    claw.openClaw(),
 //                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
 //                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
-                    arm.pickupFront() //I'm assuming these positions are temporary
+                    arm.pickupFront()
             ));
         }
         else
         {
             schedule(new SequentialCommandGroup(
                     claw.closeClaw(),
+                    arm.transport(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightPurpleScore)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightPostPurple)),
-                    arm.deployBack(), //I'm assuming these positions are temporary
+                    arm.deployFront(),
 //                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightPostPurple)),
 //                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(goToMiddle)),
 //                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightYellowScore)),
 //                    claw.openClaw(),
 //                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
 //                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
-                    arm.pickupFront() //I'm assuming deployFront is temporary
+                    arm.pickupFront()
             ));
         }
     }
