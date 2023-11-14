@@ -83,11 +83,16 @@ public class TeleOpTest2 extends OpModeBase
         //Slow mode
         gamepadEx1.getGamepadButton(LEFT_BUMPER).whileHeld(mecanumDrive.slowFieldCentric(gamepadEx1::getLeftX, gamepadEx1::getLeftY, gamepadEx1::getRightX, gyroManager::getHeading, telemetry));
 
-        //Drone launcher
+        //Drone launcher gamepad 1  x+y
         gamepadEx1.getGamepadButton(X).and(gamepadEx1.getGamepadButton(Y)).whileActiveOnce(launcher.fireDrone());
+        //hang gamepad 1  a+b
+        gamepadEx1.getGamepadButton(B).and(gamepadEx1.getGamepadButton(A)).whileActiveOnce(hang.hangRobot());
 
         //Claw
-        gamepadEx2.getGamepadButton(RIGHT_BUMPER).toggleWhenPressed(claw.openClaw(), claw.closeClaw());
+        //tyler controller set to close, isaiah controller set to open, request from drivers. Tyler said its more effecient because he can intake better, while isaiah can focus on scoring
+//        gamepadEx2.getGamepadButton(RIGHT_BUMPER).toggleWhenPressed(claw.openClaw(), claw.closeClaw());
+        gamepadEx1.getGamepadButton(RIGHT_BUMPER).toggleWhenPressed(claw.closeClaw());
+        gamepadEx2.getGamepadButton(RIGHT_BUMPER).toggleWhenPressed(claw.openClaw());
 
         //Arm/wrist positions
         //whenActive and whileHeld seem like they should both work, so they're split rn to test
