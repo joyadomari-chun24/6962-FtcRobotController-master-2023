@@ -143,6 +143,8 @@ public class TeleOpTest2 extends OpModeBase
         telemetry.addData("Left Arm Position", leftPlatformServo.getPosition());
         telemetry.addData("Right Arm Position", rightPlatformServo.getPosition());
         telemetry.addData("Wrist Position", wristServo.getPosition());
+        telemetry.addData("Hang Position", hangServo.getPosition());
+        telemetry.addData("Drone servo position", droneServo.getPosition());
         telemetry.update();
 
     }
