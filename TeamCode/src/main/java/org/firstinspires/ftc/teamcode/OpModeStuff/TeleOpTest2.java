@@ -38,7 +38,6 @@ public class TeleOpTest2 extends OpModeBase
     {
 
         super.initialize();
-        arm.pickupFront();
 
         /*
         * Gamepad 2:
@@ -108,6 +107,7 @@ public class TeleOpTest2 extends OpModeBase
         //Adjustable wrist
         gamepadEx2.getGamepadButton(DPAD_LEFT).whileHeld(arm.incrementalWrist(1));
         gamepadEx2.getGamepadButton(DPAD_RIGHT).whileHeld(arm.incrementalWrist(-1));
+        //incremental bound to joystick returns error that we're not sure how to fix yet
         //arm.setDefaultCommand(arm.incrementalWrist(gamepadEx2::getRightY));
 
         //Gyro reset

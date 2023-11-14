@@ -15,7 +15,7 @@ public class HangSubsystem extends SubsystemBase
     public HangSubsystem(Servo hangServo)
     {
         lever = hangServo;
-        lever.setPosition(releasedPosition);
+        lever.setPosition(sustainedPosition);
     }
     public Command hangRobot()
     {

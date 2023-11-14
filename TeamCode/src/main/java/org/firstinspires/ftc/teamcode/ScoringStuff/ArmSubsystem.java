@@ -74,7 +74,6 @@ public class ArmSubsystem extends SubsystemBase
             }, this);
     }
 
-
     public Command incrementalArm(int sign)
     {
         return new InstantCommand(() -> {
