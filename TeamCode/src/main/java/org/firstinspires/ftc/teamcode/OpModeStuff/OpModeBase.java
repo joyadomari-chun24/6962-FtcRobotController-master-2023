@@ -10,10 +10,12 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.EndgameStuff.HangSubsystem;
 import org.firstinspires.ftc.teamcode.ScoringStuff.ArmSubsystem;
 import org.firstinspires.ftc.teamcode.ScoringStuff.ClawSubsystem;
 import org.firstinspires.ftc.teamcode.DriveStuff.NavxManager;
-import org.firstinspires.ftc.teamcode.DroneLaunchSubsystem;
+import org.firstinspires.ftc.teamcode.EndgameStuff.DroneLaunchSubsystem;
+import org.firstinspires.ftc.teamcode.EndgameStuff.HangSubsystem;
 import org.firstinspires.ftc.teamcode.SlideStuff.IntakeSlideSubsystem;
 import org.firstinspires.ftc.teamcode.DriveStuff.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.SlideStuff.ScoringSlideSubsystem;
@@ -40,11 +42,12 @@ public class OpModeBase extends CommandOpMode
     protected ScoringSlideSubsystem scoringSlides;
     protected MecanumDriveSubsystem mecanumDrive;
     protected PropDetectionProcessor propDetectionPipeline;
-    protected Servo droneServo, ArmServoL, ArmServoR;
+    protected Servo droneServo, ArmServoL, ArmServoR, hangServo;
     protected Servo clawServo, wristServo, leftPlatformServo, rightPlatformServo;
     protected ClawSubsystem claw;
     protected ArmSubsystem arm;
     protected DroneLaunchSubsystem launcher;
+    protected HangSubsystem hang;
     protected NavxManager gyroManager;
 
     ElapsedTime navxCalibrationTimer = new ElapsedTime();
@@ -64,6 +67,7 @@ public class OpModeBase extends CommandOpMode
         navxMicro = hardwareMap.get(NavxMicroNavigationSensor.class, "navx");
         distanceSensor = hardwareMap.get(DistanceSensor.class, "distSensor");
         droneServo = hardwareMap.get(Servo.class, "droneLauncher");
+        hangServo = hardwareMap.get(Servo.class, "hangServo");
         wristServo = hardwareMap.get(Servo.class, "platformServo");
         clawServo = hardwareMap.get(Servo.class, "claw");
         leftPlatformServo = hardwareMap.servo.get("leftPlatformServo");
@@ -90,6 +94,7 @@ public class OpModeBase extends CommandOpMode
         claw = new ClawSubsystem(clawServo);
         arm = new ArmSubsystem(leftPlatformServo, rightPlatformServo, wristServo);
         launcher = new DroneLaunchSubsystem(droneServo);
+        hang = new HangSubsystem(hangServo);
         gyroManager = new NavxManager(navxMicro);
 
         // Wait until the gyro calibration is complete
