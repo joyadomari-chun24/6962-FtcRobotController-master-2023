@@ -17,10 +17,10 @@ public class HangSubsystem extends SubsystemBase
         lever = hangServoL;
         lever2 = hangServoR;
         lever.setPosition(sustainedPosition);
-        lever.setPosition(sustainedPosition);
+        lever2.setPosition(1-sustainedPosition);
     }
     public Command hangRobot()
     {
-        return new InstantCommand(() -> {lever.setPosition(releasedPosition); lever2.setPosition(releasedPosition);});
+        return new InstantCommand(() -> {lever.setPosition(releasedPosition); lever2.setPosition(1-releasedPosition);});
     }
 }
