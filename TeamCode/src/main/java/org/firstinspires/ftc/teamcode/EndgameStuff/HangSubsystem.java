@@ -9,16 +9,18 @@ import com.qualcomm.robotcore.hardware.Servo;
 @Config
 public class HangSubsystem extends SubsystemBase
 {
-    private Servo lever;
+    private Servo lever, lever2;
     public static double sustainedPosition = 0;
     public static double releasedPosition = 1;
-    public HangSubsystem(Servo hangServo)
+    public HangSubsystem(Servo hangServoL, Servo hangServoR)
     {
-        lever = hangServo;
+        lever = hangServoL;
+        lever2 = hangServoR;
+        lever.setPosition(sustainedPosition);
         lever.setPosition(sustainedPosition);
     }
     public Command hangRobot()
     {
-        return new InstantCommand(() -> {lever.setPosition(releasedPosition);});
+        return new InstantCommand(() -> {lever.setPosition(releasedPosition); lever2.setPosition(releasedPosition);});
     }
 }

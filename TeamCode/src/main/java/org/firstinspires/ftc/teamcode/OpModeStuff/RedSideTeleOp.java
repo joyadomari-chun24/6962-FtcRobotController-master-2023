@@ -138,9 +138,9 @@ public class RedSideTeleOp extends OpModeBase
         Pose2d poseEstimate = roadrunnerMecanumDrive.getPoseEstimate();
 
         //Telemetry
-        telemetry.addData("LeftStickX (pad1)", gamepadEx1.getLeftX());
-        telemetry.addData("LeftStickY (pad1)", gamepadEx1.getLeftY());
-        telemetry.addData("RightStickX (pad1)", gamepadEx1.getRightX());
+//        telemetry.addData("LeftStickX (pad1)", gamepadEx1.getLeftX());
+//        telemetry.addData("LeftStickY (pad1)", gamepadEx1.getLeftY());
+//        telemetry.addData("RightStickX (pad1)", gamepadEx1.getRightX());
         telemetry.addData("L Slide Position (method)", scoringSlides.getPosition(ScoringSlideSubsystem.motorSide.LEFT));
         telemetry.addData("R Slide Position (method)", scoringSlides.getPosition(ScoringSlideSubsystem.motorSide.RIGHT));
         telemetry.addData("L Slide Position (straight)", scoringSlideMotorL.getCurrentPosition());
@@ -154,7 +154,8 @@ public class RedSideTeleOp extends OpModeBase
         telemetry.addData("Left Arm Position", leftPlatformServo.getPosition());
         telemetry.addData("Right Arm Position", rightPlatformServo.getPosition());
         telemetry.addData("Wrist Position", wristServo.getPosition());
-        telemetry.addData("Hang Position", hangServo.getPosition());
+        telemetry.addData("Hang Position Left ", hangServoL.getPosition());
+        telemetry.addData("Hang Position Right ", hangServoR.getPosition());
         telemetry.addData("Drone servo position", droneServo.getPosition());
         telemetry.update();
 

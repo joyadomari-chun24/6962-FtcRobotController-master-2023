@@ -51,7 +51,7 @@ public class OpModeBase extends CommandOpMode
     protected ScoringSlideSubsystem scoringSlides;
     protected MecanumDriveSubsystem mecanumDrive;
     protected PropDetectionProcessor propDetectionPipeline;
-    protected Servo droneServo, ArmServoL, ArmServoR, hangServo;
+    protected Servo droneServo, ArmServoL, ArmServoR, hangServoL, hangServoR;
     protected Servo clawServoL, clawServoR, wristServo, leftPlatformServo, rightPlatformServo;
     protected ClawSubsystem clawL;
     protected ClawSubsystem clawR;
@@ -90,16 +90,17 @@ public class OpModeBase extends CommandOpMode
         navxMicro = hardwareMap.get(NavxMicroNavigationSensor.class, "navx");
         distanceSensor = hardwareMap.get(DistanceSensor.class, "distSensor");
         droneServo = hardwareMap.get(Servo.class, "droneLauncher");
-        hangServo = hardwareMap.get(Servo.class, "hangServo");
+        hangServoL = hardwareMap.get(Servo.class, "hangServoL");
+        hangServoR = hardwareMap.get(Servo.class, "hangServoR");
         wristServo = hardwareMap.get(Servo.class, "platformServo");
         clawServoL = hardwareMap.get(Servo.class, "leftClaw");
         clawServoR = hardwareMap.get(Servo.class, "rightClaw");
         leftPlatformServo = hardwareMap.servo.get("leftPlatformServo");
         rightPlatformServo = hardwareMap.servo.get("rightPlatformServo");
         /*scoringSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        intakeSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        scoringSlideMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        intakeSlideMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);*/
+        intakeSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);*/
+        scoringSlideMotorL.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        scoringSlideMotorR.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         scoringSlideMotorL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         scoringSlideMotorR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         //intakeSlideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -111,8 +112,7 @@ public class OpModeBase extends CommandOpMode
         backdropAprilTag = new AprilTagProcessor.Builder().build();
         backdropAprilTag.setDecimation(2); // Higher decimation = increased performance but less distance
         aprilPortal = new VisionPortal.Builder()
-                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 2"))
-                .addProcessor(backdropAprilTag)
+                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 2")).addProcessor(backdropAprilTag)
                 .build();
 
         //Set camera exposure to minimize motion blur (6 ms exposure, 250 gain)
@@ -136,7 +136,7 @@ public class OpModeBase extends CommandOpMode
         clawR = new ClawSubsystem(clawServoR, false);
         arm = new ArmSubsystem(leftPlatformServo, rightPlatformServo, wristServo);
         launcher = new DroneLaunchSubsystem(droneServo);
-        hang = new HangSubsystem(hangServo);
+        hang = new HangSubsystem(hangServoL, hangServoR);
         gyroManager = new NavxManager(navxMicro);
 
         // Wait until the gyro calibration is complete
