@@ -59,6 +59,7 @@ public class OpModeBase extends CommandOpMode
     protected DroneLaunchSubsystem launcher;
     protected HangSubsystem hang;
     protected NavxManager gyroManager;
+    public int blueLeftAprilID = 1, blueCenterAprilID = 2, blueRightAprilID = 3, redLeftAprilID = 4, redCenterAprilID = 5, redRightAprilID = 6;
     protected AprilTagProcessor backdropAprilTag;
     boolean targetFound;
     AprilTagDetection detectedTag;
@@ -68,6 +69,9 @@ public class OpModeBase extends CommandOpMode
     protected double aprilTurnGain = 0.01;
     protected double aprilStrafeGain = 0.015;
     protected double maxAprilPower = 0.5;
+    protected double aprilDrive = 0;
+    protected double aprilTurn = 0;
+    protected double aprilStrafe = 0;
 
     ElapsedTime navxCalibrationTimer = new ElapsedTime();
 
@@ -158,6 +162,8 @@ public class OpModeBase extends CommandOpMode
 
         List<AprilTagDetection> currentDetections = backdropAprilTag.getDetections();
 
+        telemetry.addLine("Scanning for april tags...");
+
         for (AprilTagDetection detection : currentDetections)
         {
             // Look to see if we have size info on this tag.
@@ -186,8 +192,9 @@ public class OpModeBase extends CommandOpMode
     }
 
     //Drives robot to the apriltag for the loop
-    public void driveToAprilTag()
+    public void driveToAprilTag(int targetTag)
     {
+        aprilTagDetect(targetTag);
         if(targetFound)
         {
             //Properties of tag
@@ -196,12 +203,21 @@ public class OpModeBase extends CommandOpMode
             double  yawError        = detectedTag.ftcPose.yaw;
 
             //Properties of robot to drive
-            double aprilDrive = Range.clip(rangeError * aprilDriveGain, -maxAprilPower, maxAprilPower);
-            double aprilTurn = Range.clip(headingError * aprilTurnGain, -maxAprilPower, maxAprilPower);
-            double aprilStrafe = Range.clip(-yawError * aprilStrafeGain, -maxAprilPower, maxAprilPower);
+            aprilDrive = Range.clip(rangeError * aprilDriveGain, -maxAprilPower, maxAprilPower);
+            aprilTurn = Range.clip(headingError * aprilTurnGain, -maxAprilPower, maxAprilPower);
+            aprilStrafe = Range.clip(-yawError * aprilStrafeGain, -maxAprilPower, maxAprilPower);
 
             mecanumDrive.roboCentric(aprilDrive, aprilTurn, aprilStrafe);
         }
     }
 
+    //VERY EXPERIMENTAL; Drives robot until it is aligned with apriltag or the timeout passes
+    public void driveUntilAprilTag(int targetTag, int timeoutInSeconds)
+    {
+        int timestamp = (int) time;
+        do
+        {
+            driveToAprilTag(targetTag);
+        } while(aprilDrive > 0.1 && aprilTurn > 0.1 && aprilStrafe > 0.1 && time - timestamp < timeoutInSeconds);
+    }
 }

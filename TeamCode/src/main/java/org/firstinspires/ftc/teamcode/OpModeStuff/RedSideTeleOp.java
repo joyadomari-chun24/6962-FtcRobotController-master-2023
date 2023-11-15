@@ -29,12 +29,6 @@ public class RedSideTeleOp extends OpModeBase
     private double armIncrement = 0.020;
     private double wristIncrement = 0.01;
 
-    //On left side, IDs are 1, 2, 3 respectively
-    private int leftAprilTagID = 4;
-    private int centerAprilTagID = 5;
-    private int rightAprilTagID = 6;
-
-
     @Override
     public void initialize()
     {
@@ -124,18 +118,9 @@ public class RedSideTeleOp extends OpModeBase
         scoringSlides.setDefaultCommand(scoringSlides.slideMovement(gamepadEx2::getRightY));
 
         //Drive to apriltag
-        gamepadEx1.getGamepadButton(DPAD_LEFT).whileHeld(new ParallelCommandGroup(
-                new InstantCommand(() -> aprilTagDetect(leftAprilTagID)),
-                new InstantCommand(() -> driveToAprilTag())
-                ));
-        gamepadEx1.getGamepadButton(DPAD_UP).whileHeld(new ParallelCommandGroup(
-                new InstantCommand(() -> aprilTagDetect(centerAprilTagID)),
-                new InstantCommand(() -> driveToAprilTag())
-        ));
-        gamepadEx1.getGamepadButton(DPAD_UP).whileHeld(new ParallelCommandGroup(
-                new InstantCommand(() -> aprilTagDetect(rightAprilTagID)),
-                new InstantCommand(() -> driveToAprilTag())
-        ));
+        gamepadEx1.getGamepadButton(DPAD_LEFT).whileHeld(new InstantCommand(() -> driveToAprilTag(redLeftAprilID)));
+        gamepadEx1.getGamepadButton(DPAD_UP).whileHeld(new InstantCommand(() -> driveToAprilTag(redCenterAprilID)));
+        gamepadEx1.getGamepadButton(DPAD_UP).whileHeld(new InstantCommand(() -> driveToAprilTag(redRightAprilID)));
 
         mecanumDrive.setDefaultCommand(mecanumDrive.fieldCentric(gamepadEx1::getLeftX, gamepadEx1::getLeftY, gamepadEx1::getRightX, gyroManager::getHeading, telemetry));
         telemetry.log().clear();

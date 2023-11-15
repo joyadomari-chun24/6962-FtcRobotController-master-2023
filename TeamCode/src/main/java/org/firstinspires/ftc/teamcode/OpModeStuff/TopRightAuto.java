@@ -5,6 +5,7 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.arcrobotics.ftclib.command.InstantCommand;
+import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
@@ -135,6 +136,7 @@ public class TopRightAuto extends OpModeBase
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPostPurple)),
                     arm.deployFront(), //I'm assuming these positions are temporary
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftYellowScore)),
+                    new RunCommand(() -> driveUntilAprilTag(redLeftAprilID, 10)),
                     clawL.openClaw(), clawR.openClaw(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
@@ -151,6 +153,7 @@ public class TopRightAuto extends OpModeBase
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middlePostPurple)),
                     arm.deployFront(), //I'm assuming these positions are temporary
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middleYellowScore)),
+                    new RunCommand(() -> driveUntilAprilTag(redCenterAprilID, 10)),
                     clawL.openClaw(), clawR.openClaw(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
@@ -167,6 +170,7 @@ public class TopRightAuto extends OpModeBase
                     arm.deployFront(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightPostPurple)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightYellowScore)),
+                    new RunCommand(() -> driveUntilAprilTag(redRightAprilID, 10)),
                     clawL.openClaw(), clawR.openClaw(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
