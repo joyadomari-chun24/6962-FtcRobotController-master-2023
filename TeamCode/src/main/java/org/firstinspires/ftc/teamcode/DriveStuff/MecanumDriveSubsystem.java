@@ -51,4 +51,10 @@ public class MecanumDriveSubsystem extends SubsystemBase
     {
         return new RunCommand(() -> drive.driveFieldCentric(strafeSpeed.getAsDouble()/slowModeFactor, forwardSpeed.getAsDouble()/slowModeFactor, turnSpeed.getAsDouble()/slowModeFactor, navxAngle.getAsDouble()), this);
     }
+
+    //robot centric drive for the april tags
+    public Command roboCentric(double strafeSpeed, double forwardSpeed, double turnSpeed)
+    {
+        return new RunCommand(() -> drive.driveRobotCentric(strafeSpeed, forwardSpeed, turnSpeed), this);
+    }
 }

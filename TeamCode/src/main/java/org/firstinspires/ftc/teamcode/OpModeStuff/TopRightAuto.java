@@ -13,9 +13,10 @@ import org.firstinspires.ftc.teamcode.VisionStuff.PropDetectionProcessor;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 @Config
-@Autonomous
+@Autonomous(preselectTeleOp = "RedTeleOp", group = "Active Autos")
 public class TopRightAuto extends OpModeBase
 {
+    //I'm also using this one for experimental testing right now
     String propLocation;
     PropDetectionProcessor processor = new PropDetectionProcessor(false);
 
@@ -128,13 +129,13 @@ public class TopRightAuto extends OpModeBase
         if(propLocation.equals("LEFT"))
         {
             schedule(new SequentialCommandGroup(
-                    claw.closeClaw(),
+                    clawL.closeClaw(), clawR.closeClaw(),
                     //arm.transport(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPurpleScore)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPostPurple)),
                     arm.deployFront(), //I'm assuming these positions are temporary
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftYellowScore)),
-                    claw.openClaw(),
+                    clawL.openClaw(), clawR.openClaw(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
                     arm.pickupFront() //I'm assuming these positions are temporary
@@ -144,13 +145,13 @@ public class TopRightAuto extends OpModeBase
         {
             //Using the scheduler allows us to run commands in auto
             schedule(new SequentialCommandGroup(
-                    claw.closeClaw(),
+                    clawL.closeClaw(), clawR.closeClaw(),
                     //arm.transport(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middlePurpleScore)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middlePostPurple)),
                     arm.deployFront(), //I'm assuming these positions are temporary
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middleYellowScore)),
-                    claw.openClaw(),
+                    clawL.openClaw(), clawR.openClaw(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
                     arm.pickupFront() //I'm assuming these positions are temporary
@@ -159,18 +160,24 @@ public class TopRightAuto extends OpModeBase
         else
         {
             schedule(new SequentialCommandGroup(
-                    claw.closeClaw(),
+                    clawL.closeClaw(), clawR.closeClaw(),
                     //arm.transport(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightPurpleScore)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightPostPurple)),
                     arm.deployFront(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightPostPurple)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightYellowScore)),
-                    claw.openClaw(),
+                    clawL.openClaw(), clawR.openClaw(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
                     arm.pickupFront()
             ));
+        }
+
+        if (aprilPortal.getCameraState() == VisionPortal.CameraState.STREAMING)
+        {
+            aprilPortal.stopLiveView();
+            aprilPortal.stopStreaming();
         }
     }
 

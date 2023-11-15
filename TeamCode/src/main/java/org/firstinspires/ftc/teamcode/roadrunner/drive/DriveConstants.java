@@ -65,7 +65,7 @@ public class DriveConstants {
      * small and gradually increase them later after everything is working. All distance units are
      * inches.
      */
-    public static double MAX_VEL = 68.8 * 0.8; //80% of 64.3159414414
+    public static double MAX_VEL = 68.8; //80% of 64.3159414414
     public static double MAX_ACCEL = 68.8;
     //keep max vel and accel same until after tuned PID values, then change accel (increase)
     public static double MAX_ANG_VEL = Math.toRadians(371.4500672023366);

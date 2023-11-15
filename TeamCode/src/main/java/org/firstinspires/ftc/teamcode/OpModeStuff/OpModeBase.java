@@ -9,18 +9,27 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.EndgameStuff.HangSubsystem;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainControl;
 import org.firstinspires.ftc.teamcode.ScoringStuff.ArmSubsystem;
 import org.firstinspires.ftc.teamcode.ScoringStuff.ClawSubsystem;
 import org.firstinspires.ftc.teamcode.DriveStuff.NavxManager;
 import org.firstinspires.ftc.teamcode.EndgameStuff.DroneLaunchSubsystem;
-import org.firstinspires.ftc.teamcode.EndgameStuff.HangSubsystem;
 import org.firstinspires.ftc.teamcode.SlideStuff.IntakeSlideSubsystem;
 import org.firstinspires.ftc.teamcode.DriveStuff.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.SlideStuff.ScoringSlideSubsystem;
 import org.firstinspires.ftc.teamcode.VisionStuff.PropDetectionProcessor;
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class OpModeBase extends CommandOpMode
 {
@@ -43,12 +52,22 @@ public class OpModeBase extends CommandOpMode
     protected MecanumDriveSubsystem mecanumDrive;
     protected PropDetectionProcessor propDetectionPipeline;
     protected Servo droneServo, ArmServoL, ArmServoR, hangServo;
-    protected Servo clawServo, wristServo, leftPlatformServo, rightPlatformServo;
-    protected ClawSubsystem claw;
+    protected Servo clawServoL, clawServoR, wristServo, leftPlatformServo, rightPlatformServo;
+    protected ClawSubsystem clawL;
+    protected ClawSubsystem clawR;
     protected ArmSubsystem arm;
     protected DroneLaunchSubsystem launcher;
     protected HangSubsystem hang;
     protected NavxManager gyroManager;
+    protected AprilTagProcessor backdropAprilTag;
+    boolean targetFound;
+    AprilTagDetection detectedTag;
+    VisionPortal aprilPortal;
+    protected double tagTargetDistance = 12.0;
+    protected double aprilDriveGain = 0.02;
+    protected double aprilTurnGain = 0.01;
+    protected double aprilStrafeGain = 0.015;
+    protected double maxAprilPower = 0.5;
 
     ElapsedTime navxCalibrationTimer = new ElapsedTime();
 
@@ -69,7 +88,8 @@ public class OpModeBase extends CommandOpMode
         droneServo = hardwareMap.get(Servo.class, "droneLauncher");
         hangServo = hardwareMap.get(Servo.class, "hangServo");
         wristServo = hardwareMap.get(Servo.class, "platformServo");
-        clawServo = hardwareMap.get(Servo.class, "claw");
+        clawServoL = hardwareMap.get(Servo.class, "leftClaw");
+        clawServoR = hardwareMap.get(Servo.class, "rightClaw");
         leftPlatformServo = hardwareMap.servo.get("leftPlatformServo");
         rightPlatformServo = hardwareMap.servo.get("rightPlatformServo");
         /*scoringSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
@@ -83,15 +103,33 @@ public class OpModeBase extends CommandOpMode
         gamepadEx1 = new GamepadEx(gamepad1);
         gamepadEx2 = new GamepadEx(gamepad2);
 
-        //Declare vision pipelines here
-        //propDetectionPipeline = new PropDetectionPipeline();
+        //April tag startup
+        backdropAprilTag = new AprilTagProcessor.Builder().build();
+        backdropAprilTag.setDecimation(2); // Higher decimation = increased performance but less distance
+        aprilPortal = new VisionPortal.Builder()
+                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 2"))
+                .addProcessor(backdropAprilTag)
+                .build();
+
+        //Set camera exposure to minimize motion blur (6 ms exposure, 250 gain)
+        ExposureControl exposureControl = aprilPortal.getCameraControl(ExposureControl.class);
+        if (exposureControl.getMode() != ExposureControl.Mode.Manual)
+        {
+            exposureControl.setMode(ExposureControl.Mode.Manual);
+            sleep(50);
+        }
+        exposureControl.setExposure(6, TimeUnit.MILLISECONDS);
+        sleep(20);
+        GainControl gainControl = aprilPortal.getCameraControl(GainControl.class);
+        gainControl.setGain(250);
 
         //Initialize subsystems
         mecanumDrive = new MecanumDriveSubsystem(leftFront, leftRearLeftEncoder, rightFront, rightRearFrontEncoder, navxMicro);
         //intakeSlides = new IntakeSlideSubsystem(intakeSlideMotor);
         scoringSlides = new ScoringSlideSubsystem(scoringSlideMotorL, scoringSlideMotorR, telemetry);
         roadrunnerMecanumDrive = new SampleMecanumDrive(hardwareMap);
-        claw = new ClawSubsystem(clawServo);
+        clawL = new ClawSubsystem(clawServoL, true);
+        clawR = new ClawSubsystem(clawServoR, false);
         arm = new ArmSubsystem(leftPlatformServo, rightPlatformServo, wristServo);
         launcher = new DroneLaunchSubsystem(droneServo);
         hang = new HangSubsystem(hangServo);
@@ -110,6 +148,60 @@ public class OpModeBase extends CommandOpMode
         telemetry.update();
     }
 
-    //(Put methods and stuff here)
+    //Put methods here
+
+    //Supplies a specific apriltag detection from webcam. This code is from the AprilTag example
+    public void aprilTagDetect(int targetTag)
+    {
+        targetFound = false;
+        detectedTag = null;
+
+        List<AprilTagDetection> currentDetections = backdropAprilTag.getDetections();
+
+        for (AprilTagDetection detection : currentDetections)
+        {
+            // Look to see if we have size info on this tag.
+            if (detection.metadata != null)
+            {
+                //  Check to see if we want to track towards this tag.
+                if ((targetTag < 0) || (detection.id == targetTag))
+                {
+                    // Yes, we want to use this tag.
+                    targetFound = true;
+                    detectedTag = detection;
+                    break;
+                }
+                else
+                {
+                    // This tag is in the library, but we do not want to track it right now.
+                    telemetry.addData("Skipping", "Tag ID %d is not desired", detection.id);
+                }
+            }
+            else
+            {
+                // This tag is NOT in the library, so we don't have enough information to track to it.
+                telemetry.addData("Unknown tag: ", detection.id);
+            }
+        }
+    }
+
+    //Drives robot to the apriltag for the loop
+    public void driveToAprilTag()
+    {
+        if(targetFound)
+        {
+            //Properties of tag
+            double  rangeError      = (detectedTag.ftcPose.range - tagTargetDistance);
+            double  headingError    = detectedTag.ftcPose.bearing;
+            double  yawError        = detectedTag.ftcPose.yaw;
+
+            //Properties of robot to drive
+            double aprilDrive = Range.clip(rangeError * aprilDriveGain, -maxAprilPower, maxAprilPower);
+            double aprilTurn = Range.clip(headingError * aprilTurnGain, -maxAprilPower, maxAprilPower);
+            double aprilStrafe = Range.clip(-yawError * aprilStrafeGain, -maxAprilPower, maxAprilPower);
+
+            mecanumDrive.roboCentric(aprilDrive, aprilTurn, aprilStrafe);
+        }
+    }
 
 }

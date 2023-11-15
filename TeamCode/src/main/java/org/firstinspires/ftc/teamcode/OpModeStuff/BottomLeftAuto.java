@@ -13,14 +13,14 @@ import org.firstinspires.ftc.teamcode.VisionStuff.PropDetectionProcessor;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 @Config
-@Autonomous
+@Autonomous(group = "Active Autos")
 public class BottomLeftAuto extends OpModeBase
 {
     String propLocation;
     PropDetectionProcessor processor = new PropDetectionProcessor(true);
 
     //Middle coordinates
-    public static int centerPurpleForward = 27;
+    public static int centerPurpleForward = 29;
     public static int centerYellowX = 53;
     public static int centerYellowY = 39;
 
@@ -90,6 +90,14 @@ public class BottomLeftAuto extends OpModeBase
                 .lineToLinearHeading(new Pose2d(rightYellowX, rightYellowY, Math.toRadians(0)))
                 .build();
 
+        Trajectory middlePostPurple = roadrunnerMecanumDrive.trajectoryBuilder(rightPurpleScore.end())
+                .back(rightBackup)
+                .build();
+
+        Trajectory leftPostPurple = roadrunnerMecanumDrive.trajectoryBuilder(rightPurpleScore.end())
+                .back(rightBackup)
+                .build();
+
         //Parking
         Trajectory parkBackup = roadrunnerMecanumDrive.trajectoryBuilder(leftYellowScore.end())
                 .back(22)
@@ -126,46 +134,58 @@ public class BottomLeftAuto extends OpModeBase
         if(propLocation.equals("LEFT"))
         {
             schedule(new SequentialCommandGroup(
-                    claw.closeClaw(),
+                    clawL.closeClaw(), clawR.closeClaw(),
+                    arm.transport(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPurpleScore)),
-                    arm.deployBack(), //I'm assuming these positions are temporary
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(goToMiddle)),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftYellowScore)),
-                    claw.openClaw(),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
-                    arm.deployFront() //I'm assuming these positions are temporary
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPostPurple)),
+                    arm.deployFront(),
+//                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(goToMiddle)),
+//                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftYellowScore)),
+//                    claw.openClaw(),
+//                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
+//                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
+                    arm.pickupFront()
             ));
         }
         else if (propLocation.equals("CENTER"))
         {
             //Using the scheduler allows us to run commands in auto
             schedule(new SequentialCommandGroup(
-                    claw.closeClaw(),
+                    clawL.closeClaw(), clawR.closeClaw(),
+                    arm.transport(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middlePurpleScore)),
-                    arm.deployBack(), //I'm assuming these positions are temporary
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(goToMiddle)),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middleYellowScore)),
-                    claw.openClaw(),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
-                    arm.deployFront() //I'm assuming these positions are temporary
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middlePostPurple)),
+                    arm.deployFront(),
+//                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(goToMiddle)),
+//                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middleYellowScore)),
+//                    claw.openClaw(),
+//                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
+//                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
+                    arm.pickupFront()
             ));
         }
         else
         {
             schedule(new SequentialCommandGroup(
-                    claw.closeClaw(),
+                    clawL.closeClaw(), clawR.closeClaw(),
+                    arm.transport(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightPurpleScore)),
-                    arm.deployBack(), //I'm assuming these positions are temporary
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightPostPurple)),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(goToMiddle)),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightYellowScore)),
-                    claw.openClaw(),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
-                    arm.deployFront() //I'm assuming deployFront is temporary
+                    arm.deployFront(),
+//                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightPostPurple)),
+//                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(goToMiddle)),
+//                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightYellowScore)),
+//                    claw.openClaw(),
+//                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
+//                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
+                    arm.pickupFront()
             ));
+        }
+
+        if (aprilPortal.getCameraState() == VisionPortal.CameraState.STREAMING)
+        {
+            aprilPortal.stopLiveView();
+            aprilPortal.stopStreaming();
         }
     }
 

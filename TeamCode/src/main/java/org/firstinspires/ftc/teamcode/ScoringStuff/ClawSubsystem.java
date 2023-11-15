@@ -10,9 +10,12 @@ public class ClawSubsystem extends SubsystemBase
     private Servo claw;
     private double closedPosition = 0.1;
     private double openPosition = 0.4;
-    public ClawSubsystem(Servo theClaw)
+    private boolean clawToggle = false;
+    public ClawSubsystem(Servo theClaw, boolean isLeftClaw)
     {
         claw = theClaw;
+        closedPosition = isLeftClaw ? closedPosition: 1-closedPosition;
+        openPosition = isLeftClaw ? openPosition: 1-openPosition;
     }
 
     public Command closeClaw()
