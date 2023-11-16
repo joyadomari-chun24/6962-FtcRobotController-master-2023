@@ -104,8 +104,8 @@ public class RedSideTeleOp extends OpModeBase
         gamepadEx2.getGamepadButton(X).whileHeld(arm.transport());
 
         //Adjustable arm
-        gamepadEx2.getGamepadButton(DPAD_UP).whileHeld(arm.incrementalArm(1));
-        gamepadEx2.getGamepadButton(DPAD_DOWN).whileHeld(arm.incrementalArm(-1));
+        gamepadEx2.getGamepadButton(DPAD_UP).whileHeld(arm.incrementalArm(-1));
+        gamepadEx2.getGamepadButton(DPAD_DOWN).whileHeld(arm.incrementalArm(1));
 
         //Adjustable wrist
         gamepadEx2.getGamepadButton(DPAD_LEFT).whileHeld(arm.incrementalWrist(1));
