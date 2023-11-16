@@ -141,10 +141,10 @@ public class BottomRightAuto extends OpModeBase
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPurpleScore)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPostPurple)),
                     arm.deployFront(),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(goToMiddle)),
+//                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(goToMiddle)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(trussPath)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftYellowScore)),
                     clawL.openClaw(), clawR.openClaw(),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(trussPath)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
                     arm.pickupFront()
@@ -159,10 +159,10 @@ public class BottomRightAuto extends OpModeBase
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middlePurpleScore)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middlePostPurple)),
                     arm.deployFront(), //I'm assuming these positions are temporary
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(goToMiddle)),
+//                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(goToMiddle)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(trussPath)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middleYellowScore)),
                     clawL.openClaw(), clawR.openClaw(),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(trussPath)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
                     arm.pickupFront() //I'm assuming these positions are temporary
@@ -177,10 +177,10 @@ public class BottomRightAuto extends OpModeBase
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightPostPurple)),
                     arm.deployFront(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightPostPurple)),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(goToMiddle)),
+//                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(goToMiddle)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(trussPath)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightYellowScore)),
                     clawL.openClaw(), clawR.openClaw(),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(trussPath)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
                     arm.pickupFront()
