@@ -21,4 +21,9 @@ public class DroneLaunchSubsystem extends SubsystemBase
     {
         return new InstantCommand(() -> {trigger.setPosition(openPosition);});
     }
+
+    public Command setDrone()
+    {
+        return new InstantCommand(() -> {trigger.setPosition(primedPosition);});
+    }
 }

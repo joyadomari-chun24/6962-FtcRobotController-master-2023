@@ -131,7 +131,7 @@ public class OpModeBase extends CommandOpMode
         distanceSensor = hardwareMap.get(DistanceSensor.class, "distSensor");
         droneServo = hardwareMap.get(Servo.class, "droneLauncher");
         hangServoL = hardwareMap.get(Servo.class, "leftHangServo");
-        hangServoR = hardwareMap.get(Servo.class, "leftHangServoc");
+        hangServoR = hardwareMap.get(Servo.class, "rightHangServo");
         wristServo = hardwareMap.get(Servo.class, "platformServo");
         clawServoL = hardwareMap.get(Servo.class, "leftClaw");
         clawServoR = hardwareMap.get(Servo.class, "rightClaw");

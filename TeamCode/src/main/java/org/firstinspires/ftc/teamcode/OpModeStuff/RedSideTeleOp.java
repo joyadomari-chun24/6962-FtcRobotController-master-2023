@@ -87,7 +87,7 @@ public class RedSideTeleOp extends OpModeBase
         gamepadEx1.getGamepadButton(LEFT_BUMPER).whileHeld(mecanumDrive.slowFieldCentric(gamepadEx1::getLeftX, gamepadEx1::getLeftY, gamepadEx1::getRightX, gyroManager::getHeading, telemetry));
 
         //Drone launcher
-        gamepadEx1.getGamepadButton(X).and(gamepadEx1.getGamepadButton(Y)).whileActiveOnce(launcher.fireDrone());
+        gamepadEx1.getGamepadButton(X).and(gamepadEx1.getGamepadButton(Y)).toggleWhenActive(launcher.setDrone(), launcher.fireDrone());
 
         //Hang
         gamepadEx1.getGamepadButton(B).and(gamepadEx1.getGamepadButton(A)).whileActiveOnce(hang.hangRobot());
