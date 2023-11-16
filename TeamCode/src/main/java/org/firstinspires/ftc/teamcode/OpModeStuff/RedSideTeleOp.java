@@ -14,6 +14,7 @@ import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.DPAD_UP;
 import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.LEFT_BUMPER;
 import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.LEFT_STICK_BUTTON;
 import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.RIGHT_BUMPER;
+import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.RIGHT_STICK_BUTTON;
 import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.X;
 import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.Y;
 
@@ -78,14 +79,17 @@ public class RedSideTeleOp extends OpModeBase
         *
         * X and Y - Drone launch
         *
+        * A and B - Hang
+        *
         * */
 
         //Slow mode
         gamepadEx1.getGamepadButton(LEFT_BUMPER).whileHeld(mecanumDrive.slowFieldCentric(gamepadEx1::getLeftX, gamepadEx1::getLeftY, gamepadEx1::getRightX, gyroManager::getHeading, telemetry));
 
-        //Drone launcher gamepad 1  x+y
+        //Drone launcher
         gamepadEx1.getGamepadButton(X).and(gamepadEx1.getGamepadButton(Y)).whileActiveOnce(launcher.fireDrone());
-        //hang gamepad 1  a+b
+
+        //Hang
         gamepadEx1.getGamepadButton(B).and(gamepadEx1.getGamepadButton(A)).whileActiveOnce(hang.hangRobot());
 
         //Claw
@@ -93,8 +97,7 @@ public class RedSideTeleOp extends OpModeBase
         gamepadEx2.getGamepadButton(LEFT_BUMPER).toggleWhenPressed(clawL.openClaw(), clawL.closeClaw());
         //tyler controller set to close, isaiah controller set to open, request from drivers. Tyler said its more effecient because he can intake better, while isaiah can focus on scoring
 
-        //Arm/wrist positions
-        //whenActive and whileHeld seem like they should both work, so they're split rn to test
+        //Arm/wrist positions (whenActive and whileHeld both work, so they're split among the buttons here for fun)
         gamepadEx2.getGamepadButton(A).whenActive(arm.pickupFront());
         gamepadEx2.getGamepadButton(B).whileHeld(arm.deployBack());
         gamepadEx2.getGamepadButton(Y).whenActive(arm.deployFront());
@@ -107,8 +110,6 @@ public class RedSideTeleOp extends OpModeBase
         //Adjustable wrist
         gamepadEx2.getGamepadButton(DPAD_LEFT).whileHeld(arm.incrementalWrist(1));
         gamepadEx2.getGamepadButton(DPAD_RIGHT).whileHeld(arm.incrementalWrist(-1));
-        //incremental bound to joystick returns error that we're not sure how to fix yet
-        //arm.setDefaultCommand(arm.incrementalWrist(gamepadEx2::getRightY));
 
         //Gyro reset
         gamepadEx1.getGamepadButton(B).whenActive(gyroManager::reset);
@@ -138,9 +139,6 @@ public class RedSideTeleOp extends OpModeBase
         Pose2d poseEstimate = roadrunnerMecanumDrive.getPoseEstimate();
 
         //Telemetry
-//        telemetry.addData("LeftStickX (pad1)", gamepadEx1.getLeftX());
-//        telemetry.addData("LeftStickY (pad1)", gamepadEx1.getLeftY());
-//        telemetry.addData("RightStickX (pad1)", gamepadEx1.getRightX());
         telemetry.addData("L Slide Position (method)", scoringSlides.getPosition(ScoringSlideSubsystem.motorSide.LEFT));
         telemetry.addData("R Slide Position (method)", scoringSlides.getPosition(ScoringSlideSubsystem.motorSide.RIGHT));
         telemetry.addData("L Slide Position (straight)", scoringSlideMotorL.getCurrentPosition());

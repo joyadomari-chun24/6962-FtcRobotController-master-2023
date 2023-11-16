@@ -11,7 +11,7 @@ public class DroneLaunchSubsystem extends SubsystemBase
 {
     private Servo trigger;
     public static double primedPosition = 0;
-    public static double openPosition = 1;
+    public static double openPosition = 0.25;
     public DroneLaunchSubsystem(Servo droneLauncher)
     {
         trigger = droneLauncher;

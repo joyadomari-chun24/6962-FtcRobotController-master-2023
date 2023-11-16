@@ -57,8 +57,8 @@ public class ScoringSlideSubsystem extends SlideBaseSubsystem
         return new RunCommand(() -> {slidePower = motorPower.getAsDouble();}, this);
     }
 
-    public int getPosition(motorSide allCapsMotorSide)
+    public int getPosition(motorSide motorSide)
     {
-        return allCapsMotorSide == motorSide.LEFT ? motorLeft.getCurrentPosition() : motorRight.getCurrentPosition();
+        return (motorSide == motorSide.LEFT) ? motorLeft.getCurrentPosition() : motorRight.getCurrentPosition();
     }
 }

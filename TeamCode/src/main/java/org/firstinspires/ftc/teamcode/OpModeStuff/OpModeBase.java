@@ -75,12 +75,52 @@ public class OpModeBase extends CommandOpMode
 
     ElapsedTime navxCalibrationTimer = new ElapsedTime();
 
+    /*
+    * Things with positions to be reset if needed:
+    * -Claw
+    * -Hang
+    * -Drone launcher
+    * -Wrist
+    * -Arm
+    * -Slide motors
+    * */
+
     @Override
     public void initialize()
     {
         // The gyro automatically starts calibrating. This takes a few seconds.
         telemetry.log().add("Gyro Calibrating. Do Not Move!");
 
+        /*
+        * Config:
+        *
+        * Motors + deadwheels
+        * Fl/Re - ?
+        * Bl/Le - 0
+        * Br/Fr - 1
+        * Fr - ?
+        *
+        * Slides
+        * Left Scoring - ?
+        * Right Scoring - ?
+        *
+        * Scoring Apparatus
+        * Wrist - Exp 2
+        * Left Arm - Ctl 4
+        * Right Arm - Exp 1
+        * Left Claw - Exp 5
+        * Right Claw - Exp 4
+        *
+        * Sensors
+        * NavX - Ctl I2C 1
+        * Distance Sensor - Ctl I2C 2
+        *
+        * Endgame
+        * Drone Launcher - Ctl 3
+        * Left Hang - Ctl 1
+        * Right Hang - Ctl 2
+        *
+        * */
         leftFront = new MotorEx(hardwareMap, "Fl/Re");
         leftRearLeftEncoder = new MotorEx(hardwareMap, "Bl/Le");
         rightRearFrontEncoder = new MotorEx(hardwareMap, "Br/Fe");
@@ -90,8 +130,8 @@ public class OpModeBase extends CommandOpMode
         navxMicro = hardwareMap.get(NavxMicroNavigationSensor.class, "navx");
         distanceSensor = hardwareMap.get(DistanceSensor.class, "distSensor");
         droneServo = hardwareMap.get(Servo.class, "droneLauncher");
-        hangServoL = hardwareMap.get(Servo.class, "hangServoL");
-        hangServoR = hardwareMap.get(Servo.class, "hangServoR");
+        hangServoL = hardwareMap.get(Servo.class, "leftHangServo");
+        hangServoR = hardwareMap.get(Servo.class, "leftHangServoc");
         wristServo = hardwareMap.get(Servo.class, "platformServo");
         clawServoL = hardwareMap.get(Servo.class, "leftClaw");
         clawServoR = hardwareMap.get(Servo.class, "rightClaw");
@@ -116,16 +156,16 @@ public class OpModeBase extends CommandOpMode
                 .build();
 
         //Set camera exposure to minimize motion blur (6 ms exposure, 250 gain)
-        ExposureControl exposureControl = aprilPortal.getCameraControl(ExposureControl.class);
-        if (exposureControl.getMode() != ExposureControl.Mode.Manual)
-        {
-            exposureControl.setMode(ExposureControl.Mode.Manual);
-            sleep(50);
-        }
-        exposureControl.setExposure(6, TimeUnit.MILLISECONDS);
-        sleep(20);
-        GainControl gainControl = aprilPortal.getCameraControl(GainControl.class);
-        gainControl.setGain(250);
+//        ExposureControl exposureControl = aprilPortal.getCameraControl(ExposureControl.class);
+//        if (exposureControl.getMode() != ExposureControl.Mode.Manual)
+//        {
+//            exposureControl.setMode(ExposureControl.Mode.Manual);
+//            sleep(50);
+//        }
+//        exposureControl.setExposure(6, TimeUnit.MILLISECONDS);
+//        sleep(20);
+//        GainControl gainControl = aprilPortal.getCameraControl(GainControl.class);
+//        gainControl.setGain(250);
 
         //Initialize subsystems
         mecanumDrive = new MecanumDriveSubsystem(leftFront, leftRearLeftEncoder, rightFront, rightRearFrontEncoder, navxMicro);
@@ -146,6 +186,7 @@ public class OpModeBase extends CommandOpMode
             telemetry.addData("calibrating", "%s", Math.round(navxCalibrationTimer.seconds()) % 2 == 0 ? "|.." : "..|");
             telemetry.update();
         }
+
         telemetry.log().clear();
         telemetry.log().add("Base Initialization Complete. Good luck!");
         telemetry.clear();
