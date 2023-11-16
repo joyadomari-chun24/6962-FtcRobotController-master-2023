@@ -191,6 +191,17 @@ public class OpModeBase extends CommandOpMode
         telemetry.log().add("Base Initialization Complete. Good luck!");
         telemetry.clear();
         telemetry.update();
+
+        ExposureControl exposureControl = aprilPortal.getCameraControl(ExposureControl.class);
+        if (exposureControl.getMode() != ExposureControl.Mode.Manual)
+        {
+            exposureControl.setMode(ExposureControl.Mode.Manual);
+            sleep(50);
+        }
+        exposureControl.setExposure(6, TimeUnit.MILLISECONDS);
+        sleep(20);
+        GainControl gainControl = aprilPortal.getCameraControl(GainControl.class);
+        gainControl.setGain(250);
     }
 
     //Put methods here
