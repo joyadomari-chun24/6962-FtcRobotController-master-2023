@@ -10,8 +10,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class HangSubsystem extends SubsystemBase
 {
     private Servo lever, lever2;
-    public static double sustainedPosition = 0;
-    public static double releasedPosition = 1;
+    public static double sustainedPosition = 0.7;
+    public static double releasedPosition = 0;
     public HangSubsystem(Servo hangServoL, Servo hangServoR)
     {
         lever = hangServoL;

@@ -10,8 +10,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class DroneLaunchSubsystem extends SubsystemBase
 {
     private Servo trigger;
-    public static double primedPosition = 0;
-    public static double openPosition = 0.25;
+    public static double primedPosition = 0.7;
+    public static double openPosition = 0.38;
     public DroneLaunchSubsystem(Servo droneLauncher)
     {
         trigger = droneLauncher;
