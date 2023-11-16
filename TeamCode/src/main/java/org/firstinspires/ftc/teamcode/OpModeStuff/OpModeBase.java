@@ -95,16 +95,16 @@ public class OpModeBase extends CommandOpMode
         * Config:
         *
         * Motors + deadwheels
-        * Fl/Re - ?
-        * Bl/Le - 0
-        * Br/Fr - 1
-        * Fr - ?
+        * Fl/Re - Ctl ?
+        * Bl/Le - Ctl 0
+        * Br/Fr - Ctl 1
+        * Fr - Ctl ?
         *
         * Slides
         * Left Scoring - ?
         * Right Scoring - ?
         *
-        * Scoring Apparatus
+        * Scoring
         * Wrist - Exp 2
         * Left Arm - Ctl 4
         * Right Arm - Exp 1
@@ -216,6 +216,7 @@ public class OpModeBase extends CommandOpMode
                     // Yes, we want to use this tag.
                     targetFound = true;
                     detectedTag = detection;
+                    telemetry.addData("Detected!", "Tag ID %d found.", detection.id);
                     break;
                 }
                 else
@@ -233,9 +234,9 @@ public class OpModeBase extends CommandOpMode
     }
 
     //Drives robot to the apriltag for the loop
-    public void driveToAprilTag(int targetTag)
+    public void driveToAprilTag(int tagTarget)
     {
-        aprilTagDetect(targetTag);
+        aprilTagDetect(tagTarget);
         if(targetFound)
         {
             //Properties of tag
@@ -259,6 +260,6 @@ public class OpModeBase extends CommandOpMode
         do
         {
             driveToAprilTag(targetTag);
-        } while(aprilDrive > 0.1 && aprilTurn > 0.1 && aprilStrafe > 0.1 && time - timestamp < timeoutInSeconds);
+        } while(aprilDrive > 0.1 || aprilTurn > 0.1 || aprilStrafe > 0.1 && time - timestamp < timeoutInSeconds);
     }
 }
