@@ -260,7 +260,7 @@ public class OpModeBase extends CommandOpMode
             aprilTurn = Range.clip(headingError * aprilTurnGain, -maxAprilPower, maxAprilPower);
             aprilStrafe = Range.clip(-yawError * aprilStrafeGain, -maxAprilPower, maxAprilPower);
 
-            mecanumDrive.roboCentric(aprilDrive, aprilTurn, aprilStrafe);
+            mecanumDrive.roboCentric(-aprilDrive, aprilTurn, -aprilStrafe);
         }
     }
 
