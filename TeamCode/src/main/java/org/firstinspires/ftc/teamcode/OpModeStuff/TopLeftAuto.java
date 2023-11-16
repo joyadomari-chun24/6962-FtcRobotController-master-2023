@@ -20,8 +20,8 @@ public class TopLeftAuto extends OpModeBase
     PropDetectionProcessor processor = new PropDetectionProcessor(true);
 
     //Middle coordinates
-    public static int centerPurpleForward = 29;
-    public static int centerYellowX = 53;
+    public static int centerPurpleForward = 31;
+    public static int centerYellowX = 56;
     public static int centerYellowY = 39;
 
     //Left coordinates
@@ -31,8 +31,8 @@ public class TopLeftAuto extends OpModeBase
     public static int leftYellowY = 45;
 
     //Right coordinates
-    public static int rightPurpleX = 0;
-    public static int rightPurpleY = 40;
+    public static int rightPurpleX = 10;
+    public static int rightPurpleY = 33;
     public static int rightYellowX = 53;
     public static int rightYellowY = 35;
     public static int rightBackup = 5;

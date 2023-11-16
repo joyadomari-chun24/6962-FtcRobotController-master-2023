@@ -20,19 +20,19 @@ public class BottomLeftAuto extends OpModeBase
     PropDetectionProcessor processor = new PropDetectionProcessor(true);
 
     //Middle coordinates
-    public static int centerPurpleForward = 29;
+    public static int centerPurpleForward = 31;
     public static int centerYellowX = 53;
     public static int centerYellowY = 39;
 
     //Left coordinates
     public static int leftPurpleX = -24;
-    public static int leftPurpleY = 43;
+    public static int leftPurpleY = 40;
     public static int leftYellowX = 53;
     public static int leftYellowY = 45;
 
     //Right coordinates
     public static int rightPurpleX = -43;
-    public static int rightPurpleY = 43;
+    public static int rightPurpleY = 33;
     public static int rightYellowX = 53;
     public static int rightYellowY = 35;
     public static int rightBackup = 5;
@@ -98,14 +98,19 @@ public class BottomLeftAuto extends OpModeBase
                 .back(rightBackup)
                 .build();
 
+        Trajectory trussPath = roadrunnerMecanumDrive.trajectoryBuilder(rightPurpleScore.end())
+                .lineToLinearHeading(new Pose2d(0, 0))
+                .build();
         //Parking
-        Trajectory parkBackup = roadrunnerMecanumDrive.trajectoryBuilder(leftYellowScore.end())
+        Trajectory parkBackup = roadrunnerMecanumDrive.trajectoryBuilder(trussPath.end())
                 .back(22)
                 .build();
 
-        Trajectory parkScore = roadrunnerMecanumDrive.trajectoryBuilder(leftYellowScore.end())
+        Trajectory parkScore = roadrunnerMecanumDrive.trajectoryBuilder(trussPath.end())
                 .lineToLinearHeading(new Pose2d(parkX, parkY, Math.toRadians(0)))
                 .build();
+
+
 
 //        Trajectory parkStill = drive.trajectoryBuilder(leftYellowScore.end())
 //                .build();
@@ -139,11 +144,12 @@ public class BottomLeftAuto extends OpModeBase
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPurpleScore)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPostPurple)),
                     arm.deployFront(),
-//                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(goToMiddle)),
-//                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftYellowScore)),
-//                    claw.openClaw(),
-//                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
-//                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(goToMiddle)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftYellowScore)),
+                    clawL.openClaw(), clawR.openClaw(),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(trussPath)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
                     arm.pickupFront()
             ));
         }
@@ -156,11 +162,12 @@ public class BottomLeftAuto extends OpModeBase
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middlePurpleScore)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middlePostPurple)),
                     arm.deployFront(),
-//                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(goToMiddle)),
-//                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middleYellowScore)),
-//                    claw.openClaw(),
-//                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
-//                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(goToMiddle)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middleYellowScore)),
+                    clawL.openClaw(), clawR.openClaw(),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(trussPath)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
                     arm.pickupFront()
             ));
         }
@@ -172,12 +179,13 @@ public class BottomLeftAuto extends OpModeBase
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightPurpleScore)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightPostPurple)),
                     arm.deployFront(),
-//                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightPostPurple)),
-//                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(goToMiddle)),
-//                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightYellowScore)),
-//                    claw.openClaw(),
-//                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
-//                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightPostPurple)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(goToMiddle)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightYellowScore)),
+                    clawL.openClaw(), clawR.openClaw(),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(trussPath)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
                     arm.pickupFront()
             ));
         }
