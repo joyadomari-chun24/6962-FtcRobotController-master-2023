@@ -26,10 +26,6 @@ import org.firstinspires.ftc.vision.VisionPortal;
 public class RedSideTeleOp extends OpModeBase
 {
 
-    private double gyroAngle;
-    private double armIncrement = 0.020;
-    private double wristIncrement = 0.01;
-
     @Override
     public void initialize()
     {
@@ -121,7 +117,7 @@ public class RedSideTeleOp extends OpModeBase
         //Drive to apriltag
         gamepadEx1.getGamepadButton(DPAD_LEFT).whileHeld(new InstantCommand(() -> driveToAprilTag(redLeftAprilID)));
         gamepadEx1.getGamepadButton(DPAD_UP).whileHeld(new InstantCommand(() -> driveToAprilTag(redCenterAprilID)));
-        gamepadEx1.getGamepadButton(DPAD_UP).whileHeld(new InstantCommand(() -> driveToAprilTag(redRightAprilID)));
+        gamepadEx1.getGamepadButton(DPAD_RIGHT).whileHeld(new InstantCommand(() -> driveToAprilTag(redRightAprilID)));
 
         mecanumDrive.setDefaultCommand(mecanumDrive.fieldCentric(gamepadEx1::getLeftX, gamepadEx1::getLeftY, gamepadEx1::getRightX, gyroManager::getHeading, telemetry));
         telemetry.log().clear();

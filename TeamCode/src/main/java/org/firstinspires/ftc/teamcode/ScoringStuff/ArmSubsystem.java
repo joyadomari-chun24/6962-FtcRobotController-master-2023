@@ -25,7 +25,7 @@ public class ArmSubsystem extends SubsystemBase
     public static double w_deployBack = 0.88;
 
     // incremental arm and wrist values
-    private double armIncrement = 0.025;
+    private double armIncrement = 0.020;
     private double wristIncrement = 0.01;
 
     private Servo ArmL, ArmR, servoForWrist;
