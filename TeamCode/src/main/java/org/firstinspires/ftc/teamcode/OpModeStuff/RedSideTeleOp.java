@@ -30,12 +30,12 @@ public class RedSideTeleOp extends OpModeBase
     public void initialize()
     {
         super.initialize();
-//
-//        if (aprilPortal.getCameraState() == VisionPortal.CameraState.STREAMING)
-//        {
-//            aprilPortal.stopLiveView();
-//            aprilPortal.stopStreaming();
-//        }
+
+        if (aprilPortal.getCameraState() == VisionPortal.CameraState.STREAMING)
+        {
+            aprilPortal.stopLiveView();
+            aprilPortal.stopStreaming();
+        }
 
         /*
         * Gamepad 2:
