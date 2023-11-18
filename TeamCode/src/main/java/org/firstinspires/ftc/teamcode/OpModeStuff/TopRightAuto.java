@@ -134,13 +134,13 @@ public class TopRightAuto extends OpModeBase
                     //arm.transport(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPurpleScore)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPostPurple)),
-                    arm.deployFront(), //I'm assuming these positions are temporary
+                    arm.deployFront(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftYellowScore)),
                     new RunCommand(() -> driveUntilAprilTag(redLeftAprilID, 10)),
                     clawL.openClaw(), clawR.openClaw(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
-                    arm.pickupFront() //I'm assuming these positions are temporary
+                    arm.pickupFront()
             ));
         }
         else if (propLocation.equals("CENTER"))
@@ -151,13 +151,13 @@ public class TopRightAuto extends OpModeBase
                     //arm.transport(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middlePurpleScore)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middlePostPurple)),
-                    arm.deployFront(), //I'm assuming these positions are temporary
+                    arm.deployFront(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middleYellowScore)),
                     new RunCommand(() -> driveUntilAprilTag(redCenterAprilID, 10)),
                     clawL.openClaw(), clawR.openClaw(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
-                    arm.pickupFront() //I'm assuming these positions are temporary
+                    arm.pickupFront()
             ));
         }
         else

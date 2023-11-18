@@ -192,16 +192,16 @@ public class OpModeBase extends CommandOpMode
         telemetry.clear();
         telemetry.update();
 
-        ExposureControl exposureControl = aprilPortal.getCameraControl(ExposureControl.class);
-        if (exposureControl.getMode() != ExposureControl.Mode.Manual)
-        {
-            exposureControl.setMode(ExposureControl.Mode.Manual);
-            sleep(50);
-        }
-        exposureControl.setExposure(6, TimeUnit.MILLISECONDS);
-        sleep(20);
-        GainControl gainControl = aprilPortal.getCameraControl(GainControl.class);
-        gainControl.setGain(250);
+//        ExposureControl exposureControl = aprilPortal.getCameraControl(ExposureControl.class);
+//        if (exposureControl.getMode() != ExposureControl.Mode.Manual)
+//        {
+//            exposureControl.setMode(ExposureControl.Mode.Manual);
+//            sleep(50);
+//        }
+//        exposureControl.setExposure(6, TimeUnit.MILLISECONDS);
+//        sleep(20);
+//        GainControl gainControl = aprilPortal.getCameraControl(GainControl.class);
+//        gainControl.setGain(250);
     }
 
     //Put methods here
@@ -260,7 +260,7 @@ public class OpModeBase extends CommandOpMode
             aprilTurn = Range.clip(headingError * aprilTurnGain, -maxAprilPower, maxAprilPower);
             aprilStrafe = Range.clip(-yawError * aprilStrafeGain, -maxAprilPower, maxAprilPower);
 
-            mecanumDrive.roboCentric(aprilDrive, aprilTurn, aprilStrafe);
+            mecanumDrive.roboCentric(-aprilDrive, aprilTurn, -aprilStrafe);
         }
     }
 
