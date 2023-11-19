@@ -26,13 +26,13 @@ public class AutoTopRight extends OpModeBase
     public static int centerYellowY = -39;
 
     //Left coordinates
-    public static int leftPurpleX = 0;
+    public static int leftPurpleX = -3;
     public static int leftPurpleY = -40;
     public static int leftYellowX = 53;
     public static int leftYellowY = -35;
 
     //Right coordinates
-    public static int rightPurpleX = 19;
+    public static int rightPurpleX = 16;
     public static int rightPurpleY = -33;
     public static int rightYellowX = 53;
     public static int rightYellowY = -45;
@@ -177,11 +177,11 @@ public class AutoTopRight extends OpModeBase
             ));
         }
 
-        if (aprilPortal.getCameraState() == VisionPortal.CameraState.STREAMING)
-        {
-            aprilPortal.stopLiveView();
-            aprilPortal.stopStreaming();
-        }
+//        if (aprilPortal.getCameraState() == VisionPortal.CameraState.STREAMING)
+//        {
+//            aprilPortal.stopLiveView();
+//            aprilPortal.stopStreaming();
+//        }
     }
 
     @Override

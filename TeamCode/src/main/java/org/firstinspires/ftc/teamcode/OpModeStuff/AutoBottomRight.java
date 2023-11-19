@@ -48,7 +48,7 @@ public class AutoBottomRight extends OpModeBase
 
         VisionPortal visionPortal = new VisionPortal.Builder()
                 .addProcessor(processor)
-                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 2"))
+                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
                 .build();
 
         Pose2d startPose = new Pose2d(-36, -66, Math.toRadians(90));
@@ -183,11 +183,11 @@ public class AutoBottomRight extends OpModeBase
             ));
         }
 
-        if (aprilPortal.getCameraState() == VisionPortal.CameraState.STREAMING)
-        {
-            aprilPortal.stopLiveView();
-            aprilPortal.stopStreaming();
-        }
+//        if (aprilPortal.getCameraState() == VisionPortal.CameraState.STREAMING)
+//        {
+//            aprilPortal.stopLiveView();
+//            aprilPortal.stopStreaming();
+//        }
     }
 
     @Override

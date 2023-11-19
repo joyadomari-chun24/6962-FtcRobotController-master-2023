@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.OpModeStuff;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import org.firstinspires.ftc.vision.VisionPortal;
 
 import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.A;
 import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.B;
@@ -28,11 +29,11 @@ public class TeleOpRedSide extends OpModeBase
     {
         super.initialize();
 
-        if (aprilPortal.getCameraState() == VisionPortal.CameraState.STREAMING)
-        {
-            aprilPortal.stopLiveView();
-            aprilPortal.stopStreaming();
-        }
+//        if (aprilPortal.getCameraState() == VisionPortal.CameraState.STREAMING)
+//        {
+//            aprilPortal.stopLiveView();
+//            aprilPortal.stopStreaming();
+//        }
 
         /*
         * Gamepad 2:

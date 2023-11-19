@@ -17,7 +17,7 @@ import org.firstinspires.ftc.vision.VisionPortal;
 public class AutoTopLeft extends OpModeBase
 {
     String propLocation;
-    PropDetectionProcessor processor = new PropDetectionProcessor(false);
+    PropDetectionProcessor processor = new PropDetectionProcessor(true);
 
     //Middle coordinates
     public static int centerPurpleForward = 31;
@@ -176,11 +176,11 @@ public class AutoTopLeft extends OpModeBase
             ));
         }
 
-        if (aprilPortal.getCameraState() == VisionPortal.CameraState.STREAMING)
-        {
-            aprilPortal.stopLiveView();
-            aprilPortal.stopStreaming();
-        }
+//        if (aprilPortal.getCameraState() == VisionPortal.CameraState.STREAMING)
+//        {
+//            aprilPortal.stopLiveView();
+//            aprilPortal.stopStreaming();
+//        }
     }
 
     @Override
