@@ -20,9 +20,12 @@ public class AutoBottomRight extends OpModeBase
     PropDetectionProcessor processor = new PropDetectionProcessor(false);
 
     //Middle coordinates
-    public static int centerPurpleForward = 31;
+    public static int centerPurpleForward = 30;
     public static int centerYellowX = 53;
     public static int centerYellowY = -39;
+
+    //New center!
+    public static int otherPurpleforward = 22;
 
     //Left coordinates
     public static int leftPurpleX = -43;
@@ -51,7 +54,7 @@ public class AutoBottomRight extends OpModeBase
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
                 .build();
 
-        Pose2d startPose = new Pose2d(-36, -66, Math.toRadians(90));
+        Pose2d startPose = new Pose2d(-31.25, -64.5, Math.toRadians(90));
 
         roadrunnerMecanumDrive.setPoseEstimate(startPose);
 
@@ -80,7 +83,8 @@ public class AutoBottomRight extends OpModeBase
                 .back(rightBackup)
                 .build();
 
-        //Move in
+        //New center!
+
 
         //Scoring yellow pixel
         Trajectory leftYellowScore = roadrunnerMecanumDrive.trajectoryBuilder(leftPurpleScore.end())
