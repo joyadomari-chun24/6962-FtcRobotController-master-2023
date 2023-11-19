@@ -17,7 +17,7 @@ import org.firstinspires.ftc.vision.VisionPortal;
 public class TopLeftAuto extends OpModeBase
 {
     String propLocation;
-    PropDetectionProcessor processor = new PropDetectionProcessor(true);
+    PropDetectionProcessor processor = new PropDetectionProcessor(false);
 
     //Middle coordinates
     public static int centerPurpleForward = 31;
