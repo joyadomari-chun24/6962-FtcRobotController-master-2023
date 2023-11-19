@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.OpModeStuff;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.arcrobotics.ftclib.command.InstantCommand;
-import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.A;
@@ -14,16 +13,14 @@ import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.DPAD_UP;
 import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.LEFT_BUMPER;
 import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.LEFT_STICK_BUTTON;
 import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.RIGHT_BUMPER;
-import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.RIGHT_STICK_BUTTON;
 import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.X;
 import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.Y;
 
 import org.firstinspires.ftc.teamcode.SlideStuff.ScoringSlideSubsystem;
-import org.firstinspires.ftc.vision.VisionPortal;
 
 
 @TeleOp(name="RedTeleOp", group="Active TeleOps")
-public class RedSideTeleOp extends OpModeBase
+public class TeleOpRedSide extends OpModeBase
 {
 
     @Override

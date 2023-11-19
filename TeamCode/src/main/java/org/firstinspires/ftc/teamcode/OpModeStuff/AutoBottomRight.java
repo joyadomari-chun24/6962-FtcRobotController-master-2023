@@ -5,7 +5,6 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.arcrobotics.ftclib.command.InstantCommand;
-import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
@@ -15,9 +14,8 @@ import org.firstinspires.ftc.vision.VisionPortal;
 
 @Config
 @Autonomous(preselectTeleOp = "RedTeleOp", group = "Active Autos")
-public class TopRightAuto extends OpModeBase
+public class AutoBottomRight extends OpModeBase
 {
-    //I'm also using this one for experimental testing right now
     String propLocation;
     PropDetectionProcessor processor = new PropDetectionProcessor(false);
 
@@ -27,13 +25,13 @@ public class TopRightAuto extends OpModeBase
     public static int centerYellowY = -39;
 
     //Left coordinates
-    public static int leftPurpleX = 0;
+    public static int leftPurpleX = -43;
     public static int leftPurpleY = -40;
     public static int leftYellowX = 53;
     public static int leftYellowY = -35;
 
     //Right coordinates
-    public static int rightPurpleX = 19;
+    public static int rightPurpleX = -24;
     public static int rightPurpleY = -33;
     public static int rightYellowX = 53;
     public static int rightYellowY = -45;
@@ -50,10 +48,10 @@ public class TopRightAuto extends OpModeBase
 
         VisionPortal visionPortal = new VisionPortal.Builder()
                 .addProcessor(processor)
-                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
+                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 2"))
                 .build();
 
-        Pose2d startPose = new Pose2d(12, -66, Math.toRadians(90));
+        Pose2d startPose = new Pose2d(-36, -66, Math.toRadians(90));
 
         roadrunnerMecanumDrive.setPoseEstimate(startPose);
 
@@ -70,29 +68,36 @@ public class TopRightAuto extends OpModeBase
                 .lineTo(new Vector2d(rightPurpleX, rightPurpleY))
                 .build();
 
+        Trajectory rightPostPurple = roadrunnerMecanumDrive.trajectoryBuilder(rightPurpleScore.end())
+                .back(rightBackup)
+                .build();
+
         Trajectory middlePostPurple = roadrunnerMecanumDrive.trajectoryBuilder(leftPurpleScore.end())
                 .back(rightBackup)
                 .build();
 
-        Trajectory leftPostPurple = roadrunnerMecanumDrive.trajectoryBuilder(rightPurpleScore.end())
+        Trajectory leftPostPurple = roadrunnerMecanumDrive.trajectoryBuilder(leftPurpleScore.end())
                 .back(rightBackup)
                 .build();
 
+        //Move in
+
         //Scoring yellow pixel
-        Trajectory leftYellowScore = roadrunnerMecanumDrive.trajectoryBuilder(leftPostPurple.end())
+        Trajectory leftYellowScore = roadrunnerMecanumDrive.trajectoryBuilder(leftPurpleScore.end())
                 .lineToLinearHeading(new Pose2d(leftYellowX, leftYellowY, Math.toRadians(0)))
                         .build();
 
-        Trajectory middleYellowScore = roadrunnerMecanumDrive.trajectoryBuilder(middlePostPurple.end())
+        Trajectory middleYellowScore = roadrunnerMecanumDrive.trajectoryBuilder(middlePurpleScore.end())
                 .lineToLinearHeading(new Pose2d(centerYellowX, centerYellowY, Math.toRadians(0)))
                 .build();
 
-        Trajectory rightPostPurple = roadrunnerMecanumDrive.trajectoryBuilder(rightPurpleScore.end())
-                .back(rightBackup)
-                .build();
         Trajectory rightYellowScore = roadrunnerMecanumDrive.trajectoryBuilder(rightPostPurple.end())
                 .lineToLinearHeading(new Pose2d(rightYellowX, rightYellowY, Math.toRadians(0)))
                 .build();
+
+;       Trajectory trussPath = roadrunnerMecanumDrive.trajectoryBuilder(rightPurpleScore.end())
+            .lineToLinearHeading(new Pose2d(0, 0))
+            .build();
 
         //Parking
         Trajectory parkBackup = roadrunnerMecanumDrive.trajectoryBuilder(leftYellowScore.end())
@@ -102,9 +107,6 @@ public class TopRightAuto extends OpModeBase
         Trajectory parkScore = roadrunnerMecanumDrive.trajectoryBuilder(leftYellowScore.end())
                 .lineToLinearHeading(new Pose2d(parkX, parkY, Math.toRadians(0)))
                 .build();
-
-//        Trajectory parkStill = drive.trajectoryBuilder(leftYellowScore.end())
-//                .build();
 
         while(!isStarted())
         {
@@ -131,12 +133,13 @@ public class TopRightAuto extends OpModeBase
         {
             schedule(new SequentialCommandGroup(
                     clawL.closeClaw(), clawR.closeClaw(),
-                    //arm.transport(),
+                    arm.transport(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPurpleScore)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPostPurple)),
                     arm.deployFront(),
+//                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(goToMiddle)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(trussPath)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftYellowScore)),
-                    new RunCommand(() -> driveUntilAprilTag(redLeftAprilID, 10)),
                     clawL.openClaw(), clawR.openClaw(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
@@ -148,29 +151,31 @@ public class TopRightAuto extends OpModeBase
             //Using the scheduler allows us to run commands in auto
             schedule(new SequentialCommandGroup(
                     clawL.closeClaw(), clawR.closeClaw(),
-                    //arm.transport(),
+                    arm.transport(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middlePurpleScore)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middlePostPurple)),
-                    arm.deployFront(),
+                    arm.deployFront(), //I'm assuming these positions are temporary
+//                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(goToMiddle)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(trussPath)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middleYellowScore)),
-                    new RunCommand(() -> driveUntilAprilTag(redCenterAprilID, 10)),
                     clawL.openClaw(), clawR.openClaw(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
-                    arm.pickupFront()
+                    arm.pickupFront() //I'm assuming these positions are temporary
             ));
         }
         else
         {
             schedule(new SequentialCommandGroup(
                     clawL.closeClaw(), clawR.closeClaw(),
-                    //arm.transport(),
+                    arm.transport(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightPurpleScore)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightPostPurple)),
                     arm.deployFront(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightPostPurple)),
+//                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(goToMiddle)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(trussPath)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightYellowScore)),
-                    new RunCommand(() -> driveUntilAprilTag(redRightAprilID, 10)),
                     clawL.openClaw(), clawR.openClaw(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
