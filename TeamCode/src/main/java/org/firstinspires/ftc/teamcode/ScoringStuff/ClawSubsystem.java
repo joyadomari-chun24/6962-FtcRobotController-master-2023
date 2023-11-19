@@ -8,8 +8,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class ClawSubsystem extends SubsystemBase
 {
     private Servo claw;
-    private double closedPosition = 0.1;
-    private double openPosition = 0.3;
+    private double closedPosition = 0.15;
+    private double openPosition = 0.4;
     public ClawSubsystem(Servo theClaw, boolean isLeftClaw)
     {
         claw = theClaw;
