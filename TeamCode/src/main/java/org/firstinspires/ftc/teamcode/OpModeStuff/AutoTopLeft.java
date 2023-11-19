@@ -25,10 +25,10 @@ public class AutoTopLeft extends OpModeBase
     public static int centerYellowY = 39;
 
     //Left coordinates
-    public static int leftPurpleX = 19;
-    public static int leftPurpleY = 40;
-    public static int leftYellowX = 53;
-    public static int leftYellowY = 45;
+    public static int leftPurpleX = 26;
+    public static int leftPurpleY = 59;
+    public static int leftYellowX = 54;
+    public static int leftYellowY = 43;
 
     //Right coordinates
     public static int rightPurpleX = 10;
@@ -128,17 +128,15 @@ public class AutoTopLeft extends OpModeBase
             schedule(new SequentialCommandGroup(
                     clawL.closeClaw(), clawR.closeClaw(),
                     arm.transport(),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(otherPurple)),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPurpleScore)),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middlePurpleScore)),
-                    //arm.pickupFront(),
-                    //clawL.openClaw(),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPostPurple)),
-                    //arm.deployFront(),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftYellowScore)),
-                    //clawR.openClaw(),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPurpleScore)),
+                    arm.pickupFront(),
+                    clawL.openClaw(),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPostPurple)),
+                    arm.deployFront(),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftYellowScore)),
+                    clawR.openClaw(),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
                     arm.pickupFront()
             ));
         }
