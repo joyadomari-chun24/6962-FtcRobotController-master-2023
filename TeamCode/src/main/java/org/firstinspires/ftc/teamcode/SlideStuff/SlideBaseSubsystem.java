@@ -52,7 +52,7 @@ public class SlideBaseSubsystem extends SubsystemBase
         motor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
-    public double PIDControl(double target, double state, DcMotorEx motor)
+    public double PIDControl(double target, DcMotorEx motor)
     {
         // PID logic and then return the output
         // obtain the encoder position

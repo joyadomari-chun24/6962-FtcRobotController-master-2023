@@ -28,8 +28,8 @@ public class ScoringSlideSubsystem extends SlideBaseSubsystem
     @Override
     public void periodic()
     {
-        double powerL = PIDControl(target, motorLeft.getCurrentPosition(), motorLeft);
-        double powerR = PIDControl(target, motorRight.getCurrentPosition(), motorRight);
+        double powerL = PIDControl(target, motorLeft);
+        double powerR = PIDControl(target, motorRight);
         // First part sets motors to the joystick if the joystick is moving and sets target to it so slides stay when let go
         if (Math.abs(slidePower) > 0.05)
         {
