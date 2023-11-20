@@ -20,7 +20,7 @@ public class AutoBottomRight extends OpModeBase
     PropDetectionProcessor processor = new PropDetectionProcessor(false);
 
     //Middle coordinates
-    public static int centerPurpleForward = 30;
+    public static double centerPurpleForward = 30 * 2.5;
     public static int centerYellowX = 53;
     public static int centerYellowY = -39;
 
@@ -138,15 +138,17 @@ public class AutoBottomRight extends OpModeBase
             schedule(new SequentialCommandGroup(
                     clawL.closeClaw(), clawR.closeClaw(),
                     arm.transport(),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPurpleScore)),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPostPurple)),
-                    arm.deployFront(),
-//                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(goToMiddle)),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(trussPath)),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftYellowScore)),
-                    clawL.openClaw(), clawR.openClaw(),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
+                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(otherPurple)),
+                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPurpleScore)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middlePurpleScore)),
+                    //arm.pickupFront(),
+                    //clawL.openClaw(),
+                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPostPurple)),
+                    //arm.deployFront(),
+                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftYellowScore)),
+                    //clawR.openClaw(),
+                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
+                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
                     arm.pickupFront()
             ));
         }
@@ -156,16 +158,18 @@ public class AutoBottomRight extends OpModeBase
             schedule(new SequentialCommandGroup(
                     clawL.closeClaw(), clawR.closeClaw(),
                     arm.transport(),
+                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(otherPurple)),
+                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPurpleScore)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middlePurpleScore)),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middlePostPurple)),
-                    arm.deployFront(), //I'm assuming these positions are temporary
-//                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(goToMiddle)),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(trussPath)),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middleYellowScore)),
-                    clawL.openClaw(), clawR.openClaw(),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
-                    arm.pickupFront() //I'm assuming these positions are temporary
+                    //arm.pickupFront(),
+                    //clawL.openClaw(),
+                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPostPurple)),
+                    //arm.deployFront(),
+                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftYellowScore)),
+                    //clawR.openClaw(),
+                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
+                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
+                    arm.pickupFront()
             ));
         }
         else
@@ -173,19 +177,22 @@ public class AutoBottomRight extends OpModeBase
             schedule(new SequentialCommandGroup(
                     clawL.closeClaw(), clawR.closeClaw(),
                     arm.transport(),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightPurpleScore)),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightPostPurple)),
-                    arm.deployFront(),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightPostPurple)),
-//                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(goToMiddle)),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(trussPath)),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightYellowScore)),
-                    clawL.openClaw(), clawR.openClaw(),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
+                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(otherPurple)),
+                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPurpleScore)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middlePurpleScore)),
+                    //arm.pickupFront(),
+                    //clawL.openClaw(),
+                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPostPurple)),
+                    //arm.deployFront(),
+                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftYellowScore)),
+                    //clawR.openClaw(),
+                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
+                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
                     arm.pickupFront()
             ));
         }
+
+        sleep(23000);
 
 //        if (aprilPortal.getCameraState() == VisionPortal.CameraState.STREAMING)
 //        {

@@ -131,8 +131,6 @@ public class AutoBottomLeft extends OpModeBase
             visionPortal.stopStreaming();
         }
 
-        sleep(3000);
-
         if(propLocation.equals("LEFT"))
         {
             schedule(new SequentialCommandGroup(
@@ -191,6 +189,8 @@ public class AutoBottomLeft extends OpModeBase
                     arm.pickupFront()
             ));
         }
+
+        sleep(23000);
 
 //        if (aprilPortal.getCameraState() == VisionPortal.CameraState.STREAMING)
 //        {
