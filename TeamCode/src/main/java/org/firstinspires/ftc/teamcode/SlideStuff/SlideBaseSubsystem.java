@@ -17,6 +17,8 @@ public class SlideBaseSubsystem extends SubsystemBase
     double Kp = 0;
     double Ki = 0;
     double Kd = 0;
+    double Kg = 0;// tune till the slide holds itself in place.
+
 
     //declaring variables for later use
     ElapsedTime timer = new ElapsedTime();
@@ -72,7 +74,7 @@ public class SlideBaseSubsystem extends SubsystemBase
         timer.reset();
 
         //calculates output and returns
-        double output = (Kp * error) + (Ki * integralSum) + (Kd * derivative);
+        double output = (Kp * error) + (Ki * integralSum) + (Kd * derivative) + Kg;
         return output;
     }
 
