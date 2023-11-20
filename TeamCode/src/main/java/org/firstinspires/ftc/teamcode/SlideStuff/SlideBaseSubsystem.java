@@ -25,25 +25,25 @@ public class SlideBaseSubsystem extends SubsystemBase
     private double lastError = 0;
 
     //Constructor for single motor
-    public SlideBaseSubsystem(double P, double I, double D, boolean reverseMotor, DcMotorEx motor)
-    {
-        motor1 = motor;
-        Kp = P;
-        Ki = I;
-        Kd = D;
-        motor1.setDirection(reverseMotor ? DcMotorSimple.Direction.REVERSE : DcMotorSimple.Direction.FORWARD);
-        motor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-    }
+//    public SlideBaseSubsystem(double P, double I, double D, boolean reverseMotor, DcMotorEx motor)
+//    {
+//        motor1 = motor;
+//        Kp = P;
+//        Ki = I;
+//        Kd = D;
+//        motor1.setDirection(reverseMotor ? DcMotorSimple.Direction.REVERSE : DcMotorSimple.Direction.FORWARD);
+//        motor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        motor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//    }
 
     //Constructor for double motors
-    public SlideBaseSubsystem(double P, double I, double D, boolean reverseMotorL, boolean reverseMotorR, DcMotorEx leftMotor, DcMotorEx rightMotor)
+    public SlideBaseSubsystem(/*double P, double I, double D, */boolean reverseMotorL, boolean reverseMotorR, DcMotorEx leftMotor, DcMotorEx rightMotor)
     {
         motor1 = leftMotor;
         motor2 = rightMotor;
-        Kp = P;
-        Ki = I;
-        Kd = D;
+//        Kp = P;
+//        Ki = I;
+//        Kd = D;
         motor1.setDirection(reverseMotorL ? DcMotorSimple.Direction.REVERSE : DcMotorSimple.Direction.FORWARD);
         motor2.setDirection(reverseMotorR ? DcMotorSimple.Direction.REVERSE : DcMotorSimple.Direction.FORWARD);
         motor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

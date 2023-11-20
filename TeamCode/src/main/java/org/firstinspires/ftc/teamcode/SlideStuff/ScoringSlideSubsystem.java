@@ -20,7 +20,7 @@ public class ScoringSlideSubsystem extends SlideBaseSubsystem
     public Telemetry telemetry;
     public ScoringSlideSubsystem(DcMotorEx scoringMotorL, DcMotorEx scoringMotorR, Telemetry tel)
     {
-        super(0, 0, 0, true, false, scoringMotorL, scoringMotorR);
+        super(/*0, 0, 0,*/true, false, scoringMotorL, scoringMotorR);
         motorLeft = scoringMotorL;
         motorRight = scoringMotorR;
         telemetry = tel;
