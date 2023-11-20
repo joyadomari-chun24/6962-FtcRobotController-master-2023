@@ -14,11 +14,10 @@ public class SlideBaseSubsystem extends SubsystemBase
      * Based on SlidesPID
      */
     DcMotorEx motor1, motor2;
-    double Kp = 0;
-    double Ki = 0;
-    double Kd = 0;
-    public static double Kg = 0;//tune till the slide holds itself in place
-
+    public static double Kp = 0;
+    public static double Ki = 0;
+    public static double Kd = 0;
+    public static double Kg = 0; //tune till the slide holds itself in place
 
     //declaring variables for later use
     ElapsedTime timer = new ElapsedTime();
@@ -37,7 +36,7 @@ public class SlideBaseSubsystem extends SubsystemBase
         motor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
-    //Alternate constructor for double motors
+    //Constructor for double motors
     public SlideBaseSubsystem(double P, double I, double D, boolean reverseMotorL, boolean reverseMotorR, DcMotorEx leftMotor, DcMotorEx rightMotor)
     {
         motor1 = leftMotor;
