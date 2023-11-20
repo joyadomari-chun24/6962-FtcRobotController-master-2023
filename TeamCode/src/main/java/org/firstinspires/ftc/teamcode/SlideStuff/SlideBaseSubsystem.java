@@ -17,7 +17,7 @@ public class SlideBaseSubsystem extends SubsystemBase
     double Kp = 0;
     double Ki = 0;
     double Kd = 0;
-    double Kg = 0;// tune till the slide holds itself in place.
+    public static double Kg = 0;//tune till the slide holds itself in place
 
 
     //declaring variables for later use
