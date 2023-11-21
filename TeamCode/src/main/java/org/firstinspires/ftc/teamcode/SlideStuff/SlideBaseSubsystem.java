@@ -2,27 +2,33 @@ package org.firstinspires.ftc.teamcode.SlideStuff;
 
 import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.RunCommand;
+import org.firstinspires.ftc.teamcode.roadrunner.util.LoggingUtil;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.acmerobotics.dashboard.FtcDashboard;
 
-public class SlideBaseSubsystem extends SubsystemBase
-{
+
+public class SlideBaseSubsystem extends SubsystemBase {
     /**
      * Based on SlidesPID
      */
     DcMotorEx motor1, motor2;
+    FtcDashboard dashboard = FtcDashboard.getInstance();;
     public static double Kp = 0;
     public static double Ki = 0;
     public static double Kd = 0;
     public static double Kg = 0; //tune till the slide holds itself in place
 
+    //graphing variables
+
+
     //declaring variables for later use
     ElapsedTime timer = new ElapsedTime();
     double integralSum = 0;
-    private double lastError = 0;
+    public double lastError = 0;
 
     //Constructor for single motor
 //    public SlideBaseSubsystem(double P, double I, double D, boolean reverseMotor, DcMotorEx motor)
@@ -37,8 +43,7 @@ public class SlideBaseSubsystem extends SubsystemBase
 //    }
 
     //Constructor for double motors
-    public SlideBaseSubsystem(/*double P, double I, double D, */boolean reverseMotorL, boolean reverseMotorR, DcMotorEx leftMotor, DcMotorEx rightMotor)
-    {
+    public SlideBaseSubsystem(/*double P, double I, double D, */boolean reverseMotorL, boolean reverseMotorR, DcMotorEx leftMotor, DcMotorEx rightMotor) {
         motor1 = leftMotor;
         motor2 = rightMotor;
 //        Kp = P;
@@ -52,8 +57,7 @@ public class SlideBaseSubsystem extends SubsystemBase
         motor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
-    public double PIDControl(double target, DcMotorEx motor)
-    {
+    public double PIDControl(double target, DcMotorEx motor) {
         // PID logic and then return the output
         // obtain the encoder position
         double encoderPosition = motor.getCurrentPosition();
@@ -76,6 +80,16 @@ public class SlideBaseSubsystem extends SubsystemBase
         double output = (Kp * error) + (Ki * integralSum) + (Kd * derivative) + Kg;
         return output;
     }
+    public double Error(int num) {
+        return lastError;
+    }
+
+
+    //Not sure if this works, so I commented it out for now to avoid confusion
+//    private int getEncoderPosition(DcMotorEx motor)
+//    {
+//        return motor.getCurrentPosition();
+//    }
 
     //Commented out for testing in more specific subsystems
 //    public Command extendToPosition(int targetPos, int currentState, DcMotorEx motor)

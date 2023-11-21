@@ -1,10 +1,6 @@
 package org.firstinspires.ftc.teamcode.OpModeStuff;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.util.ElapsedTime;
+import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.A;
 
 public class SlidePIDTesting extends OpModeBase
 {
@@ -13,6 +9,7 @@ public class SlidePIDTesting extends OpModeBase
 	public void initialize()
 	{
 		super.initialize();
+		gamepadEx2.getGamepadButton(A).toggleWhenPressed(scoringSlides.extendToPosition(2000), scoringSlides.extendToPosition(0));
 	}
 
 	@Override
@@ -25,12 +22,18 @@ public class SlidePIDTesting extends OpModeBase
 			double powerR = scoringSlides.PIDControl(extension, scoringSlideMotorR);
 			scoringSlideMotorL.setPower(powerL);
 			scoringSlideMotorR.setPower(powerR);
-			if (gamepad1.b)
-			{
+
+			if (gamepad1.b) {
 				idle();
 			}
-			telemetry.addData("Left position (straight): ", scoringSlideMotorL.getCurrentPosition());
-			telemetry.addData("Right position (straight): ", scoringSlideMotorR.getCurrentPosition());
+			telemetry.addData("powerL: ", powerL);
+			telemetry.addData("powerR: ", powerR);
+			telemetry.addData("Left position: ", scoringSlideMotorL.getCurrentPosition());
+			telemetry.addData("Right position: ", scoringSlideMotorR.getCurrentPosition());
+			telemetry.addData("measuredVelocityL: ", scoringSlideMotorL.getVelocity());
+			telemetry.addData("measuredVelocityR: ", scoringSlideMotorR.getVelocity());
+			telemetry.addData("errorL: ", scoringSlides.Error(1));
+			telemetry.addData("errorR: ", scoringSlides.Error(1));
 			telemetry.update();
 		}
 	}

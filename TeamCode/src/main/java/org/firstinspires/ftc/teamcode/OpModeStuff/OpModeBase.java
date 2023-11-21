@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.ScoringStuff.ArmSubsystem;
 import org.firstinspires.ftc.teamcode.ScoringStuff.ClawSubsystem;
 import org.firstinspires.ftc.teamcode.DriveStuff.NavxManager;
 import org.firstinspires.ftc.teamcode.EndgameStuff.DroneLaunchSubsystem;
-import org.firstinspires.ftc.teamcode.SlideStuff.IntakeSlideSubsystem;
+//import org.firstinspires.ftc.teamcode.SlideStuff.IntakeSlideSubsystem;
 import org.firstinspires.ftc.teamcode.DriveStuff.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.SlideStuff.ScoringSlideSubsystem;
 import org.firstinspires.ftc.teamcode.VisionStuff.PropDetectionProcessor;
@@ -27,6 +27,7 @@ import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -47,7 +48,7 @@ public class OpModeBase extends CommandOpMode
     protected SampleMecanumDrive roadrunnerMecanumDrive;
     protected GamepadEx gamepadEx1;
     protected GamepadEx gamepadEx2;
-    protected IntakeSlideSubsystem intakeSlides;
+    //protected IntakeSlideSubsystem intakeSlides;
     protected ScoringSlideSubsystem scoringSlides;
     protected MecanumDriveSubsystem mecanumDrive;
     protected PropDetectionProcessor propDetectionPipeline;
@@ -141,8 +142,8 @@ public class OpModeBase extends CommandOpMode
         intakeSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);*/
         scoringSlideMotorL.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         scoringSlideMotorR.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        scoringSlideMotorL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        scoringSlideMotorR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        scoringSlideMotorL.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        scoringSlideMotorR.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         //intakeSlideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         gamepadEx1 = new GamepadEx(gamepad1);
