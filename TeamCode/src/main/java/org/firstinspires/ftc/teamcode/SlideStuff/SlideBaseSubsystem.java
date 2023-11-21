@@ -77,12 +77,6 @@ public class SlideBaseSubsystem extends SubsystemBase
         return output;
     }
 
-    //Not sure if this works, so I commented it out for now to avoid confusion
-//    private int getEncoderPosition(DcMotorEx motor)
-//    {
-//        return motor.getCurrentPosition();
-//    }
-
     //Commented out for testing in more specific subsystems
 //    public Command extendToPosition(int targetPos, int currentState, DcMotorEx motor)
 //    {
