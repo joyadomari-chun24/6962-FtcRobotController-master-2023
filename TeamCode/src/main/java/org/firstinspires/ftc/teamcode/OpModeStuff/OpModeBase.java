@@ -96,30 +96,30 @@ public class OpModeBase extends CommandOpMode
         * Config:
         *
         * Motors + deadwheels
-        * Fl/Re - Ctl ?
+        * Fl/Re - Ctl 2
         * Bl/Le - Ctl 0
-        * Br/Fr - Ctl 1
-        * Fr - Ctl ?
+        * Br/Fe - Ctl 3
+        * Fr - Ctl 1
         *
         * Slides
-        * Left Scoring - ?
-        * Right Scoring - ?
+        * Left Scoring - Exp 0?
+        * Right Scoring - Exp 1?
         *
         * Scoring
         * Wrist - Exp 2
         * Left Arm - Ctl 4
         * Right Arm - Exp 1
-        * Left Claw - Exp 5
+        * Left Claw - Ctl 5
         * Right Claw - Exp 4
         *
         * Sensors
         * NavX - Ctl I2C 1
-        * Distance Sensor - Ctl I2C 2
+        * Distance Sensor - Ctl I2C 0
         *
         * Endgame
         * Drone Launcher - Ctl 3
         * Left Hang - Ctl 1
-        * Right Hang - Ctl 2
+        * Right Hang - Exp 3
         *
         * */
         leftFront = new MotorEx(hardwareMap, "Fl/Re");
