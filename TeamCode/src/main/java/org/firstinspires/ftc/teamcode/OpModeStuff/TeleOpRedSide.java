@@ -30,7 +30,7 @@ public class TeleOpRedSide extends OpModeBase
     {
         super.initialize();
 
-        aprilPortal.resumeStreaming();
+        //aprilPortal.resumeStreaming();
 
         /*
         * Gamepad 2:

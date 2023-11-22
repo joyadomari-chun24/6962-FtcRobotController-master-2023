@@ -114,7 +114,7 @@ public class OpModeBase extends CommandOpMode
         *
         * Sensors
         * NavX - Ctl I2C 1
-        * Distance Sensor - Ctl I2C 0
+        * Distance Sensor - Ctl I2C ?
         *
         * Endgame
         * Drone Launcher - Ctl 3
@@ -140,8 +140,8 @@ public class OpModeBase extends CommandOpMode
         rightPlatformServo = hardwareMap.servo.get("rightPlatformServo");
         /*scoringSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         intakeSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);*/
-        scoringSlideMotorL.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        scoringSlideMotorR.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        scoringSlideMotorL.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        scoringSlideMotorR.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
         scoringSlideMotorL.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         scoringSlideMotorR.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         //intakeSlideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -150,12 +150,11 @@ public class OpModeBase extends CommandOpMode
         gamepadEx2 = new GamepadEx(gamepad2);
 
         //April tag startup
-        backdropAprilTag = new AprilTagProcessor.Builder().build();
-        backdropAprilTag.setDecimation(2); // Higher decimation = increased performance but less distance
-        aprilPortal = new VisionPortal.Builder()
-                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 2")).addProcessor(backdropAprilTag)
-                .build();
-        aprilPortal.stopStreaming();
+//        backdropAprilTag = new AprilTagProcessor.Builder().build();
+//        backdropAprilTag.setDecimation(2); // Higher decimation = increased performance but less distance
+//        aprilPortal = new VisionPortal.Builder()
+//                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 2")).addProcessor(backdropAprilTag)
+//                .build();
 
         //Set camera exposure to minimize motion blur (6 ms exposure, 250 gain)
 //        ExposureControl exposureControl = aprilPortal.getCameraControl(ExposureControl.class);

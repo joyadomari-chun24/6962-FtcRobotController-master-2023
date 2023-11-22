@@ -134,7 +134,7 @@ public class AutoTopRight extends OpModeBase
             visionPortal.stopLiveView();
             visionPortal.stopStreaming();
 
-            aprilPortal.resumeStreaming();
+            //aprilPortal.resumeStreaming();
         }
 
         if(propLocation.equals("LEFT"))
