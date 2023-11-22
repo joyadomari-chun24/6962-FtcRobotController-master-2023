@@ -1,7 +1,9 @@
-package org.firstinspires.ftc.teamcode.OpModeStuff;
+package org.firstinspires.ftc.teamcode.SlideStuff;
 
 import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.A;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
+import org.firstinspires.ftc.teamcode.OpModeStuff.OpModeBase;
 
 @TeleOp
 public class SlidePIDTesting extends OpModeBase
