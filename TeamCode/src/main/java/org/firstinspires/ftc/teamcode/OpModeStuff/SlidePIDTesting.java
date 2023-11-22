@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode.OpModeStuff;
 
 import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.A;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+@TeleOp
 public class SlidePIDTesting extends OpModeBase
 {
 	public static int extension = 1000;
@@ -10,6 +12,7 @@ public class SlidePIDTesting extends OpModeBase
 	{
 		super.initialize();
 		gamepadEx2.getGamepadButton(A).toggleWhenPressed(scoringSlides.extendToPosition(2000), scoringSlides.extendToPosition(0));
+		scoringSlides.setDefaultCommand(scoringSlides.slideMovement(gamepadEx2::getRightY));
 	}
 
 	@Override
@@ -23,7 +26,8 @@ public class SlidePIDTesting extends OpModeBase
 			scoringSlideMotorL.setPower(powerL);
 			scoringSlideMotorR.setPower(powerR);
 
-			if (gamepad1.b) {
+			if (gamepad1.b)
+			{
 				idle();
 			}
 			telemetry.addData("powerL: ", powerL);
@@ -32,8 +36,6 @@ public class SlidePIDTesting extends OpModeBase
 			telemetry.addData("Right position: ", scoringSlideMotorR.getCurrentPosition());
 			telemetry.addData("measuredVelocityL: ", scoringSlideMotorL.getVelocity());
 			telemetry.addData("measuredVelocityR: ", scoringSlideMotorR.getVelocity());
-			telemetry.addData("errorL: ", scoringSlides.Error(1));
-			telemetry.addData("errorR: ", scoringSlides.Error(1));
 			telemetry.update();
 		}
 	}

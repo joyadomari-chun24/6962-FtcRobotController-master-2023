@@ -30,11 +30,7 @@ public class TeleOpRedSide extends OpModeBase
     {
         super.initialize();
 
-//        if (aprilPortal.getCameraState() == VisionPortal.CameraState.STREAMING)
-//        {
-//            aprilPortal.stopLiveView();
-//            aprilPortal.stopStreaming();
-//        }
+        aprilPortal.resumeStreaming();
 
         /*
         * Gamepad 2:
@@ -156,4 +152,5 @@ v
         telemetry.update();
 
     }
+
 }
