@@ -14,9 +14,9 @@ import java.util.function.IntSupplier;
 public class ArmSubsystem extends SubsystemBase
 {
     //Arm positions
-    public static double left_pickupFront = 1; // arm is lowered, claw is parallel to ground
+    public static double left_pickupFront = 0.885; // arm is lowered, claw is parallel to ground
     public static double left_transport = 0.935; // arm is parallel to ground, claw is pointing straight up
-    public static double left_deployFront = 0.785; // arm is raised, claw parallel to scoring board
+    public static double left_deployFront = 0.62; // arm is raised, claw parallel to scoring board
     public static double left_deployBack = 0.1; // arm is parallel to slides, claw is parallel to ground
     //Wrist positions
     public static double w_pickupFront = 0.475;

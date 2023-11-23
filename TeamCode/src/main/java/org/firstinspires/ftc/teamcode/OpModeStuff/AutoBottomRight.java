@@ -21,7 +21,7 @@ public class AutoBottomRight extends OpModeBase
 
     //Experimental coordinates
     public static int PurpleX = -36;
-    public static int PurpleY = -36;
+    public static int PurpleY = -35;
     public static int middlePurpleX = -36;
     public static int middlePurpleY = -16;
     public static int trussBottomX = -36;
@@ -53,6 +53,7 @@ public class AutoBottomRight extends OpModeBase
     //Parking coordinates
     public static int parkX = 56;
     public static int parkY = -17;
+
     @Override
     public void initialize()
     {
@@ -94,11 +95,11 @@ public class AutoBottomRight extends OpModeBase
                 //.build();
 
         Trajectory leftPurpleScore = roadrunnerMecanumDrive.trajectoryBuilder(startPose)
-                .lineToLinearHeading(new Pose2d(PurpleX, PurpleY, Math.toRadians(150)))
+                .lineToConstantHeading(new Vector2d(PurpleX, PurpleY))
                 .build();
 
         Trajectory rightPurpleScore = roadrunnerMecanumDrive.trajectoryBuilder(startPose)
-                .lineToLinearHeading(new Pose2d(PurpleX, PurpleY, Math.toRadians(30)))
+                .lineToConstantHeading(new Vector2d(PurpleX, PurpleY))
                 .build();
 
         Trajectory middlePurpleScore = roadrunnerMecanumDrive.trajectoryBuilder(startPose)
@@ -179,11 +180,13 @@ public class AutoBottomRight extends OpModeBase
                     //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(otherPurple)),
                     //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPurpleScore)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPurpleScore)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.turn(-181)),
                     //arm.pickupFront(),
                     clawL.openClaw(),
                     arm.deployFront(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftBottomTruss)),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(topTruss))
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(topTruss)),
+                    clawR.openClaw()
                     //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPostPurple)),
                     //arm.deployFront(),
                     //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftYellowScore)),
@@ -206,7 +209,8 @@ public class AutoBottomRight extends OpModeBase
                     clawL.openClaw(),
                     arm.deployFront(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middleBottomTruss)),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(topTruss))
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(topTruss)),
+                    clawR.openClaw()
                     //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPostPurple)),
                     //arm.deployFront(),
                     //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftYellowScore)),
@@ -228,7 +232,8 @@ public class AutoBottomRight extends OpModeBase
                     clawL.openClaw(),
                     arm.deployFront(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightBottomTruss)),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(topTruss))
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(topTruss)),
+                    clawR.openClaw()
                     //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPostPurple)),
                     //arm.deployFront(),
                     //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftYellowScore)),
@@ -239,7 +244,7 @@ public class AutoBottomRight extends OpModeBase
             ));
         }
 
-        sleep(23000);
+        //sleep(23000);
 
 //        if (aprilPortal.getCameraState() == VisionPortal.CameraState.STREAMING)
 //        {
