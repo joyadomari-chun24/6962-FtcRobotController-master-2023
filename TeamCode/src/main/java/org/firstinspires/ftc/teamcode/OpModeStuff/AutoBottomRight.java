@@ -19,6 +19,16 @@ public class AutoBottomRight extends OpModeBase
     String propLocation;
     PropDetectionProcessor processor = new PropDetectionProcessor(false);
 
+    //Experimental coordinates
+    public static int PurpleX = -36;
+    public static int PurpleY = -36;
+    public static int middlePurpleX = -36;
+    public static int middlePurpleY = -16;
+    public static int trussBottomX = -36;
+    public static int trussBottomY = -11;
+    public static int trussTopX = 13;
+    public static int trussTopY = -11;
+
     //Middle coordinates
     public static double centerPurpleForward = 30 * 2.5;
     public static int centerYellowX = 53;
@@ -54,33 +64,61 @@ public class AutoBottomRight extends OpModeBase
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
                 .build();
 
-        Pose2d startPose = new Pose2d(-31.25, -64.5, Math.toRadians(90));
+        Pose2d startPose = new Pose2d(-39, -63.5, Math.toRadians(0));
 
         roadrunnerMecanumDrive.setPoseEstimate(startPose);
 
         //Scoring purple pixel
-        Trajectory leftPurpleScore = roadrunnerMecanumDrive.trajectoryBuilder(startPose)
-                .lineTo(new Vector2d(leftPurpleX, leftPurpleY))
-                .build();
+        //Trajectory leftPurpleScore = roadrunnerMecanumDrive.trajectoryBuilder(startPose)
+                //.lineTo(new Vector2d(leftPurpleX, leftPurpleY))
+                //.build();
 
-        Trajectory middlePurpleScore = roadrunnerMecanumDrive.trajectoryBuilder(startPose)
-                .forward(centerPurpleForward)
+        //Trajectory middlePurpleScore = roadrunnerMecanumDrive.trajectoryBuilder(startPose)
+                //.forward(centerPurpleForward)
+                //.build();
+
+        //Trajectory rightPurpleScore = roadrunnerMecanumDrive.trajectoryBuilder(startPose)
+                //.lineTo(new Vector2d(rightPurpleX, rightPurpleY))
+                //.build();
+
+        //Trajectory rightPostPurple = roadrunnerMecanumDrive.trajectoryBuilder(rightPurpleScore.end())
+                //.back(rightBackup)
+                //.build();
+
+        //Trajectory middlePostPurple = roadrunnerMecanumDrive.trajectoryBuilder(leftPurpleScore.end())
+                //.back(rightBackup)
+                //.build();
+
+        //Trajectory leftPostPurple = roadrunnerMecanumDrive.trajectoryBuilder(leftPurpleScore.end())
+                //.back(rightBackup)
+                //.build();
+
+        Trajectory leftPurpleScore = roadrunnerMecanumDrive.trajectoryBuilder(startPose)
+                .lineToLinearHeading(new Pose2d(PurpleX, PurpleY, Math.toRadians(150)))
                 .build();
 
         Trajectory rightPurpleScore = roadrunnerMecanumDrive.trajectoryBuilder(startPose)
-                .lineTo(new Vector2d(rightPurpleX, rightPurpleY))
+                .lineToLinearHeading(new Pose2d(PurpleX, PurpleY, Math.toRadians(30)))
                 .build();
 
-        Trajectory rightPostPurple = roadrunnerMecanumDrive.trajectoryBuilder(rightPurpleScore.end())
-                .back(rightBackup)
+        Trajectory middlePurpleScore = roadrunnerMecanumDrive.trajectoryBuilder(startPose)
+                .lineToLinearHeading(new Pose2d(middlePurpleX, middlePurpleY, Math.toRadians(-90)))
                 .build();
 
-        Trajectory middlePostPurple = roadrunnerMecanumDrive.trajectoryBuilder(leftPurpleScore.end())
-                .back(rightBackup)
+        Trajectory leftBottomTruss = roadrunnerMecanumDrive.trajectoryBuilder(leftPurpleScore.end())
+                .lineToLinearHeading(new Pose2d(trussBottomX, trussBottomY, Math.toRadians(0)))
                 .build();
 
-        Trajectory leftPostPurple = roadrunnerMecanumDrive.trajectoryBuilder(leftPurpleScore.end())
-                .back(rightBackup)
+        Trajectory rightBottomTruss = roadrunnerMecanumDrive.trajectoryBuilder(rightPurpleScore.end())
+                .lineToLinearHeading(new Pose2d(trussBottomX, trussBottomY, Math.toRadians(0)))
+                .build();
+
+        Trajectory middleBottomTruss = roadrunnerMecanumDrive.trajectoryBuilder(middlePurpleScore.end())
+                .lineToLinearHeading(new Pose2d(trussBottomX, trussBottomY, Math.toRadians(0)))
+                .build();
+
+        Trajectory topTruss = roadrunnerMecanumDrive.trajectoryBuilder(middleBottomTruss.end())
+                .lineToLinearHeading(new Pose2d(trussTopX, trussTopY, Math.toRadians(0)))
                 .build();
 
         //New center!
@@ -95,9 +133,9 @@ public class AutoBottomRight extends OpModeBase
                 .lineToLinearHeading(new Pose2d(centerYellowX, centerYellowY, Math.toRadians(0)))
                 .build();
 
-        Trajectory rightYellowScore = roadrunnerMecanumDrive.trajectoryBuilder(rightPostPurple.end())
-                .lineToLinearHeading(new Pose2d(rightYellowX, rightYellowY, Math.toRadians(0)))
-                .build();
+        //Trajectory rightYellowScore = roadrunnerMecanumDrive.trajectoryBuilder(rightPostPurple.end())
+                //.lineToLinearHeading(new Pose2d(rightYellowX, rightYellowY, Math.toRadians(0)))
+                //.build();
 
 ;       Trajectory trussPath = roadrunnerMecanumDrive.trajectoryBuilder(rightPurpleScore.end())
             .lineToLinearHeading(new Pose2d(0, 0))
@@ -137,19 +175,22 @@ public class AutoBottomRight extends OpModeBase
         {
             schedule(new SequentialCommandGroup(
                     clawL.closeClaw(), clawR.closeClaw(),
-                    arm.transport(),
+                    //arm.transport(),
                     //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(otherPurple)),
                     //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPurpleScore)),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middlePurpleScore)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPurpleScore)),
                     //arm.pickupFront(),
-                    //clawL.openClaw(),
+                    clawL.openClaw(),
+                    arm.deployFront(),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftBottomTruss)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(topTruss))
                     //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPostPurple)),
                     //arm.deployFront(),
                     //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftYellowScore)),
                     //clawR.openClaw(),
                     //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
                     //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
-                    arm.pickupFront()
+                    //arm.pickupFront()
             ));
         }
         else if (propLocation.equals("CENTER"))
@@ -157,38 +198,44 @@ public class AutoBottomRight extends OpModeBase
             //Using the scheduler allows us to run commands in auto
             schedule(new SequentialCommandGroup(
                     clawL.closeClaw(), clawR.closeClaw(),
-                    arm.transport(),
+                    //arm.transport(),
                     //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(otherPurple)),
                     //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPurpleScore)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middlePurpleScore)),
                     //arm.pickupFront(),
-                    //clawL.openClaw(),
+                    clawL.openClaw(),
+                    arm.deployFront(),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middleBottomTruss)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(topTruss))
                     //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPostPurple)),
                     //arm.deployFront(),
                     //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftYellowScore)),
                     //clawR.openClaw(),
                     //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
                     //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
-                    arm.pickupFront()
+                    //arm.pickupFront()
             ));
         }
         else
         {
             schedule(new SequentialCommandGroup(
                     clawL.closeClaw(), clawR.closeClaw(),
-                    arm.transport(),
+                    //arm.transport(),
                     //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(otherPurple)),
                     //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPurpleScore)),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middlePurpleScore)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightPurpleScore)),
                     //arm.pickupFront(),
-                    //clawL.openClaw(),
+                    clawL.openClaw(),
+                    arm.deployFront(),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightBottomTruss)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(topTruss))
                     //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPostPurple)),
                     //arm.deployFront(),
                     //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftYellowScore)),
                     //clawR.openClaw(),
                     //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkBackup)),
                     //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
-                    arm.pickupFront()
+                    //arm.pickupFront()
             ));
         }
 
