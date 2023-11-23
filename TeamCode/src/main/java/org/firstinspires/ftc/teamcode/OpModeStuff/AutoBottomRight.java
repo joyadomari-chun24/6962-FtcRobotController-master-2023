@@ -95,23 +95,27 @@ public class AutoBottomRight extends OpModeBase
                 //.build();
 
         Trajectory leftPurpleScore = roadrunnerMecanumDrive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(PurpleX, PurpleY))
+                .lineToLinearHeading(new Pose2d(PurpleX, PurpleY, Math.toRadians(-179)))
                 .build();
 
         Trajectory rightPurpleScore = roadrunnerMecanumDrive.trajectoryBuilder(startPose)
                 .lineToConstantHeading(new Vector2d(PurpleX, PurpleY))
                 .build();
 
-        Trajectory middlePurpleScore = roadrunnerMecanumDrive.trajectoryBuilder(startPose)
+        Trajectory middlePurplePrep = roadrunnerMecanumDrive.trajectoryBuilder(startPose)
+                .lineToLinearHeading(new Pose2d(PurpleX, PurpleY, Math.toRadians(-90)))
+                .build();
+
+        Trajectory middlePurpleScore = roadrunnerMecanumDrive.trajectoryBuilder(middlePurplePrep.end())
                 .lineToLinearHeading(new Pose2d(middlePurpleX, middlePurpleY, Math.toRadians(-90)))
                 .build();
 
         Trajectory leftBottomTruss = roadrunnerMecanumDrive.trajectoryBuilder(leftPurpleScore.end())
-                .lineToLinearHeading(new Pose2d(trussBottomX, trussBottomY, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(trussBottomX, trussBottomY, Math.toRadians(-90)))
                 .build();
 
         Trajectory rightBottomTruss = roadrunnerMecanumDrive.trajectoryBuilder(rightPurpleScore.end())
-                .lineToLinearHeading(new Pose2d(trussBottomX, trussBottomY, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(trussBottomX, trussBottomY, Math.toRadians(-90)))
                 .build();
 
         Trajectory middleBottomTruss = roadrunnerMecanumDrive.trajectoryBuilder(middlePurpleScore.end())
@@ -180,7 +184,7 @@ public class AutoBottomRight extends OpModeBase
                     //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(otherPurple)),
                     //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPurpleScore)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPurpleScore)),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.turn(-181)),
+                    //new InstantCommand(() -> roadrunnerMecanumDrive.turn(Math.toRadians(-181))),
                     //arm.pickupFront(),
                     clawL.openClaw(),
                     arm.deployFront(),
