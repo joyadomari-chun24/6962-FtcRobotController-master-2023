@@ -9,9 +9,11 @@ import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
 
 import java.util.function.DoubleSupplier;
@@ -25,15 +27,28 @@ public class MecanumDriveSubsystem extends SubsystemBase
     private static double kD = 0;
     private static double kF = 0;
     private final MecanumDrive drive;
+    private DistanceSensor distSensor;
+    private boolean aligningToBackdrop = false;
     private ElapsedTime time = new ElapsedTime();
     public Telemetry telemetry;
 
-    public MecanumDriveSubsystem(MotorEx FL, MotorEx BL, MotorEx FR, MotorEx BR, NavxMicroNavigationSensor navxSensor)
+    public MecanumDriveSubsystem(MotorEx FL, MotorEx BL, MotorEx FR, MotorEx BR, NavxMicroNavigationSensor navxSensor, DistanceSensor distanceSensor)
     {
         navx = navxSensor;
         FL.setInverted(true);
         BL.setInverted(true);
         drive = new MecanumDrive(false, FL, FR, BL, BR);
+        distSensor = distanceSensor;
+    }
+
+    @Override
+    public void periodic()
+    {
+        super.periodic();
+        if (aligningToBackdrop && distSensor.getDistance(DistanceUnit.CM) > 10)
+        {
+            drive.driveRobotCentric(0, -0.25, 0);
+        }
     }
 
     /**
@@ -56,5 +71,10 @@ public class MecanumDriveSubsystem extends SubsystemBase
     public Command roboCentric(double strafeSpeed, double forwardSpeed, double turnSpeed)
     {
         return new RunCommand(() -> drive.driveRobotCentric(strafeSpeed, forwardSpeed, turnSpeed), this);
+    }
+
+    public void setBackdropAlignment(boolean state)
+    {
+        aligningToBackdrop = state;
     }
 }

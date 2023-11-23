@@ -154,6 +154,8 @@ public class AutoTopRight extends OpModeBase
             telemetry.update();
         }
 
+        mecanumDrive.setBackdropAlignment(false);
+
         if(isStopRequested()) return;
 
         //Turns off camera

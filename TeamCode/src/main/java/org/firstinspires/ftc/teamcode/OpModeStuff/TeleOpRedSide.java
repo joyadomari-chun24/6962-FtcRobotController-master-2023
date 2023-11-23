@@ -30,6 +30,8 @@ public class TeleOpRedSide extends OpModeBase
     {
         super.initialize();
 
+        mecanumDrive.setBackdropAlignment(false);
+
         //aprilPortal.resumeStreaming();
 
         /*
@@ -81,6 +83,9 @@ public class TeleOpRedSide extends OpModeBase
         gamepadEx1.getGamepadButton(LEFT_STICK_BUTTON).whileHeld(mecanumDrive.roboCentric(0, 1, 0));
         gamepadEx1.getGamepadButton(DPAD_LEFT).whileHeld(mecanumDrive.roboCentric(1, 0, 0));
         gamepadEx1.getGamepadButton(DPAD_RIGHT).whileHeld(mecanumDrive.roboCentric(-1, 0, 0));
+
+        //Align with backdrop
+        gamepadEx1.getGamepadButton(RIGHT_BUMPER).toggleWhenPressed(new InstantCommand(() -> mecanumDrive.setBackdropAlignment(false)), new InstantCommand(() -> mecanumDrive.setBackdropAlignment(true)));
 
         //Drone launcher
         gamepadEx1.getGamepadButton(X).and(gamepadEx1.getGamepadButton(Y)).toggleWhenActive(launcher.setDrone(), launcher.fireDrone());

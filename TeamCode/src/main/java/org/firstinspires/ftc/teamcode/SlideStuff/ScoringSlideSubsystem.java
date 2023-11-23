@@ -54,6 +54,8 @@ public class ScoringSlideSubsystem extends SubsystemBase
     @Override
     public void periodic()
     {
+        super.periodic();
+
         double powerL = PIDControl(target, motorLeft);
         double powerR = PIDControl(target, motorRight);
         // First part sets motors to the joystick if the joystick is moving and sets target to it so slides stay when let go
@@ -63,14 +65,13 @@ public class ScoringSlideSubsystem extends SubsystemBase
             motorRight.setPower(slidePower/2);
             target = motorLeft.getCurrentPosition() + (int) slidePower * joystickScalar;
         }
-        else //If not, move slides to target (current pos from joystick or a button's set position)
+        else //If not, move slides to target (current pos from joystick+1 or a button's set position)
         {
             motorLeft.setPower(powerL);
             motorRight.setPower(powerR);
         }
         telemetry.addData("PID Power L", powerL);
         telemetry.addData("PID Power R", powerR);
-        super.periodic();
     }
 
     public Command extendToPosition(int targetPos)
