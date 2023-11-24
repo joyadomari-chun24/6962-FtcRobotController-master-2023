@@ -22,6 +22,17 @@ public class AutoTopRight extends OpModeBase
     String propLocation;
     PropDetectionProcessor processor = new PropDetectionProcessor(false);
 
+    //https://github.com/NoahBres/road-runner-quickstart/blob/advanced-examples/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/advanced/AsyncFollowingFSM.java
+    enum State
+    {
+        TRAJECTORY_1,
+        TRAJECTORY_2,
+        TURN_1,
+        TRAJECTORY_3,
+        WAIT_1,
+        TURN_2,
+        IDLE
+    }
     //Middle coordinates
     public static int centerPurpleForward = 30;
     public static int centerYellowX = 53;
@@ -99,14 +110,6 @@ public class AutoTopRight extends OpModeBase
                 //.back(rightBackup)
                 //.build();
 
-        //New center!
-        Trajectory otherPurple = roadrunnerMecanumDrive.trajectoryBuilder(startPose)
-                .forward(otherPurpleforward)
-                .build();
-        Trajectory rightBack = roadrunnerMecanumDrive.trajectoryBuilder(startPose)
-                .back(5)
-                .build();
-
         //Scoring yellow pixel
         Trajectory leftYellowScore = roadrunnerMecanumDrive.trajectoryBuilder(leftPurpleScore.end())
                 .lineToLinearHeading(new Pose2d(leftYellowX, leftYellowY, Math.toRadians(0)))
@@ -171,20 +174,12 @@ public class AutoTopRight extends OpModeBase
         {
             schedule(new SequentialCommandGroup(
                     clawL.closeClaw(), clawR.closeClaw(),
-                    //arm.transport(),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(otherPurple)),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.turn(Math.toRadians(-90))),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPurpleScore)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPurpleScore)),
-                    //arm.pickupFront(),
                     clawL.openClaw(),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPostPurple)),
                     arm.deployFront(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftYellowScore)),
                     clawR.openClaw(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkLeft))
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
-                   // arm.pickupFront()
             ));
         }
         else if (propLocation.equals("CENTER"))
@@ -192,20 +187,12 @@ public class AutoTopRight extends OpModeBase
             //Using the scheduler allows us to run commands in auto
             schedule(new SequentialCommandGroup(
                     clawL.closeClaw(), clawR.closeClaw(),
-                    //arm.transport(),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(otherPurple)),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.turn(Math.toRadians(-90))),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPurpleScore)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middlePurpleScore)),
-                    //arm.pickupFront(),
                     clawL.openClaw(),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPostPurple)),
                     arm.deployFront(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middleYellowScore)),
                     clawR.openClaw(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkMiddle))
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
-                    //arm.pickupFront()
             ));
         }
         else
@@ -213,23 +200,14 @@ public class AutoTopRight extends OpModeBase
             schedule(new SequentialCommandGroup(
                     clawL.closeClaw(), clawR.closeClaw(),
                     arm.deployFront(),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(otherPurple)),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.turn(Math.toRadians(-90))),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPurpleScore)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightYellowScore)),
                     clawR.openClaw(),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkRight)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightPurpleScore)),
                     arm.pickupFront(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.turn(Math.toRadians(-190))),
                     clawL.openClaw(),
                     arm.deployFront(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkRight))
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPostPurple)),
-                    //arm.deployFront(),
-                    //clawR.openClaw()
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
-                    //arm.pickupFront()
             ));
         }
 

@@ -189,6 +189,11 @@ public class SampleMecanumDrive extends MecanumDrive {
         waitForIdle();
     }
 
+    public void breakFollowing()
+    {
+        trajectorySequenceRunner.breakFollowing();
+    }
+
 
     public Pose2d getLastError() {
         return trajectorySequenceRunner.getLastPoseError();
