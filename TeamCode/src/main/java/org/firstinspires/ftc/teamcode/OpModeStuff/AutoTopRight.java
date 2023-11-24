@@ -129,16 +129,17 @@ public class AutoTopRight extends OpModeBase
         //right side scoring
         TrajectorySequence rightPurpleScore = roadrunnerMecanumDrive.trajectorySequenceBuilder(rightYellowScore.end())
                 .lineToLinearHeading(new Pose2d(rightPurpleX, rightPurpleY, Math.toRadians(0)))
+                .turn(Math.toRadians(-190))
                 .waitSeconds(2)
                 .build();
 
         //Parking
         Trajectory parkLeft = roadrunnerMecanumDrive.trajectoryBuilder(leftYellowScore.end())
-                .back(2)
+                .back(4)
                 .build();
 
         Trajectory parkMiddle = roadrunnerMecanumDrive.trajectoryBuilder(middleYellowScore.end())
-                .back(2)
+                .back(4)
                 .build();
 
         Trajectory parkRight = roadrunnerMecanumDrive.trajectoryBuilder(rightPurpleScore.end())
@@ -226,7 +227,7 @@ public class AutoTopRight extends OpModeBase
                     //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkRight)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(rightPurpleScore)),
                     arm.pickupFront(),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.turn(Math.toRadians(-190))),
+                    //new InstantCommand(() -> roadrunnerMecanumDrive.turn(Math.toRadians(-190))),
                     clawL.openClaw(),
                     arm.deployFront(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkRight))
