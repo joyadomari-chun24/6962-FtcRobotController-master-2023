@@ -119,11 +119,15 @@ public class AutoBottomRight extends OpModeBase
                 .waitSeconds(2)
                 .lineToLinearHeading(new Pose2d(trussBottomX, trussBottomY, Math.toRadians(-90)))
                 .waitSeconds(1)
+                .turn(Math.toRadians(90))
+                .waitSeconds(1)
                 .build();
 
         TrajectorySequence rightBottomTruss = roadrunnerMecanumDrive.trajectorySequenceBuilder(rightPurpleScore.end())
                 .waitSeconds(2)
                 .lineToLinearHeading(new Pose2d(trussBottomX, trussBottomY, Math.toRadians(-90)))
+                .waitSeconds(1)
+                .turn(Math.toRadians(90))
                 .waitSeconds(1)
                 .build();
 
@@ -134,17 +138,17 @@ public class AutoBottomRight extends OpModeBase
                 .build();
 
         TrajectorySequence leftTopTruss = roadrunnerMecanumDrive.trajectorySequenceBuilder(leftBottomTruss.end())
-                .lineToLinearHeading(new Pose2d(trussTopX, trussTopY, Math.toRadians(0)))
+                .lineToConstantHeading(new Vector2d(trussTopX, trussTopY))
                 .waitSeconds(1)
                 .build();
 
         TrajectorySequence middleTopTruss = roadrunnerMecanumDrive.trajectorySequenceBuilder(middleBottomTruss.end())
-                .lineToLinearHeading(new Pose2d(trussTopX, trussTopY, Math.toRadians(0)))
+                .lineToConstantHeading(new Vector2d(trussTopX, trussTopY))
                 .waitSeconds(1)
                 .build();
 
         TrajectorySequence rightTopTruss = roadrunnerMecanumDrive.trajectorySequenceBuilder(rightBottomTruss.end())
-                .lineToLinearHeading(new Pose2d(trussTopX, trussTopY, Math.toRadians(0)))
+                .lineToConstantHeading(new Vector2d(trussTopX, trussTopY))
                 .waitSeconds(1)
                 .build();
 

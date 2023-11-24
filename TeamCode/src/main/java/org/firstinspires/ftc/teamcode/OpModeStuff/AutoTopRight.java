@@ -130,7 +130,6 @@ public class AutoTopRight extends OpModeBase
         TrajectorySequence rightPurpleScore = roadrunnerMecanumDrive.trajectorySequenceBuilder(rightYellowScore.end())
                 .lineToLinearHeading(new Pose2d(rightPurpleX, rightPurpleY, Math.toRadians(0)))
                 .turn(Math.toRadians(-190))
-                .waitSeconds(2)
                 .build();
 
         //Parking
