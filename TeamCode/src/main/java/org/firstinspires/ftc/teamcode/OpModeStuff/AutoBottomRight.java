@@ -17,7 +17,7 @@ import org.firstinspires.ftc.vision.VisionPortal;
 public class AutoBottomRight extends OpModeBase
 {
     String propLocation;
-    PropDetectionProcessor processor = new PropDetectionProcessor(false);
+    PropDetectionProcessor processor = new PropDetectionProcessor(true);
 
     //Experimental coordinates
     public static int PurpleX = -36;
