@@ -60,7 +60,7 @@ public class AutoBottomLeft extends OpModeBase
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
                 .build();
 
-        Pose2d startPose = new Pose2d(-32, 63.5, Math.toRadians(-180));
+        Pose2d startPose = new Pose2d(-35, 64, Math.toRadians(-180));
 
         roadrunnerMecanumDrive.setPoseEstimate(startPose);
 
