@@ -32,8 +32,8 @@ public class AutoBottomRight extends OpModeBase
 
     //Middle coordinates
     public static double centerPurpleForward = 30 * 2.5;
-    public static int middleYellowX = 54;
-    public static int middleYellowY = -37;
+    public static int middleYellowX = 56;
+    public static int middleYellowY = -39;
 
     //New center!
     public static int otherPurpleforward = 22;
@@ -41,14 +41,14 @@ public class AutoBottomRight extends OpModeBase
     //Left coordinates
     public static int leftPurpleX = -43;
     public static int leftPurpleY = -40;
-    public static int leftYellowX = 55;
-    public static int leftYellowY = -33;
+    public static int leftYellowX = 57;
+    public static int leftYellowY = -35;
 
     //Right coordinates
     public static int rightPurpleX = -24;
     public static int rightPurpleY = -33;
-    public static int rightYellowX = 54;
-    public static int rightYellowY = -40;
+    public static int rightYellowX = 56;
+    public static int rightYellowY = -42;
     public static int rightBackup = 5;
 
     //Parking coordinates
@@ -187,15 +187,15 @@ public class AutoBottomRight extends OpModeBase
                 .build();
 
         Trajectory leftPark = roadrunnerMecanumDrive.trajectoryBuilder(leftYellowScore.end())
-                .back(4)
+                .back(6)
                 .build();
 
         Trajectory middlePark = roadrunnerMecanumDrive.trajectoryBuilder(middleYellowScore.end())
-                .back(4)
+                .back(6)
                 .build();
 
         Trajectory rightPark = roadrunnerMecanumDrive.trajectoryBuilder(rightYellowScore.end())
-                .back(4)
+                .back(6)
                 .build();
 
         while(!isStarted())
