@@ -31,6 +31,8 @@ public class TeleOpRedSide extends OpModeBase
         super.initialize();
 
         mecanumDrive.setBackdropAlignment(false);
+        clawL.autoClosing = true;
+        clawR.autoClosing = true;
 
         //aprilPortal.resumeStreaming();
 
