@@ -16,6 +16,7 @@ public class ClawSubsystem extends SubsystemBase
     private double closedPosition = 0.15;
     private double openPosition = 0.4;
     public boolean autoClosing = false;
+    private boolean isOpen = true;
     public ClawSubsystem(Servo theClaw, boolean isLeftClaw, ColorRangeSensor theColorSensor)
     {
         claw = theClaw;
@@ -28,18 +29,19 @@ public class ClawSubsystem extends SubsystemBase
     public void periodic()
     {
         super.periodic();
-        if (colorSensor.getDistance(DistanceUnit.INCH) < 0.5 && autoClosing) {
+        if (colorSensor.getDistance(DistanceUnit.INCH) < 0.5 && autoClosing && isOpen) {
             closeClaw();
+            isOpen = false;
         }
     }
 
     public Command closeClaw()
     {
-        return new InstantCommand(() -> {claw.setPosition(closedPosition);});
+        return new InstantCommand(() -> {claw.setPosition(closedPosition); isOpen = false;});
     }
 
     public Command openClaw()
     {
-        return new InstantCommand(() -> {claw.setPosition(openPosition);});
+        return new InstantCommand(() -> {claw.setPosition(openPosition); isOpen = true;});
     }
 }
