@@ -40,10 +40,6 @@ public class ScoringSlideSubsystem extends SubsystemBase
         motorLeft = scoringMotorL;
         motorRight = scoringMotorR;
         telemetry = tel;
-
-//        Kp = P;
-//        Ki = I;
-//        Kd = D;
         motorLeft.setDirection(reverseMotorL ? DcMotorSimple.Direction.REVERSE : DcMotorSimple.Direction.FORWARD);
         motorRight.setDirection(reverseMotorR ? DcMotorSimple.Direction.REVERSE : DcMotorSimple.Direction.FORWARD);
         motorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -61,9 +57,11 @@ public class ScoringSlideSubsystem extends SubsystemBase
         // First part sets motors to the joystick if the joystick is moving and sets target to it so slides stay when let go
         if (Math.abs(slidePower) > 0.05)
         {
-            motorLeft.setPower(slidePower/2);
-            motorRight.setPower(slidePower/2);
-            target = motorLeft.getCurrentPosition() + (int) slidePower * joystickScalar;
+            if (motorLeft.getCurrentPosition() + (int) slidePower * joystickScalar > 0) {
+                motorLeft.setPower(slidePower/2);
+                motorRight.setPower(slidePower/2);
+                target = motorLeft.getCurrentPosition() + (int) slidePower * joystickScalar;
+            }
         }
         else //If not, move slides to target (current pos from joystick+1 or a button's set position)
         {
@@ -72,6 +70,8 @@ public class ScoringSlideSubsystem extends SubsystemBase
         }
         telemetry.addData("PID Power L", powerL);
         telemetry.addData("PID Power R", powerR);
+        telemetry.addData("Target", target);
+
     }
 
     public Command extendToPosition(int targetPos)
