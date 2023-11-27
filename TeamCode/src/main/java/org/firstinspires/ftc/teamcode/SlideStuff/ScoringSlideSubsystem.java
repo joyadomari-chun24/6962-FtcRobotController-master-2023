@@ -71,7 +71,6 @@ public class ScoringSlideSubsystem extends SubsystemBase
         telemetry.addData("PID Power L", powerL);
         telemetry.addData("PID Power R", powerR);
         telemetry.addData("Target", target);
-
     }
 
     public Command extendToPosition(int targetPos)

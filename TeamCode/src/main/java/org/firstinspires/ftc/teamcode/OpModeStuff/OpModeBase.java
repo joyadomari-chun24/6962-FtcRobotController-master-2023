@@ -4,6 +4,8 @@ import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
+import com.qualcomm.robotcore.hardware.ColorRangeSensor;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
@@ -45,6 +47,7 @@ public class OpModeBase extends CommandOpMode
     protected DcMotorEx scoringSlideMotorL, scoringSlideMotorR, intakeSlideMotor;
     protected NavxMicroNavigationSensor navxMicro;
     protected DistanceSensor distanceSensor;
+    protected ColorRangeSensor colorSensorR, colorSensorL;
     protected SampleMecanumDrive roadrunnerMecanumDrive;
     protected GamepadEx gamepadEx1;
     protected GamepadEx gamepadEx2;
@@ -130,6 +133,8 @@ public class OpModeBase extends CommandOpMode
         scoringSlideMotorR = hardwareMap.get(DcMotorEx.class, "scoreSlideRight");
         navxMicro = hardwareMap.get(NavxMicroNavigationSensor.class, "navx");
         distanceSensor = hardwareMap.get(DistanceSensor.class, "distSensor");
+        colorSensorL = hardwareMap.get(ColorRangeSensor.class, "colorSensorL");
+        colorSensorR = hardwareMap.get(ColorRangeSensor.class, "colorSensorR");
         droneServo = hardwareMap.get(Servo.class, "droneLauncher");
         hangServoL = hardwareMap.get(Servo.class, "leftHangServo");
         hangServoR = hardwareMap.get(Servo.class, "rightHangServo");
@@ -172,8 +177,8 @@ public class OpModeBase extends CommandOpMode
         mecanumDrive = new MecanumDriveSubsystem(leftFront, leftRearLeftEncoder, rightFront, rightRearFrontEncoder, navxMicro, distanceSensor);
         scoringSlides = new ScoringSlideSubsystem(scoringSlideMotorL, scoringSlideMotorR, true, false, telemetry);
         roadrunnerMecanumDrive = new SampleMecanumDrive(hardwareMap);
-        clawL = new ClawSubsystem(clawServoL, true);
-        clawR = new ClawSubsystem(clawServoR, false);
+        clawL = new ClawSubsystem(clawServoL, true, colorSensorL);
+        clawR = new ClawSubsystem(clawServoR, false, colorSensorR);
         arm = new ArmSubsystem(leftPlatformServo, rightPlatformServo, wristServo);
         launcher = new DroneLaunchSubsystem(droneServo);
         hang = new HangSubsystem(hangServoL, hangServoR);
