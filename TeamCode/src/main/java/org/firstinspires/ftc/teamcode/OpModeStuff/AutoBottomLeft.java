@@ -167,17 +167,29 @@ public class AutoBottomLeft extends OpModeBase
         //Parking
         TrajectorySequence leftPark = roadrunnerMecanumDrive.trajectorySequenceBuilder(leftYellowScore.end())
                 .waitSeconds(2)
-                .back(4)
+                .back(6)
+                .turn(Math.toRadians(90))
+                .waitSeconds(1)
+                .back(24)
+                .strafeRight(10)
                 .build();
 
         TrajectorySequence middlePark = roadrunnerMecanumDrive.trajectorySequenceBuilder(middleYellowScore.end())
                 .waitSeconds(2)
-                .back(4)
+                .back(6)
+                .turn(Math.toRadians(90))
+                .waitSeconds(1)
+                .back(24)
+                .strafeRight(10)
                 .build();
 
         TrajectorySequence rightPark = roadrunnerMecanumDrive.trajectorySequenceBuilder(rightYellowScore.end())
                 .waitSeconds(2)
-                .back(4)
+                .back(6)
+                .turn(Math.toRadians(90))
+                .waitSeconds(1)
+                .back(24)
+                .strafeRight(10)
                 .build();
 
         //Trajectory parkBackup = roadrunnerMecanumDrive.trajectoryBuilder(trussPath.end())

@@ -186,16 +186,28 @@ public class AutoBottomRight extends OpModeBase
                 .lineToLinearHeading(new Pose2d(parkX, parkY, Math.toRadians(0)))
                 .build();
 
-        Trajectory leftPark = roadrunnerMecanumDrive.trajectoryBuilder(leftYellowScore.end())
+        TrajectorySequence leftPark = roadrunnerMecanumDrive.trajectorySequenceBuilder(leftYellowScore.end())
                 .back(6)
+                .turn(Math.toRadians(-90))
+                .waitSeconds(1)
+                .back(24)
+                .strafeLeft(10)
                 .build();
 
-        Trajectory middlePark = roadrunnerMecanumDrive.trajectoryBuilder(middleYellowScore.end())
+        TrajectorySequence middlePark = roadrunnerMecanumDrive.trajectorySequenceBuilder(middleYellowScore.end())
                 .back(6)
+                .turn(Math.toRadians(-90))
+                .waitSeconds(1)
+                .back(24)
+                .strafeLeft(10)
                 .build();
 
-        Trajectory rightPark = roadrunnerMecanumDrive.trajectoryBuilder(rightYellowScore.end())
+        TrajectorySequence rightPark = roadrunnerMecanumDrive.trajectorySequenceBuilder(rightYellowScore.end())
                 .back(6)
+                .turn(Math.toRadians(-90))
+                .waitSeconds(1)
+                .back(24)
+                .strafeLeft(10)
                 .build();
 
         while(!isStarted())
@@ -238,7 +250,7 @@ public class AutoBottomRight extends OpModeBase
                     //arm.deployFront(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(leftYellowScore)),
                     clawR.openClaw(),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPark)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(leftPark)),
                     //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
                     arm.pickupFront()
             ));
@@ -262,7 +274,7 @@ public class AutoBottomRight extends OpModeBase
                     //arm.deployFront(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(middleYellowScore)),
                     clawR.openClaw(),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middlePark)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(middlePark)),
                     //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
                     arm.pickupFront()
             ));
@@ -285,7 +297,7 @@ public class AutoBottomRight extends OpModeBase
                     //arm.deployFront(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(rightYellowScore)),
                     clawR.openClaw(),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightPark)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(rightPark)),
                     //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
                     arm.pickupFront()
             ));
