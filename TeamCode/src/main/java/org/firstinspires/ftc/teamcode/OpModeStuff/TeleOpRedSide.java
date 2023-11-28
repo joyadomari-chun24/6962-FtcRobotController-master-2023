@@ -144,9 +144,7 @@ public class TeleOpRedSide extends OpModeBase
         //Telemetry
         telemetry.addData("L Slide Position ", scoringSlideMotorL.getCurrentPosition());
         telemetry.addData("R Slide Position ", scoringSlideMotorR.getCurrentPosition());
-//        telemetry.addData("Slide Target ", );
-//        telemetry.addData("L Slide Power", );
-//        telemetry.addData("R Slide Power", );
+        telemetry.addData("Slide Controlling Joystick", gamepadEx2.getRightY());
         telemetry.addData("Gyro Heading ", gyroManager.getHeading());
         telemetry.addData("x cord", poseEstimate.getX());
         telemetry.addData("y cord", poseEstimate.getY());
