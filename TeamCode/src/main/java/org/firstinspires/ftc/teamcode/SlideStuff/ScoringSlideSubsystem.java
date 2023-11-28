@@ -24,7 +24,6 @@ public class ScoringSlideSubsystem extends SubsystemBase
     private int joystickScalar = 1;
     private double slideScalar = 0.45;
     private int target = 0;
-    public enum motorSide {LEFT, RIGHT}
     public Telemetry telemetry;
     FtcDashboard dashboard = FtcDashboard.getInstance();;
     public static double Kp = 0.006;
@@ -73,7 +72,7 @@ public class ScoringSlideSubsystem extends SubsystemBase
             }
             // could add "else {target = 0;}", but seems unnecessary, and could cause problems
         }
-        else //If not, move slides to target (current pos from joystick+1 or a button's set position)
+        else //If not, move slides to target (current pos from joystick or a button's set position)
         {
             motorLeft.setPower(powerL);
             motorRight.setPower(powerR);
@@ -91,11 +90,6 @@ public class ScoringSlideSubsystem extends SubsystemBase
     public Command slideMovement(DoubleSupplier motorPower)
     {
         return new RunCommand(() -> {slidePower = -1 * motorPower.getAsDouble();}, this);
-    }
-
-    public int getPosition(motorSide motorSide)
-    {
-        return (motorSide == motorSide.LEFT) ? motorLeft.getCurrentPosition() : motorRight.getCurrentPosition();
     }
 
     public double PIDControl(double target, DcMotorEx motor)
