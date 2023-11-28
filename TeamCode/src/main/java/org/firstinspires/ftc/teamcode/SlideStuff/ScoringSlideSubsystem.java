@@ -22,11 +22,12 @@ public class ScoringSlideSubsystem extends SubsystemBase
     private DcMotorEx motorLeft, motorRight;
     private double slidePower;
     private int joystickScalar = 1;
+    private double slideScalar = 0.45;
     private int target = 0;
     public enum motorSide {LEFT, RIGHT}
     public Telemetry telemetry;
     FtcDashboard dashboard = FtcDashboard.getInstance();;
-    public static double Kp = 0.001;
+    public static double Kp = 0.006;
     public static double Ki = 0;
     public static double Kd = 0;
     public static double Kg = 0; //tune till the slide holds itself in place
@@ -59,15 +60,15 @@ public class ScoringSlideSubsystem extends SubsystemBase
         {
             // if position positive, then can move
             if (motorLeft.getCurrentPosition() > -2) {
-                motorLeft.setPower(slidePower/2);
-                motorRight.setPower(slidePower/2);
+                motorLeft.setPower(slidePower * slideScalar);
+                motorRight.setPower(slidePower * slideScalar);
                 target = motorLeft.getCurrentPosition();
             }
             // if position negative, but slidePower is positive, then can move
             else if (motorLeft.getCurrentPosition() <= -2 && slidePower > 0)
             {
-                motorLeft.setPower(slidePower/2);
-                motorRight.setPower(slidePower/2);
+                motorLeft.setPower(slidePower * slideScalar);
+                motorRight.setPower(slidePower * slideScalar);
                 target = motorLeft.getCurrentPosition();
             }
             // could add "else {target = 0;}", but seems unnecessary, and could cause problems

@@ -175,7 +175,7 @@ public class OpModeBase extends CommandOpMode
 
         //Initialize subsystems
         mecanumDrive = new MecanumDriveSubsystem(leftFront, leftRearLeftEncoder, rightFront, rightRearFrontEncoder, navxMicro, distanceSensor);
-        scoringSlides = new ScoringSlideSubsystem(scoringSlideMotorL, scoringSlideMotorR, true, false, telemetry);
+        scoringSlides = new ScoringSlideSubsystem(scoringSlideMotorL, scoringSlideMotorR, false, true, telemetry);
         roadrunnerMecanumDrive = new SampleMecanumDrive(hardwareMap);
         clawL = new ClawSubsystem(clawServoL, true, colorSensorL);
         clawR = new ClawSubsystem(clawServoR, false, colorSensorR);
