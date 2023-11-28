@@ -11,11 +11,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.VisionStuff.PropDetectionProcessor;
-<<<<<<< Updated upstream
-=======
 import org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence.TrajectorySequence;
->>>>>>> Stashed changes
-import org.firstinspires.ftc.teamcode.roadrunner.drive.DriveConstants;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 @Config
