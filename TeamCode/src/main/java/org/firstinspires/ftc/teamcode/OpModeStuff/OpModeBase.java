@@ -145,13 +145,8 @@ public class OpModeBase extends CommandOpMode
         rightPlatformServo = hardwareMap.servo.get("rightPlatformServo");
         /*scoringSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         intakeSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);*/
-<<<<<<< Updated upstream
-        scoringSlideMotorL.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
-        scoringSlideMotorR.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
-=======
         scoringSlideMotorL.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         scoringSlideMotorR.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
->>>>>>> Stashed changes
         scoringSlideMotorL.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         scoringSlideMotorR.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         //intakeSlideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
