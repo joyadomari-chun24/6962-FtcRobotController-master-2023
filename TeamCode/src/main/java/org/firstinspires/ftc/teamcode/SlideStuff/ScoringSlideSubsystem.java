@@ -64,7 +64,7 @@ public class ScoringSlideSubsystem extends SubsystemBase
                 target = motorLeft.getCurrentPosition();
             }
             // if position negative, but slidePower is positive, then can move
-            else if (motorLeft.getCurrentPosition() <= -2 && Math.abs(slidePower) == slidePower)
+            else if (motorLeft.getCurrentPosition() <= -2 && slidePower > 0)
             {
                 motorLeft.setPower(slidePower/2);
                 motorRight.setPower(slidePower/2);
