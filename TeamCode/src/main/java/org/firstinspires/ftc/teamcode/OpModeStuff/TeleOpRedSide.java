@@ -142,10 +142,11 @@ public class TeleOpRedSide extends OpModeBase
         Pose2d poseEstimate = roadrunnerMecanumDrive.getPoseEstimate();
 
         //Telemetry
-        telemetry.addData("L Slide Position (subsystem)", scoringSlides.getPosition(ScoringSlideSubsystem.motorSide.LEFT));
-        telemetry.addData("R Slide Position (subsystem)", scoringSlides.getPosition(ScoringSlideSubsystem.motorSide.RIGHT));
-        telemetry.addData("L Slide Position (straight)", scoringSlideMotorL.getCurrentPosition());
-        telemetry.addData("R Slide Position (straight)", scoringSlideMotorR.getCurrentPosition());
+        telemetry.addData("L Slide Position ", scoringSlideMotorL.getCurrentPosition());
+        telemetry.addData("R Slide Position ", scoringSlideMotorR.getCurrentPosition());
+//        telemetry.addData("Slide Target ", );
+//        telemetry.addData("L Slide Power", );
+//        telemetry.addData("R Slide Power", );
         telemetry.addData("Gyro Heading ", gyroManager.getHeading());
         telemetry.addData("x cord", poseEstimate.getX());
         telemetry.addData("y cord", poseEstimate.getY());
