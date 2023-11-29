@@ -155,11 +155,11 @@ public class OpModeBase extends CommandOpMode
         gamepadEx2 = new GamepadEx(gamepad2);
 
         //April tag startup
-//        backdropAprilTag = new AprilTagProcessor.Builder().build();
-//        backdropAprilTag.setDecimation(2); // Higher decimation = increased performance but less distance
-//        aprilPortal = new VisionPortal.Builder()
-//                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 2")).addProcessor(backdropAprilTag)
-//                .build();
+        backdropAprilTag = new AprilTagProcessor.Builder().build();
+        backdropAprilTag.setDecimation(2); // Higher decimation = increased performance but less distance
+        aprilPortal = new VisionPortal.Builder()
+                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 2")).addProcessor(backdropAprilTag)
+                .build();
 
         //Set camera exposure to minimize motion blur (6 ms exposure, 250 gain)
 //        ExposureControl exposureControl = aprilPortal.getCameraControl(ExposureControl.class);
