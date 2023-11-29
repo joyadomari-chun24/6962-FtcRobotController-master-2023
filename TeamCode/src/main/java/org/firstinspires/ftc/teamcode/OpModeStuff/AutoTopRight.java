@@ -245,6 +245,7 @@ public class AutoTopRight extends OpModeBase
              */
             propLocation = processor.GetPropLocation();
             telemetry.addData("Prop Location: ", propLocation);
+            //telemetry.addData("April Camera state ", aprilPortal.getCameraState());
             telemetry.update();
         }
 
@@ -257,8 +258,6 @@ public class AutoTopRight extends OpModeBase
         {
             visionPortal.stopLiveView();
             visionPortal.stopStreaming();
-
-            //aprilPortal.resumeStreaming();
         }
 
         if(propLocation.equals("LEFT"))

@@ -209,6 +209,7 @@ public class AutoBottomLeft extends OpModeBase
              */
             propLocation = processor.GetPropLocation();
             telemetry.addData("Prop Location: ", propLocation);
+            telemetry.addData("Camera state ", aprilPortal.getCameraState());
             telemetry.update();
         }
 
@@ -219,6 +220,7 @@ public class AutoBottomLeft extends OpModeBase
         {
             visionPortal.stopLiveView();
             visionPortal.stopStreaming();
+            aprilPortal.resumeStreaming();
         }
 
         if(propLocation.equals("LEFT"))

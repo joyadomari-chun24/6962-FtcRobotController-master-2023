@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.OpModeStuff;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -30,11 +31,10 @@ public class TeleOpRedSide extends OpModeBase
     {
         super.initialize();
 
+        //aprilPortal.stopStreaming();
         mecanumDrive.setBackdropAlignment(false);
         clawL.autoClosing = true;
         clawR.autoClosing = true;
-
-        //aprilPortal.resumeStreaming();
 
         /*
         * Gamepad 2:
@@ -120,11 +120,6 @@ public class TeleOpRedSide extends OpModeBase
         //Slides
         gamepadEx2.getGamepadButton(LEFT_STICK_BUTTON).toggleWhenPressed(scoringSlides.extendToPosition(500), scoringSlides.extendToPosition(0));
         scoringSlides.setDefaultCommand(scoringSlides.slideMovement(gamepadEx2::getRightY));
-
-        //Drive to apriltag
-        gamepadEx1.getGamepadButton(DPAD_LEFT).whileHeld(new InstantCommand(() -> driveToAprilTag(redLeftAprilID)));
-        gamepadEx1.getGamepadButton(DPAD_UP).whileHeld(new InstantCommand(() -> driveToAprilTag(redCenterAprilID)));
-        gamepadEx1.getGamepadButton(DPAD_RIGHT).whileHeld(new InstantCommand(() -> driveToAprilTag(redRightAprilID)));
 
         mecanumDrive.setDefaultCommand(mecanumDrive.fieldCentric(gamepadEx1::getLeftX, gamepadEx1::getLeftY, gamepadEx1::getRightX, gyroManager::getHeading, telemetry));
         telemetry.log().clear();
