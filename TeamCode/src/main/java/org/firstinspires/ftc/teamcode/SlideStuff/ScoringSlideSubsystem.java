@@ -22,11 +22,11 @@ public class ScoringSlideSubsystem extends SubsystemBase
     private DcMotorEx motorLeft, motorRight;
     private double slidePower;
     private int joystickScalar = 1;
+    private double slideScalar = 0.45;
     private int target = 0;
-    public enum motorSide {LEFT, RIGHT}
     public Telemetry telemetry;
     FtcDashboard dashboard = FtcDashboard.getInstance();;
-    public static double Kp = 0;
+    public static double Kp = 0.006;
     public static double Ki = 0;
     public static double Kd = 0;
     public static double Kg = 0; //tune till the slide holds itself in place
@@ -57,13 +57,22 @@ public class ScoringSlideSubsystem extends SubsystemBase
         // First part sets motors to the joystick if the joystick is moving and sets target to it so slides stay when let go
         if (Math.abs(slidePower) > 0.05)
         {
-            if (motorLeft.getCurrentPosition() + (int) slidePower * joystickScalar > 0) {
-                motorLeft.setPower(slidePower/2);
-                motorRight.setPower(slidePower/2);
-                target = motorLeft.getCurrentPosition() + (int) slidePower * joystickScalar;
+            // if position positive, then can move
+            if (motorLeft.getCurrentPosition() > -2) {
+                motorLeft.setPower(slidePower * slideScalar);
+                motorRight.setPower(slidePower * slideScalar);
+                target = motorLeft.getCurrentPosition();
             }
+            // if position negative, but slidePower is positive, then can move
+            else if (motorLeft.getCurrentPosition() <= -2 && slidePower > 0)
+            {
+                motorLeft.setPower(slidePower * slideScalar);
+                motorRight.setPower(slidePower * slideScalar);
+                target = motorLeft.getCurrentPosition();
+            }
+            // could add "else {target = 0;}", but seems unnecessary, and could cause problems
         }
-        else //If not, move slides to target (current pos from joystick+1 or a button's set position)
+        else //If not, move slides to target (current pos from joystick or a button's set position)
         {
             motorLeft.setPower(powerL);
             motorRight.setPower(powerR);
@@ -80,12 +89,7 @@ public class ScoringSlideSubsystem extends SubsystemBase
 
     public Command slideMovement(DoubleSupplier motorPower)
     {
-        return new RunCommand(() -> {slidePower = motorPower.getAsDouble();}, this);
-    }
-
-    public int getPosition(motorSide motorSide)
-    {
-        return (motorSide == motorSide.LEFT) ? motorLeft.getCurrentPosition() : motorRight.getCurrentPosition();
+        return new RunCommand(() -> {slidePower = -1 * motorPower.getAsDouble();}, this);
     }
 
     public double PIDControl(double target, DcMotorEx motor)

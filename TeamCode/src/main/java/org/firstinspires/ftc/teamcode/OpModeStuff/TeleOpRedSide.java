@@ -118,7 +118,7 @@ public class TeleOpRedSide extends OpModeBase
         gamepadEx1.getGamepadButton(B).whenActive(gyroManager::reset);
 
         //Slides
-        gamepadEx2.getGamepadButton(LEFT_STICK_BUTTON).toggleWhenPressed(scoringSlides.extendToPosition(2000), scoringSlides.extendToPosition(0));
+        gamepadEx2.getGamepadButton(LEFT_STICK_BUTTON).toggleWhenPressed(scoringSlides.extendToPosition(500), scoringSlides.extendToPosition(0));
         scoringSlides.setDefaultCommand(scoringSlides.slideMovement(gamepadEx2::getRightY));
 
         //Drive to apriltag
@@ -144,9 +144,7 @@ public class TeleOpRedSide extends OpModeBase
         //Telemetry
         telemetry.addData("L Slide Position ", scoringSlideMotorL.getCurrentPosition());
         telemetry.addData("R Slide Position ", scoringSlideMotorR.getCurrentPosition());
-//        telemetry.addData("Slide Target ", );
-//        telemetry.addData("L Slide Power", );
-//        telemetry.addData("R Slide Power", );
+        telemetry.addData("Slide Controlling Joystick", gamepadEx2.getRightY());
         telemetry.addData("Gyro Heading ", gyroManager.getHeading());
         telemetry.addData("x cord", poseEstimate.getX());
         telemetry.addData("y cord", poseEstimate.getY());
