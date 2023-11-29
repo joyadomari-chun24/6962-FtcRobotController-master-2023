@@ -20,8 +20,8 @@ public class ClawSubsystem extends SubsystemBase
     public ClawSubsystem(Servo theClaw, boolean isLeftClaw, ColorRangeSensor theColorSensor)
     {
         claw = theClaw;
-        closedPosition = isLeftClaw ? closedPosition: 1-closedPosition;
-        openPosition = isLeftClaw ? openPosition: 1-openPosition;
+        closedPosition = isLeftClaw ? closedPosition: 0.98-closedPosition;
+        openPosition = isLeftClaw ? openPosition: 0.98-openPosition;
         colorSensor = theColorSensor;
     }
 
