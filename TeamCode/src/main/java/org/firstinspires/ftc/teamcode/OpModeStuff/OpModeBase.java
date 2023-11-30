@@ -158,6 +158,7 @@ public class OpModeBase extends CommandOpMode
         aprilPortal = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "aprilCam")).addProcessor(aprilProcessor)
                 .build();
+        //https://ftc-docs.firstinspires.org/en/latest/apriltag/vision_portal/vision_multiportal/vision-multiportal.html
 
         //Initialize subsystems
         mecanumDrive = new MecanumDriveSubsystem(leftFront, leftRearLeftEncoder, rightFront, rightRearFrontEncoder, navxMicro, distanceSensor);
