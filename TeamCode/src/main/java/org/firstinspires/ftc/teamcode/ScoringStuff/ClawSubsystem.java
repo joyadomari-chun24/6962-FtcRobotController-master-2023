@@ -30,7 +30,7 @@ public class ClawSubsystem extends SubsystemBase
     {
         super.periodic();
         if (colorSensor.getDistance(DistanceUnit.INCH) < 0.5 && autoClosing && isOpen) {
-            closeClaw();
+            schedule(closeClaw());
             isOpen = false;
         }
     }
