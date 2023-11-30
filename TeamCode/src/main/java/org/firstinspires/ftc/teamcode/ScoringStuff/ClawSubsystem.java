@@ -6,6 +6,7 @@ import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ColorRangeSensor;
+import org.firstinspires.ftc.teamcode.ScoringStuff.ArmSubsystem;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
@@ -29,8 +30,8 @@ public class ClawSubsystem extends SubsystemBase
     public void periodic()
     {
         super.periodic();
-        if (colorSensor.getDistance(DistanceUnit.INCH) < 0.5 && autoClosing && isOpen) {
-            schedule(closeClaw());
+        if (colorSensor.getDistance(DistanceUnit.INCH) < 0.5 && autoClosing && isOpen && !ArmSubsystem.isScoring) {
+            claw.setPosition(closedPosition);
             isOpen = false;
         }
     }

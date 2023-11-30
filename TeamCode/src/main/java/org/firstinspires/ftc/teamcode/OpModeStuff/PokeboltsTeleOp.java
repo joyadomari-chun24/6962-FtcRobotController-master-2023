@@ -4,6 +4,8 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.A;
@@ -23,7 +25,7 @@ import org.firstinspires.ftc.teamcode.SlideStuff.ScoringSlideSubsystem;
 
 
 @TeleOp(name="RedTeleOp", group="Active TeleOps")
-public class TeleOpRedSide extends OpModeBase
+public class PokeboltsTeleOp extends OpModeBase
 {
 
     @Override
@@ -155,7 +157,9 @@ public class TeleOpRedSide extends OpModeBase
         telemetry.addData("y cord", poseEstimate.getY());
         telemetry.addData("roadrunner predicted heading", poseEstimate.getHeading());
         telemetry.addData("Claw Target Position Left ", clawServoL.getPosition());
-        telemetry.addData("Claw Target Position Right ", clawServoL.getPosition());
+        telemetry.addData("Claw Target Position Right ", clawServoR.getPosition());
+        telemetry.addData("Color Sensor Right ", colorSensorR.getDistance(DistanceUnit.INCH));
+        telemetry.addData("Color Sensor Left ", colorSensorL.getDistance(DistanceUnit.INCH));
         telemetry.addData("Right Arm Position", rightPlatformServo.getPosition());
         telemetry.addData("Hang Position Left ", hangServoL.getPosition());
         telemetry.addData("Hang Position Right ", hangServoR.getPosition());
