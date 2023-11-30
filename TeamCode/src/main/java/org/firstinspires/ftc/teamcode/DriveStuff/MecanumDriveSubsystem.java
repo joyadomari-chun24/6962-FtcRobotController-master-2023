@@ -47,7 +47,11 @@ public class MecanumDriveSubsystem extends SubsystemBase
         super.periodic();
         if (aligningToBackdrop && distSensor.getDistance(DistanceUnit.CM) > 10)
         {
-            drive.driveRobotCentric(0, -0.25, 0);
+            drive.driveRobotCentric(0, -0.75, 0);
+        }
+        else if (aligningToBackdrop && distSensor.getDistance(DistanceUnit.CM) < 10)
+        {
+            drive.driveRobotCentric(0, 0.75, 0);
         }
     }
 
