@@ -156,7 +156,7 @@ public class OpModeBase extends CommandOpMode
         aprilProcessor = new AprilTagProcessor.Builder().build();
         aprilProcessor.setDecimation(2); // Higher decimation = increased performance but less distance
         aprilPortal = new VisionPortal.Builder()
-                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 2")).addProcessor(aprilProcessor)
+                .setCamera(hardwareMap.get(WebcamName.class, "aprilCam")).addProcessor(aprilProcessor)
                 .build();
 
         //Initialize subsystems
