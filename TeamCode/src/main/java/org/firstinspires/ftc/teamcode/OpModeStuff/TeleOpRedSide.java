@@ -125,6 +125,14 @@ public class TeleOpRedSide extends OpModeBase
         telemetry.log().clear();
         telemetry.log().add("TeleOpTest2 has initialized.");
         telemetry.update();
+
+        waitForStart();
+
+        if (aprilPortal.getCameraState() == VisionPortal.CameraState.STREAMING)
+        {
+            aprilPortal.stopLiveView();
+            aprilPortal.stopStreaming();
+        }
     }
 
     @Override
@@ -140,15 +148,15 @@ public class TeleOpRedSide extends OpModeBase
         telemetry.addData("L Slide Position ", scoringSlideMotorL.getCurrentPosition());
         telemetry.addData("R Slide Position ", scoringSlideMotorR.getCurrentPosition());
         telemetry.addData("Slide Controlling Joystick", gamepadEx2.getRightY());
+        telemetry.addData("Left Arm Position", leftPlatformServo.getPosition());
+        telemetry.addData("Wrist Position", wristServo.getPosition());
         telemetry.addData("Gyro Heading ", gyroManager.getHeading());
         telemetry.addData("x cord", poseEstimate.getX());
         telemetry.addData("y cord", poseEstimate.getY());
         telemetry.addData("roadrunner predicted heading", poseEstimate.getHeading());
         telemetry.addData("Claw Target Position Left ", clawServoL.getPosition());
         telemetry.addData("Claw Target Position Right ", clawServoL.getPosition());
-        telemetry.addData("Left Arm Position", leftPlatformServo.getPosition());
         telemetry.addData("Right Arm Position", rightPlatformServo.getPosition());
-        telemetry.addData("Wrist Position", wristServo.getPosition());
         telemetry.addData("Hang Position Left ", hangServoL.getPosition());
         telemetry.addData("Hang Position Right ", hangServoR.getPosition());
         telemetry.addData("Drone servo position", droneServo.getPosition());

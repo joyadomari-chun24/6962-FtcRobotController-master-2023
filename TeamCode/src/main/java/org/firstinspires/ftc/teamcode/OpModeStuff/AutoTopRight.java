@@ -78,7 +78,6 @@ public class AutoTopRight extends OpModeBase
     {
         super.initialize();
 
-
         VisionPortal visionPortal = new VisionPortal.Builder()
                 .addProcessor(processor)
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
@@ -235,7 +234,7 @@ public class AutoTopRight extends OpModeBase
 
         //return
 
-
+        //This just repeats in init
         while(!isStarted())
         {
             /*
@@ -248,6 +247,8 @@ public class AutoTopRight extends OpModeBase
             //telemetry.addData("April Camera state ", aprilPortal.getCameraState());
             telemetry.update();
         }
+
+        setAprilExposure();
 
         mecanumDrive.setBackdropAlignment(false);
 

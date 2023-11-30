@@ -31,14 +31,7 @@ public class AprilTagDriveTest extends OpModeBase
 
         if(isStopRequested()) return;
 
-        schedule(new SequentialCommandGroup(
-                new RunCommand(() -> driveUntilAprilTag(redTagId, 20))));
-
-//        if (aprilPortal.getCameraState() == VisionPortal.CameraState.STREAMING)
-//        {
-//            aprilPortal.stopLiveView();
-//            aprilPortal.stopStreaming();
-//        }
+        schedule(new RunCommand(() -> driveUntilAprilTag(redTagId, 20)));
     }
 
     @Override

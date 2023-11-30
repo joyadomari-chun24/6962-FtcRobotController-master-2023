@@ -63,8 +63,8 @@ public class OpModeBase extends CommandOpMode
     protected DroneLaunchSubsystem launcher;
     protected HangSubsystem hang;
     protected NavxManager gyroManager;
-    public int blueLeftAprilID = 1, blueCenterAprilID = 2, blueRightAprilID = 3, redLeftAprilID = 4, redCenterAprilID = 5, redRightAprilID = 6;
-    protected AprilTagProcessor backdropAprilTag;
+    public int redTagId = 8, blueTagId = 9;
+    protected AprilTagProcessor aprilProcessor;
     boolean targetFound;
     AprilTagDetection detectedTag;
     VisionPortal aprilPortal;
@@ -143,35 +143,21 @@ public class OpModeBase extends CommandOpMode
         clawServoR = hardwareMap.get(Servo.class, "rightClaw");
         leftPlatformServo = hardwareMap.servo.get("leftPlatformServo");
         rightPlatformServo = hardwareMap.servo.get("rightPlatformServo");
-        /*scoringSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        intakeSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);*/
-        scoringSlideMotorL.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        scoringSlideMotorR.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        //scoringSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+//        scoringSlideMotorL.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+//        scoringSlideMotorR.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         scoringSlideMotorL.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         scoringSlideMotorR.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        //intakeSlideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         gamepadEx1 = new GamepadEx(gamepad1);
         gamepadEx2 = new GamepadEx(gamepad2);
 
         //April tag startup
-        backdropAprilTag = new AprilTagProcessor.Builder().build();
-        backdropAprilTag.setDecimation(2); // Higher decimation = increased performance but less distance
+        aprilProcessor = new AprilTagProcessor.Builder().build();
+        aprilProcessor.setDecimation(2); // Higher decimation = increased performance but less distance
         aprilPortal = new VisionPortal.Builder()
-                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 2")).addProcessor(backdropAprilTag)
+                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 2")).addProcessor(aprilProcessor)
                 .build();
-
-        //Set camera exposure to minimize motion blur (6 ms exposure, 250 gain)
-//        ExposureControl exposureControl = aprilPortal.getCameraControl(ExposureControl.class);
-//        if (exposureControl.getMode() != ExposureControl.Mode.Manual)
-//        {
-//            exposureControl.setMode(ExposureControl.Mode.Manual);
-//            sleep(50);
-//        }
-//        exposureControl.setExposure(6, TimeUnit.MILLISECONDS);
-//        sleep(20);
-//        GainControl gainControl = aprilPortal.getCameraControl(GainControl.class);
-//        gainControl.setGain(250);
 
         //Initialize subsystems
         mecanumDrive = new MecanumDriveSubsystem(leftFront, leftRearLeftEncoder, rightFront, rightRearFrontEncoder, navxMicro, distanceSensor);
@@ -199,20 +185,24 @@ public class OpModeBase extends CommandOpMode
         telemetry.log().add("Base Initialization Complete. Good luck!");
         telemetry.clear();
         telemetry.update();
-
-//        ExposureControl exposureControl = aprilPortal.getCameraControl(ExposureControl.class);
-//        if (exposureControl.getMode() != ExposureControl.Mode.Manual)
-//        {
-//            exposureControl.setMode(ExposureControl.Mode.Manual);
-//            sleep(50);
-//        }
-//        exposureControl.setExposure(6, TimeUnit.MILLISECONDS);
-//        sleep(20);
-//        GainControl gainControl = aprilPortal.getCameraControl(GainControl.class);
-//        gainControl.setGain(250);
     }
 
-    //Put methods here
+    //Put methods here:
+
+    //Set camera exposure to minimize motion blur (6 ms exposure, 250 gain)
+    public void setAprilExposure()
+    {
+        ExposureControl exposureControl = aprilPortal.getCameraControl(ExposureControl.class);
+        if (exposureControl.getMode() != ExposureControl.Mode.Manual)
+        {
+            exposureControl.setMode(ExposureControl.Mode.Manual);
+            sleep(50);
+        }
+        exposureControl.setExposure(6, TimeUnit.MILLISECONDS);
+        sleep(20);
+        GainControl gainControl = aprilPortal.getCameraControl(GainControl.class);
+        gainControl.setGain(250);
+    }
 
     //Supplies a specific apriltag detection from webcam. This code is from the AprilTag example
     public void aprilTagDetect(int targetTag)
@@ -220,7 +210,7 @@ public class OpModeBase extends CommandOpMode
         targetFound = false;
         detectedTag = null;
 
-        List<AprilTagDetection> currentDetections = backdropAprilTag.getDetections();
+        List<AprilTagDetection> currentDetections = aprilProcessor.getDetections();
 
         telemetry.addLine("Scanning for april tags...");
 
