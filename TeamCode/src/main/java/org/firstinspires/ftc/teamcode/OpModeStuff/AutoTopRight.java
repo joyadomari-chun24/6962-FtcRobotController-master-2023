@@ -78,10 +78,15 @@ public class AutoTopRight extends OpModeBase
     {
         super.initialize();
 
-        VisionPortal colorPortal = new VisionPortal.Builder()
-                .addProcessor(processor)
+        VisionPortal colorPortal;
+//        = new VisionPortal.Builder()
+//                .addProcessor(processor)
+//                .setCamera(hardwareMap.get(WebcamName.class, "colorCam"))
+//                .build();
+        visionPortalBuilder = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "colorCam"))
-                .build();
+                .addProcessor(processor).setLiveViewContainerId(colorPortalId);
+        colorPortal = visionPortalBuilder.build();
 
         Pose2d startPose = new Pose2d(15.5, -63.5, Math.toRadians(0));
 
@@ -257,8 +262,9 @@ public class AutoTopRight extends OpModeBase
         //Turns off camera
         if (colorPortal.getCameraState() == VisionPortal.CameraState.STREAMING)
         {
-            colorPortal.stopLiveView();
-            colorPortal.stopStreaming();
+//            colorPortal.stopLiveView();
+//            colorPortal.stopStreaming();
+            colorPortal.close();
         }
 
         if(propLocation.equals("LEFT"))
