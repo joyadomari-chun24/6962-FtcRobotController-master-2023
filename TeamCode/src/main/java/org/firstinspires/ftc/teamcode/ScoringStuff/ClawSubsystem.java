@@ -15,28 +15,35 @@ import org.firstinspires.ftc.teamcode.ScoringStuff.ArmSubsystem;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
+////    public void schedule(TimerTask , long delay, long period)
+
 @Config
 public class ClawSubsystem extends SubsystemBase
 {
     private Servo claw;
     private ColorRangeSensor colorSensor;
-    private static double closedPosition = 0.16;
-    private static double openPosition = 0.4;
-    public static boolean autoClosing = false;
-
-    public static double leftClawValue = 0.955;
-
-    public static double rightClawValue = 0.97;
-    private static boolean isOpen = true;
+    private double closedPosition = 0.275;
+    private double openPosition = 0.37;
+    public boolean autoClosing = false;
+    public static double rightClawOffset = 0.98;
+    private boolean isOpen = true;
     public ClawSubsystem(Servo theClaw, boolean isLeftClaw, ColorRangeSensor theColorSensor)
     {
         claw = theClaw;
-        closedPosition = isLeftClaw ? closedPosition: leftClawValue-closedPosition;
-        openPosition = isLeftClaw ? openPosition: rightClawValue-openPosition;
+        closedPosition = isLeftClaw ? closedPosition: rightClawOffset-closedPosition;
+        openPosition = isLeftClaw ? openPosition: rightClawOffset-openPosition;
         colorSensor = theColorSensor;
     }
-//    public void schedule(TimerTask , long delay, long period)
-    @Override
+//    @Override
+//    public void periodic()
+//    {
+//        super.periodic();
+//        if (colorSensor.getDistance(DistanceUnit.INCH) < 0.5 && autoClosing && isOpen) {
+//                claw.setPosition(closedPosition);
+//                isOpen = false;
+//        }
+//    }
+    //    @Override
     public void periodic()
     {
         super.periodic();
@@ -44,28 +51,32 @@ public class ClawSubsystem extends SubsystemBase
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                isOpen = false;
+                isOpen = isOpen;
             }
         };
 
         Timer timer = new Timer();
 
-        if (colorSensor.getDistance(DistanceUnit.INCH) < 0.5 && autoClosing && isOpen && !ArmSubsystem.isScoring) {
+        if (colorSensor.getDistance(DistanceUnit.INCH) < 0.5 && autoClosing && isOpen) {
 
             claw.setPosition(closedPosition);
-
-            timer.scheduleAtFixedRate(task, 2000, 0);
-            }
+            isOpen = false;
+            timer.scheduleAtFixedRate(task, 1000, 1);
         }
-    
+    }
 
     public Command closeClaw()
     {
-        return new InstantCommand(() -> {claw.setPosition(closedPosition); isOpen = false;});
+        return new InstantCommand(() -> {isOpen = false; claw.setPosition(closedPosition);});
     }
 
     public Command openClaw()
     {
-        return new InstantCommand(() -> {claw.setPosition(openPosition); isOpen = true;});
+        return new InstantCommand(() -> {isOpen = true; claw.setPosition(openPosition); });
+    }
+
+    public boolean getOpen()
+    {
+        return isOpen;
     }
 }
