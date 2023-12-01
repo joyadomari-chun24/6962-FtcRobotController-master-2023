@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.OpModeStuff;
 
-import android.util.Size;
-
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
@@ -15,7 +13,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.robotcore.external.JavaUtil;
 import org.firstinspires.ftc.teamcode.EndgameStuff.HangSubsystem;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
@@ -79,9 +76,7 @@ public class OpModeBase extends CommandOpMode
     protected double aprilDrive = 0;
     protected double aprilTurn = 0;
     protected double aprilStrafe = 0;
-    protected int aprilPortalId;
-    public int colorPortalId;
-    protected VisionPortal.Builder visionPortalBuilder;
+
     ElapsedTime navxCalibrationTimer = new ElapsedTime();
 
     /*
@@ -157,23 +152,12 @@ public class OpModeBase extends CommandOpMode
         gamepadEx1 = new GamepadEx(gamepad1);
         gamepadEx2 = new GamepadEx(gamepad2);
 
-        //create a list of IDs
-        List myPortalsList;
-        myPortalsList = JavaUtil.makeIntegerList(VisionPortal.makeMultiPortalView(2, VisionPortal.MultiPortalLayout.HORIZONTAL));
-        aprilPortalId = ((Integer) JavaUtil.inListGet(myPortalsList, JavaUtil.AtMode.FROM_START, 0, false)).intValue();
-        colorPortalId = ((Integer) JavaUtil.inListGet(myPortalsList, JavaUtil.AtMode.FROM_START, 1, false)).intValue();
-
         //April tag startup
         aprilProcessor = new AprilTagProcessor.Builder().build();
         aprilProcessor.setDecimation(2); // Higher decimation = increased performance but less distance
-//        aprilPortal = new VisionPortal.Builder()
-//                .setCamera(hardwareMap.get(WebcamName.class, "aprilCam")).addProcessor(aprilProcessor)
-//                .build();
-        visionPortalBuilder = new VisionPortal.Builder()
-                .setCamera(hardwareMap.get(WebcamName.class, "aprilCam"))
-                .addProcessor(aprilProcessor).setLiveViewContainerId(aprilPortalId);
-        aprilPortal = visionPortalBuilder.build();
-
+        aprilPortal = new VisionPortal.Builder()
+                .setCamera(hardwareMap.get(WebcamName.class, "aprilCam")).addProcessor(aprilProcessor)
+                .build();
         //https://ftc-docs.firstinspires.org/en/latest/apriltag/vision_portal/vision_multiportal/vision-multiportal.html
 
         //Initialize subsystems
