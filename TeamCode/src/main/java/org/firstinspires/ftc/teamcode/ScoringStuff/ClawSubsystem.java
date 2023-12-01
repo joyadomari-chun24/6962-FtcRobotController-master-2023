@@ -20,19 +20,20 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 @Config
 public class ClawSubsystem extends SubsystemBase
 {
-    private Servo claw;
+    private Servo claw, ArmL;
     private ColorRangeSensor colorSensor;
     private double closedPosition = 0.275;
     private double openPosition = 0.37;
     public boolean autoClosing = false;
     public static double rightClawOffset = 0.98;
     private boolean isOpen = true;
-    public ClawSubsystem(Servo theClaw, boolean isLeftClaw, ColorRangeSensor theColorSensor)
+    public ClawSubsystem(Servo theClaw, boolean isLeftClaw, ColorRangeSensor theColorSensor, Servo leftArm)
     {
         claw = theClaw;
         closedPosition = isLeftClaw ? closedPosition: rightClawOffset-closedPosition;
         openPosition = isLeftClaw ? openPosition: rightClawOffset-openPosition;
         colorSensor = theColorSensor;
+        ArmL = leftArm;
     }
 //    @Override
 //    public void periodic()
@@ -48,20 +49,20 @@ public class ClawSubsystem extends SubsystemBase
     {
         super.periodic();
 
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                isOpen = isOpen;
-            }
-        };
+//        TimerTask task = new TimerTask() {
+//            @Override
+//            public void run() {
+//                isOpen = isOpen;
+//            }
+//        };
 
-        Timer timer = new Timer();
+        //Timer timer = new Timer();
 
-        if (colorSensor.getDistance(DistanceUnit.INCH) < 0.5 && autoClosing && isOpen) {
+        if (colorSensor.getDistance(DistanceUnit.INCH) < 0.5 && autoClosing && isOpen && ArmL.getPosition() > 0.7) {
 
             claw.setPosition(closedPosition);
             isOpen = false;
-            timer.scheduleAtFixedRate(task, 1000, 1);
+            //timer.scheduleAtFixedRate(task, 1000, 1);
         }
     }
 
