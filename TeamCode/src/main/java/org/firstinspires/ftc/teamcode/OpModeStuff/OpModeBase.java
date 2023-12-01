@@ -30,7 +30,6 @@ import org.firstinspires.ftc.teamcode.SlideStuff.ScoringSlideSubsystem;
 import org.firstinspires.ftc.teamcode.VisionStuff.PropDetectionProcessor;
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.vision.VisionPortal;
-import org.firstinspires.ftc.vision.VisionProcessor;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
@@ -72,7 +71,6 @@ public class OpModeBase extends CommandOpMode
     boolean targetFound;
     AprilTagDetection detectedTag;
     VisionPortal aprilPortal;
-    public VisionPortal colorPortal;
     protected double tagTargetDistance = 12.0;
     protected double aprilDriveGain = 0.02;
     protected double aprilTurnGain = 0.01;
@@ -160,23 +158,21 @@ public class OpModeBase extends CommandOpMode
         gamepadEx2 = new GamepadEx(gamepad2);
 
         //create a list of IDs
-//        List myPortalsList;
-//        myPortalsList = JavaUtil.makeIntegerList(VisionPortal.makeMultiPortalView(2, VisionPortal.MultiPortalLayout.HORIZONTAL));
-//        aprilPortalId = ((Integer) JavaUtil.inListGet(myPortalsList, JavaUtil.AtMode.FROM_START, 0, false)).intValue();
-//        colorPortalId = ((Integer) JavaUtil.inListGet(myPortalsList, JavaUtil.AtMode.FROM_START, 1, false)).intValue();
+        List myPortalsList;
+        myPortalsList = JavaUtil.makeIntegerList(VisionPortal.makeMultiPortalView(2, VisionPortal.MultiPortalLayout.HORIZONTAL));
+        aprilPortalId = ((Integer) JavaUtil.inListGet(myPortalsList, JavaUtil.AtMode.FROM_START, 0, false)).intValue();
+        colorPortalId = ((Integer) JavaUtil.inListGet(myPortalsList, JavaUtil.AtMode.FROM_START, 1, false)).intValue();
 
         //April tag startup
-//        aprilProcessor = new AprilTagProcessor.Builder().build();
-//        aprilProcessor.setDecimation(2); // Higher decimation = increased performance but less distance
+        aprilProcessor = new AprilTagProcessor.Builder().build();
+        aprilProcessor.setDecimation(2); // Higher decimation = increased performance but less distance
 //        aprilPortal = new VisionPortal.Builder()
 //                .setCamera(hardwareMap.get(WebcamName.class, "aprilCam")).addProcessor(aprilProcessor)
 //                .build();
-//        visionPortalBuilder = new VisionPortal.Builder()
-//                .setCamera(hardwareMap.get(WebcamName.class, "aprilCam"))
-//                .addProcessor(aprilProcessor).setLiveViewContainerId(aprilPortalId);
-//        aprilPortal = visionPortalBuilder.build();
-        initMultiPortals();
-        makeAprilPortal(aprilProcessor);
+        visionPortalBuilder = new VisionPortal.Builder()
+                .setCamera(hardwareMap.get(WebcamName.class, "aprilCam"))
+                .addProcessor(aprilProcessor).setLiveViewContainerId(aprilPortalId);
+        aprilPortal = visionPortalBuilder.build();
 
         //https://ftc-docs.firstinspires.org/en/latest/apriltag/vision_portal/vision_multiportal/vision-multiportal.html
 
@@ -291,30 +287,5 @@ public class OpModeBase extends CommandOpMode
         {
             driveToAprilTag(targetTag);
         } while(aprilDrive > 0.1 || aprilTurn > 0.1 || aprilStrafe > 0.1 && time - timestamp < timeoutInSeconds);
-    }
-
-    //Directly copying form the multiportal example for now.
-    private void initMultiPortals() {
-        List myPortalsList;
-
-        myPortalsList = JavaUtil.makeIntegerList(VisionPortal.makeMultiPortalView(2, VisionPortal.MultiPortalLayout.HORIZONTAL));
-        aprilPortalId = ((Integer) JavaUtil.inListGet(myPortalsList, JavaUtil.AtMode.FROM_START, 0, false)).intValue();
-        colorPortalId = ((Integer) JavaUtil.inListGet(myPortalsList, JavaUtil.AtMode.FROM_START, 1, false)).intValue();
-    }
-
-    private void makeAprilPortal(VisionProcessor processor) {
-        visionPortalBuilder = new VisionPortal.Builder()
-                .setCamera(hardwareMap.get(WebcamName.class, "aprilCam"))
-                .setCameraResolution(new Size(320, 240))
-                .addProcessor(processor).setLiveViewContainerId(aprilPortalId);
-        aprilPortal = visionPortalBuilder.build();
-    }
-
-    public void makeColorPortal(VisionProcessor processor) {
-        visionPortalBuilder = new VisionPortal.Builder()
-                .setCamera(hardwareMap.get(WebcamName.class, "colorCam"))
-                .setCameraResolution(new Size(320, 240))
-                .addProcessor(processor).setLiveViewContainerId(colorPortalId);
-        colorPortal = visionPortalBuilder.build();
     }
 }

@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.OpModeStuff;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -23,7 +24,7 @@ import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.RIGHT_STICK_BUTT
 import org.firstinspires.ftc.teamcode.SlideStuff.ScoringSlideSubsystem;
 
 
-@TeleOp(name="PokéboltsTeleOp", group="Active TeleOps")
+@TeleOp(name="RedTeleOp", group="Active TeleOps")
 public class PokeboltsTeleOp extends OpModeBase
 {
 
