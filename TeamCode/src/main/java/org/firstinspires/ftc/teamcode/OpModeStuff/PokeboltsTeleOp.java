@@ -120,7 +120,7 @@ public class PokeboltsTeleOp extends OpModeBase
         gamepadEx1.getGamepadButton(B).whenActive(gyroManager::reset);
 
         //Slides
-        gamepadEx2.getGamepadButton(LEFT_STICK_BUTTON).toggleWhenPressed(scoringSlides.extendToPosition(50), scoringSlides.extendToPosition(0));
+        gamepadEx2.getGamepadButton(LEFT_STICK_BUTTON).toggleWhenPressed(scoringSlides.extendToPosition(300), scoringSlides.extendToPosition(0));
         scoringSlides.setDefaultCommand(scoringSlides.slideMovement(gamepadEx2::getRightY));
 
         mecanumDrive.setDefaultCommand(mecanumDrive.fieldCentric(gamepadEx1::getLeftX, gamepadEx1::getLeftY, gamepadEx1::getRightX, gyroManager::getHeading, telemetry));
@@ -158,6 +158,8 @@ public class PokeboltsTeleOp extends OpModeBase
         telemetry.addData("roadrunner predicted heading", poseEstimate.getHeading());
         telemetry.addData("Claw Target Position Left ", clawServoL.getPosition());
         telemetry.addData("Claw Target Position Right ", clawServoR.getPosition());
+        telemetry.addData("isOpen Left", clawL.getOpen());
+        telemetry.addData("isOpen Right", clawR.getOpen());
         telemetry.addData("Color Sensor Right ", colorSensorR.getDistance(DistanceUnit.INCH));
         telemetry.addData("Color Sensor Left ", colorSensorL.getDistance(DistanceUnit.INCH));
         telemetry.addData("Right Arm Position", rightPlatformServo.getPosition());
