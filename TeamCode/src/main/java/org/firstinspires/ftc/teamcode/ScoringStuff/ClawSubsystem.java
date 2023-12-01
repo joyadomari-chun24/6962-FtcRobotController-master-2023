@@ -16,14 +16,14 @@ public class ClawSubsystem extends SubsystemBase
 {
     private Servo claw;
     private ColorRangeSensor colorSensor;
-    private double closedPosition = 0.16;
-    private double openPosition = 0.4;
-    public boolean autoClosing = false;
+    private static double closedPosition = 0.16;
+    private static double openPosition = 0.4;
+    public static boolean autoClosing = false;
 
-    public double leftClawValue = 0.965;
+    public static double leftClawValue = 0.965;
 
-    public double rightClawValue = 0.98;
-    private boolean isOpen = true;
+    public static double rightClawValue = 0.98;
+    private static boolean isOpen = true;
     public ClawSubsystem(Servo theClaw, boolean isLeftClaw, ColorRangeSensor theColorSensor)
     {
         claw = theClaw;
