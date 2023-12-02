@@ -48,7 +48,7 @@ public class ClawSubsystem extends SubsystemBase
     public void periodic()
     {
         super.periodic();
-        if (colorSensor.getDistance(DistanceUnit.INCH) < 0.5 && autoClosing && isOpen && ArmL.getPosition() > 0.7) {
+        if (colorSensor.getDistance(DistanceUnit.INCH) < 0.5 && autoClosing && isOpen && ArmL.getPosition() > 0.8) {
             claw.setPosition(closedPosition);
             isOpen = false;
         }
