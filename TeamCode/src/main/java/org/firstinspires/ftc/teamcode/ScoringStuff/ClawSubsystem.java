@@ -23,7 +23,7 @@ public class ClawSubsystem extends SubsystemBase
     private Servo claw, ArmL;
     private ColorRangeSensor colorSensor;
     private double closedPosition = 0.275;
-    private double openPosition = 0.37;
+    private double openPosition = 0.4;
     public boolean autoClosing = false;
     public static double rightClawOffset = 0.98;
     private boolean isOpen = true;
@@ -48,21 +48,9 @@ public class ClawSubsystem extends SubsystemBase
     public void periodic()
     {
         super.periodic();
-
-//        TimerTask task = new TimerTask() {
-//            @Override
-//            public void run() {
-//                isOpen = isOpen;
-//            }
-//        };
-
-        //Timer timer = new Timer();
-
         if (colorSensor.getDistance(DistanceUnit.INCH) < 0.5 && autoClosing && isOpen && ArmL.getPosition() > 0.7) {
-
             claw.setPosition(closedPosition);
             isOpen = false;
-            //timer.scheduleAtFixedRate(task, 1000, 1);
         }
     }
 

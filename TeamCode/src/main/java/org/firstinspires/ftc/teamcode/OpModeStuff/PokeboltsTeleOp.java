@@ -120,7 +120,7 @@ public class PokeboltsTeleOp extends OpModeBase
         gamepadEx1.getGamepadButton(B).whenActive(gyroManager::reset);
 
         //Slides
-        gamepadEx2.getGamepadButton(LEFT_STICK_BUTTON).toggleWhenPressed(scoringSlides.extendToPosition(300), scoringSlides.extendToPosition(0));
+        gamepadEx2.getGamepadButton(LEFT_STICK_BUTTON).toggleWhenPressed(scoringSlides.extendToPosition(500), scoringSlides.extendToPosition(0));
         scoringSlides.setDefaultCommand(scoringSlides.slideMovement(gamepadEx2::getRightY));
 
         mecanumDrive.setDefaultCommand(mecanumDrive.fieldCentric(gamepadEx1::getLeftX, gamepadEx1::getLeftY, gamepadEx1::getRightX, gyroManager::getHeading, telemetry));
