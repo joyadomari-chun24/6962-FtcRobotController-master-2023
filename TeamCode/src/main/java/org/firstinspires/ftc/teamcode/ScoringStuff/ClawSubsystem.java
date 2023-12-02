@@ -22,7 +22,7 @@ public class ClawSubsystem extends SubsystemBase
 {
     private Servo claw, ArmL;
     private ColorRangeSensor colorSensor;
-    private double closedPosition = 0.275;
+    private double closedPosition = 0.245;
     private double openPosition = 0.5;
     public boolean autoClosing = false;
     public static double rightClawOffset = 0.98;
