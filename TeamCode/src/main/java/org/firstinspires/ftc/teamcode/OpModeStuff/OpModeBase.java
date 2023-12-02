@@ -7,7 +7,6 @@ import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
 import com.qualcomm.robotcore.hardware.ColorRangeSensor;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -72,7 +71,7 @@ public class OpModeBase extends CommandOpMode
     public int redTagId = 8, blueTagId = 9;
     protected AprilTagProcessor aprilProcessor;
     protected PropDetectionProcessor colorProcessor;
-    VisionPortal aprilPortal, colorPortal;
+    public VisionPortal aprilPortal, colorPortal;
     VisionPortal.Builder visionPortalBuilder;
     protected double tagTargetDistance = 12.0;
     protected double aprilDriveGain = 0.02;
@@ -104,11 +103,13 @@ public class OpModeBase extends CommandOpMode
         /*
         * Config:
         *
+        * Todo: Everything needs to be redone! It doesn't match for some reason!
+        *
         * Motors + deadwheels
-        * Fl/Re - Ctl 2
-        * Bl/Le - Ctl 0
-        * Br/Fe - Ctl 3
-        * Fr - Ctl 1
+        * Fl/Re - Ctl 2?
+        * Bl/Le - Ctl 0?
+        * Br/Fe - Ctl 3?
+        * Fr - Ctl 1?
         *
         * Slides
         * Left Scoring - Exp 0?
@@ -116,18 +117,18 @@ public class OpModeBase extends CommandOpMode
         *
         * Scoring
         * Wrist - Exp 2
-        * Left Arm - Ctl 4
-        * Right Arm - Exp 1
-        * Left Claw - Ctl 5
+        * Left Arm - Ctl 4?
+        * Right Arm - Exp 0
+        * Left Claw - Ctl 3
         * Right Claw - Exp 4
         *
         * Sensors
-        * NavX - Ctl I2C 1
+        * NavX - Ctl I2C 1?
         * Distance Sensor - Ctl I2C ?
         *
         * Endgame
-        * Drone Launcher - Ctl 3
-        * Left Hang - Ctl 1
+        * Drone Launcher - Exp 5
+        * Left Hang - Ctl 1?
         * Right Hang - Exp 3
         *
         * */
@@ -311,4 +312,35 @@ public class OpModeBase extends CommandOpMode
 //            driveToAprilTag(targetTag);
 //        } while(aprilDrive > 0.1 || aprilTurn > 0.1 || aprilStrafe > 0.1 && time - timestamp < timeoutInSeconds);
 //    }
+
+    //temp telemetry method
+    private void AprilTag_telemetry_for_Portal_1() {
+        List<AprilTagDetection> myAprilTagDetections_1;
+        AprilTagDetection thisDetection_1;
+
+        // Get a list of AprilTag detections.
+        myAprilTagDetections_1 = aprilProcessor.getDetections();
+        telemetry.addData("Portal 1 - # AprilTags Detected", JavaUtil.listLength(myAprilTagDetections_1));
+        // Iterate through list and call a function to display info for each recognized AprilTag.
+        for (AprilTagDetection thisDetection_1_item : myAprilTagDetections_1) {
+            thisDetection_1 = thisDetection_1_item;
+            // Display info about the detection.
+            telemetry.addLine("");
+            if (thisDetection_1.metadata != null) {
+                telemetry.addLine("==== (ID " + thisDetection_1.id + ") " + thisDetection_1.metadata.name);
+                telemetry.addLine("XYZ " + JavaUtil.formatNumber(thisDetection_1.ftcPose.x, 6, 1) + " " + JavaUtil.formatNumber(thisDetection_1.ftcPose.y, 6, 1) + " " + JavaUtil.formatNumber(thisDetection_1.ftcPose.z, 6, 1) + "  (inch)");
+                telemetry.addLine("PRY " + JavaUtil.formatNumber(thisDetection_1.ftcPose.yaw, 6, 1) + " " + JavaUtil.formatNumber(thisDetection_1.ftcPose.pitch, 6, 1) + " " + JavaUtil.formatNumber(thisDetection_1.ftcPose.roll, 6, 1) + "  (deg)");
+                telemetry.addLine("RBE " + JavaUtil.formatNumber(thisDetection_1.ftcPose.range, 6, 1) + " " + JavaUtil.formatNumber(thisDetection_1.ftcPose.bearing, 6, 1) + " " + JavaUtil.formatNumber(thisDetection_1.ftcPose.elevation, 6, 1) + "  (inch, deg, deg)");
+            } else {
+                telemetry.addLine("==== (ID " + thisDetection_1.id + ") Unknown");
+                telemetry.addLine("Center " + JavaUtil.formatNumber(thisDetection_1.center.x, 6, 0) + "" + JavaUtil.formatNumber(thisDetection_1.center.y, 6, 0) + " (pixels)");
+            }
+        }
+    }
+
+    @Override
+    public void run() {
+        super.run();
+        AprilTag_telemetry_for_Portal_1();
+    }
 }
