@@ -30,8 +30,6 @@ public class AprilTagDriveTest extends OpModeBase
         waitForStart();
 
         if(isStopRequested()) return;
-
-        schedule(new RunCommand(() -> driveUntilAprilTag(redTagId, 20)));
     }
 
     @Override
