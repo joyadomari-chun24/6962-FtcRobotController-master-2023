@@ -248,8 +248,6 @@ public class AutoTopRight extends OpModeBase
             telemetry.update();
         }
 
-        setAprilExposure();
-
         mecanumDrive.setBackdropAlignment(false);
 
         if(isStopRequested()) return;

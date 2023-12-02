@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.DriveStuff;
 
+import android.util.Size;
+
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.InstantCommand;
@@ -11,11 +13,23 @@ import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.JavaUtil;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainControl;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.VisionStuff.PropDetectionProcessor;
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.VisionProcessor;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.function.DoubleSupplier;
 
 public class MecanumDriveSubsystem extends SubsystemBase
@@ -29,6 +43,8 @@ public class MecanumDriveSubsystem extends SubsystemBase
     private final MecanumDrive drive;
     private DistanceSensor distSensor;
     private boolean aligningToBackdrop = false;
+    private double aligningInches = 0.75;
+
     private ElapsedTime time = new ElapsedTime();
     public Telemetry telemetry;
 
@@ -45,11 +61,11 @@ public class MecanumDriveSubsystem extends SubsystemBase
     public void periodic()
     {
         super.periodic();
-        if (aligningToBackdrop && distSensor.getDistance(DistanceUnit.INCH) > 0.5)
+        if (aligningToBackdrop && distSensor.getDistance(DistanceUnit.INCH) > aligningInches)
         {
             drive.driveRobotCentric(0, -0.75, 0);
         }
-        else if (aligningToBackdrop && distSensor.getDistance(DistanceUnit.INCH) < 0.5)
+        else if (aligningToBackdrop && distSensor.getDistance(DistanceUnit.INCH) < aligningInches)
         {
             drive.driveRobotCentric(0, 0.75, 0);
         }

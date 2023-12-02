@@ -1,11 +1,12 @@
 package org.firstinspires.ftc.teamcode.OpModeStuff;
 
+import android.util.Size;
+
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
 import com.qualcomm.robotcore.hardware.ColorRangeSensor;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
@@ -13,6 +14,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.JavaUtil;
 import org.firstinspires.ftc.teamcode.EndgameStuff.HangSubsystem;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
@@ -27,6 +29,7 @@ import org.firstinspires.ftc.teamcode.SlideStuff.ScoringSlideSubsystem;
 import org.firstinspires.ftc.teamcode.VisionStuff.PropDetectionProcessor;
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.VisionProcessor;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
@@ -44,17 +47,15 @@ public class OpModeBase extends CommandOpMode
      *
      * */
     protected MotorEx leftFront, leftRearLeftEncoder, rightRearFrontEncoder, rightFront;
-    protected DcMotorEx scoringSlideMotorL, scoringSlideMotorR, intakeSlideMotor;
+    protected DcMotorEx scoringSlideMotorL, scoringSlideMotorR;
     protected NavxMicroNavigationSensor navxMicro;
     protected DistanceSensor distanceSensor;
     protected ColorRangeSensor colorSensorR, colorSensorL;
     protected SampleMecanumDrive roadrunnerMecanumDrive;
     protected GamepadEx gamepadEx1;
     protected GamepadEx gamepadEx2;
-    //protected IntakeSlideSubsystem intakeSlides;
     protected ScoringSlideSubsystem scoringSlides;
     protected MecanumDriveSubsystem mecanumDrive;
-    protected PropDetectionProcessor propDetectionPipeline;
     protected Servo droneServo, ArmServoL, ArmServoR, hangServoL, hangServoR;
     protected Servo clawServoL, clawServoR, wristServo, leftPlatformServo, rightPlatformServo;
     protected ClawSubsystem clawL;
@@ -63,11 +64,16 @@ public class OpModeBase extends CommandOpMode
     protected DroneLaunchSubsystem launcher;
     protected HangSubsystem hang;
     protected NavxManager gyroManager;
+    ElapsedTime navxCalibrationTimer = new ElapsedTime();
+
+    //here are the camera variables:
+    public boolean targetFound;
+    private AprilTagDetection detectedTag;
     public int redTagId = 8, blueTagId = 9;
     protected AprilTagProcessor aprilProcessor;
-    boolean targetFound;
-    AprilTagDetection detectedTag;
-    VisionPortal aprilPortal;
+    protected PropDetectionProcessor colorProcessor;
+    VisionPortal aprilPortal, colorPortal;
+    VisionPortal.Builder visionPortalBuilder;
     protected double tagTargetDistance = 12.0;
     protected double aprilDriveGain = 0.02;
     protected double aprilTurnGain = 0.01;
@@ -76,8 +82,8 @@ public class OpModeBase extends CommandOpMode
     protected double aprilDrive = 0;
     protected double aprilTurn = 0;
     protected double aprilStrafe = 0;
-
-    ElapsedTime navxCalibrationTimer = new ElapsedTime();
+    private int colorPortalId;
+    private int aprilPortalId;
 
     /*
     * Things with positions to be reset if needed:
@@ -143,9 +149,6 @@ public class OpModeBase extends CommandOpMode
         clawServoR = hardwareMap.get(Servo.class, "rightClaw");
         leftPlatformServo = hardwareMap.servo.get("leftPlatformServo");
         rightPlatformServo = hardwareMap.servo.get("rightPlatformServo");
-        //scoringSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-//        scoringSlideMotorL.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-//        scoringSlideMotorR.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         scoringSlideMotorL.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         scoringSlideMotorR.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
@@ -153,11 +156,11 @@ public class OpModeBase extends CommandOpMode
         gamepadEx2 = new GamepadEx(gamepad2);
 
         //April tag startup
-        aprilProcessor = new AprilTagProcessor.Builder().build();
-        aprilProcessor.setDecimation(2); // Higher decimation = increased performance but less distance
-        aprilPortal = new VisionPortal.Builder()
-                .setCamera(hardwareMap.get(WebcamName.class, "aprilCam")).addProcessor(aprilProcessor)
-                .build();
+//        aprilProcessor = new AprilTagProcessor.Builder().build();
+//        aprilProcessor.setDecimation(2); // Higher decimation = increased performance but less distance
+//        aprilPortal = new VisionPortal.Builder()
+//                .setCamera(hardwareMap.get(WebcamName.class, "aprilCam")).addProcessor(aprilProcessor)
+//                .build();
         //https://ftc-docs.firstinspires.org/en/latest/apriltag/vision_portal/vision_multiportal/vision-multiportal.html
 
         //Initialize subsystems
@@ -173,6 +176,10 @@ public class OpModeBase extends CommandOpMode
 
         //Put drone launcher in set position
         launcher.setDrone();
+
+        //Initialize processors
+        initMultiPortals();
+        initProcessors();
 
         // Wait until the gyro calibration is complete
         navxCalibrationTimer.reset();
@@ -191,9 +198,9 @@ public class OpModeBase extends CommandOpMode
     //Put methods here:
 
     //Set camera exposure to minimize motion blur (6 ms exposure, 250 gain)
-    public void setAprilExposure()
+    public void setAprilExposure(VisionPortal portal)
     {
-        ExposureControl exposureControl = aprilPortal.getCameraControl(ExposureControl.class);
+        ExposureControl exposureControl = portal.getCameraControl(ExposureControl.class);
         if (exposureControl.getMode() != ExposureControl.Mode.Manual)
         {
             exposureControl.setMode(ExposureControl.Mode.Manual);
@@ -201,8 +208,40 @@ public class OpModeBase extends CommandOpMode
         }
         exposureControl.setExposure(6, TimeUnit.MILLISECONDS);
         sleep(20);
-        GainControl gainControl = aprilPortal.getCameraControl(GainControl.class);
+        GainControl gainControl = portal.getCameraControl(GainControl.class);
         gainControl.setGain(250);
+    }
+
+    //Here are the computer vision methods:
+    public void initMultiPortals() {
+        List myPortalsList;
+
+        myPortalsList = JavaUtil.makeIntegerList(VisionPortal.makeMultiPortalView(2, VisionPortal.MultiPortalLayout.HORIZONTAL));
+        colorPortalId = ((Integer) JavaUtil.inListGet(myPortalsList, JavaUtil.AtMode.FROM_START, 0, false)).intValue();
+        aprilPortalId = ((Integer) JavaUtil.inListGet(myPortalsList, JavaUtil.AtMode.FROM_START, 1, false)).intValue();
+    }
+
+    public void initProcessors() {
+        colorProcessor = new PropDetectionProcessor(false);
+        AprilTagProcessor.Builder aprilTagProcessorBuilder = new AprilTagProcessor.Builder();
+        aprilProcessor = aprilTagProcessorBuilder.build();
+        makeColorPortal("colorCam", colorPortalId, colorProcessor);
+        makeAprilPortal("aprilCam", aprilPortalId, aprilProcessor);
+    }
+
+    private void makeColorPortal(String name, int portalId, VisionProcessor processor) {
+        visionPortalBuilder = new VisionPortal.Builder()
+                .setCamera(hardwareMap.get(WebcamName.class, name))
+                .setCameraResolution(new Size(320, 240))
+                .addProcessor(processor).setLiveViewContainerId(portalId);
+        colorPortal = visionPortalBuilder.build();
+    }
+    private void makeAprilPortal(String name, int portalId, VisionProcessor processor) {
+        visionPortalBuilder = new VisionPortal.Builder()
+                .setCamera(hardwareMap.get(WebcamName.class, name))
+                .setCameraResolution(new Size(320, 240))
+                .addProcessor(processor).setLiveViewContainerId(portalId);
+        aprilPortal = visionPortalBuilder.build();
     }
 
     //Supplies a specific apriltag detection from webcam. This code is from the AprilTag example
@@ -264,12 +303,12 @@ public class OpModeBase extends CommandOpMode
     }
 
     //VERY EXPERIMENTAL; Drives robot until it is aligned with apriltag or the timeout passes
-    public void driveUntilAprilTag(int targetTag, int timeoutInSeconds)
-    {
-        int timestamp = (int) time;
-        do
-        {
-            driveToAprilTag(targetTag);
-        } while(aprilDrive > 0.1 || aprilTurn > 0.1 || aprilStrafe > 0.1 && time - timestamp < timeoutInSeconds);
-    }
+//    public void driveUntilAprilTag(int targetTag, int timeoutInSeconds)
+//    {
+//        int timestamp = (int) time;
+//        do
+//        {
+//            driveToAprilTag(targetTag);
+//        } while(aprilDrive > 0.1 || aprilTurn > 0.1 || aprilStrafe > 0.1 && time - timestamp < timeoutInSeconds);
+//    }
 }
