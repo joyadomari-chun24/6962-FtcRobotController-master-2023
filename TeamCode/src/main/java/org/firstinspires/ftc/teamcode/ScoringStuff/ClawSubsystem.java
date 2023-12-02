@@ -7,6 +7,8 @@ import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ColorRangeSensor;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
 import java.util.TimerTask;
 import java.util.Timer;
 import java.lang.Object;
@@ -15,18 +17,18 @@ import org.firstinspires.ftc.teamcode.ScoringStuff.ArmSubsystem;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-////    public void schedule(TimerTask , long delay, long period)
-
 @Config
 public class ClawSubsystem extends SubsystemBase
 {
     private Servo claw, ArmL;
     private ColorRangeSensor colorSensor;
     private double closedPosition = 0.275;
-    private double openPosition = 0.4;
+    private double openPosition = 0.5;
     public boolean autoClosing = false;
     public static double rightClawOffset = 0.98;
     private boolean isOpen = true;
+    private double detectionInches = 0.8;
+    private ElapsedTime colorSensorTimer = new ElapsedTime();
     public ClawSubsystem(Servo theClaw, boolean isLeftClaw, ColorRangeSensor theColorSensor, Servo leftArm)
     {
         claw = theClaw;
@@ -35,20 +37,13 @@ public class ClawSubsystem extends SubsystemBase
         colorSensor = theColorSensor;
         ArmL = leftArm;
     }
-//    @Override
-//    public void periodic()
-//    {
-//        super.periodic();
-//        if (colorSensor.getDistance(DistanceUnit.INCH) < 0.5 && autoClosing && isOpen) {
-//                claw.setPosition(closedPosition);
-//                isOpen = false;
-//        }
-//    }
-    //    @Override
+
+    @Override
     public void periodic()
     {
         super.periodic();
-        if (colorSensor.getDistance(DistanceUnit.INCH) < 0.5 && autoClosing && isOpen && ArmL.getPosition() > 0.8) {
+        if (colorSensor.getDistance(DistanceUnit.INCH) < detectionInches && autoClosing && isOpen && ArmL.getPosition() > 0.8 && colorSensorTimer.seconds() > 1)
+        {
             claw.setPosition(closedPosition);
             isOpen = false;
         }
@@ -61,7 +56,7 @@ public class ClawSubsystem extends SubsystemBase
 
     public Command openClaw()
     {
-        return new InstantCommand(() -> {isOpen = true; claw.setPosition(openPosition); });
+        return new InstantCommand(() -> {isOpen = true; claw.setPosition(openPosition); colorSensorTimer.reset();});
     }
 
     public boolean getOpen()
