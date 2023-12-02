@@ -5,6 +5,7 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.arcrobotics.ftclib.command.InstantCommand;
+import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -30,6 +31,11 @@ public class AprilTagDriveTest extends OpModeBase
         waitForStart();
 
         if(isStopRequested()) return;
+
+        schedule(new ParallelCommandGroup(
+                arm.deployFront(),
+                new RunCommand(() -> driveUntilAprilTag(redTagId, 20))));
+        //todo: rewrite this and look into scheduling during opmode
     }
 
     @Override
@@ -38,6 +44,8 @@ public class AprilTagDriveTest extends OpModeBase
         super.run();
         roadrunnerMecanumDrive.update();
         Pose2d poseEstimate = roadrunnerMecanumDrive.getPoseEstimate();
+
+
 
         telemetry.addData("Gyro Heading", gyroManager.getHeading());
         telemetry.addData("x cord", poseEstimate.getX());

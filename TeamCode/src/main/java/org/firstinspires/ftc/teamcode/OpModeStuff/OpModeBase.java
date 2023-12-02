@@ -304,14 +304,15 @@ public class OpModeBase extends CommandOpMode
     }
 
     //VERY EXPERIMENTAL; Drives robot until it is aligned with apriltag or the timeout passes
-//    public void driveUntilAprilTag(int targetTag, int timeoutInSeconds)
-//    {
-//        int timestamp = (int) time;
-//        do
-//        {
-//            driveToAprilTag(targetTag);
-//        } while(aprilDrive > 0.1 || aprilTurn > 0.1 || aprilStrafe > 0.1 && time - timestamp < timeoutInSeconds);
-//    }
+    public void driveUntilAprilTag(int targetTag, int timeoutInSeconds)
+    {
+        navxCalibrationTimer.reset();
+        int timestamp = (int) navxCalibrationTimer.seconds();
+        do
+        {
+            driveToAprilTag(targetTag);
+        } while(/*aprilDrive > 0.1 || aprilTurn > 0.1 || aprilStrafe > 0.1 &&*/ navxCalibrationTimer.seconds() - timestamp < timeoutInSeconds);
+    }
 
     //temp telemetry method
     private void AprilTag_telemetry_for_Portal_1() {

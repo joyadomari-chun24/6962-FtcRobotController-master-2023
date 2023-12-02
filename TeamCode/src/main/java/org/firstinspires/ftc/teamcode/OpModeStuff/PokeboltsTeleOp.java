@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.OpModeStuff;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.arcrobotics.ftclib.command.InstantCommand;
+import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -24,7 +25,7 @@ import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.RIGHT_STICK_BUTT
 import org.firstinspires.ftc.teamcode.SlideStuff.ScoringSlideSubsystem;
 
 
-@TeleOp(name="RedTeleOp", group="Active TeleOps")
+@TeleOp(name="PokéboltsTeleOp", group="Active TeleOps")
 public class PokeboltsTeleOp extends OpModeBase
 {
 
@@ -43,15 +44,19 @@ public class PokeboltsTeleOp extends OpModeBase
         *
         * Left joystick - Scoring Slides
         *
-        * Right joystick - Adjustable Wrist (Currently D-Pad Left and Right)
+        * Left joystick button - Back score
+        *
+        * D-Pad left and right - Adjustable Wrist
         *
         * D-Pad Up and Down - Adjustable Arm
         *
-        * Right bumper - Claw Toggle
+        * Right bumper - Right claw Toggle
+        *
+        * Left bumper - left claw toggle
         *
         * A - Ground Pickup Position
         *
-        * B - Retracted Position
+        * B - Back score position (without slides)
         *
         * Y - Front Scoring Position
         *
@@ -64,19 +69,23 @@ public class PokeboltsTeleOp extends OpModeBase
         *
         * Left joystick - strafe
         *
+        * Left joystick button - straight drive
+        *
         * Right joystick - turn
         *
         * Left Bumper - slow mode
         *
+        * Right Bumper - align to backdrop
+        *
+        * Left D-Pad - strafe left
+        *
+        * Right D-Pad - strafe right
+        *
         * B - reset gyro
-        *
-        * D-Pad Up - drive to backdrop (not implemented)
-        *
-        * D-Pad Down - drive to human player station (not implemented)
         *
         * X and Y - Drone launch
         *
-        * A and B - Hang
+        * A and X - Hang
         *
         * */
 
@@ -85,28 +94,29 @@ public class PokeboltsTeleOp extends OpModeBase
 
         //Straight drives
         gamepadEx1.getGamepadButton(LEFT_STICK_BUTTON).whileHeld(mecanumDrive.roboCentric(0, 1, 0));
-        gamepadEx1.getGamepadButton(DPAD_LEFT).whileHeld(mecanumDrive.roboCentric(1, 0, 0));
-        gamepadEx1.getGamepadButton(DPAD_RIGHT).whileHeld(mecanumDrive.roboCentric(-1, 0, 0));
+        gamepadEx1.getGamepadButton(DPAD_LEFT).whileHeld(mecanumDrive.roboCentric(-1, 0, 0));
+        gamepadEx1.getGamepadButton(DPAD_RIGHT).whileHeld(mecanumDrive.roboCentric(1, 0, 0));
 
         //Align with backdrop
-        gamepadEx1.getGamepadButton(RIGHT_BUMPER).toggleWhenPressed(new InstantCommand(() -> mecanumDrive.setBackdropAlignment(false)), new InstantCommand(() -> mecanumDrive.setBackdropAlignment(true)));
+        gamepadEx1.getGamepadButton(RIGHT_BUMPER).whileHeld(new InstantCommand(() -> mecanumDrive.alignToBackdrop()));
 
         //Drone launcher
         gamepadEx1.getGamepadButton(X).and(gamepadEx1.getGamepadButton(Y)).toggleWhenActive(launcher.setDrone(), launcher.fireDrone());
 
         //Hang
-        gamepadEx1.getGamepadButton(B).and(gamepadEx1.getGamepadButton(A)).whileActiveOnce(hang.hangRobot());
+        gamepadEx1.getGamepadButton(X).and(gamepadEx1.getGamepadButton(A)).whileActiveOnce(hang.hangRobot());
 
         //Claw
         gamepadEx2.getGamepadButton(RIGHT_BUMPER).toggleWhenPressed(clawR.openClaw(), clawR.closeClaw());
         gamepadEx2.getGamepadButton(LEFT_BUMPER).toggleWhenPressed(clawL.openClaw(), clawL.closeClaw());
         //tyler controller set to close, isaiah controller set to open, request from drivers. Tyler said its more effecient because he can intake better, while isaiah can focus on scoring
 
-        //Arm/wrist positions (whenActive and whileHeld both work, so they're split among the buttons here for fun)
+        //Arm/wrist/slide positions (whenActive and whileHeld both work, so they're split among the buttons here for fun)
         gamepadEx2.getGamepadButton(A).whenActive(arm.pickupFront());
         gamepadEx2.getGamepadButton(B).whileHeld(arm.deployBack());
         gamepadEx2.getGamepadButton(Y).whenActive(arm.deployFront());
         gamepadEx2.getGamepadButton(X).whileHeld(arm.transport());
+        gamepadEx2.getGamepadButton(LEFT_STICK_BUTTON).toggleWhenPressed(new SequentialCommandGroup(arm.transport(), scoringSlides.extendToPosition(800), arm.deployBack()), new SequentialCommandGroup(arm.transport(), scoringSlides.extendToPosition(0), arm.deployFront()));
 
         //Adjustable arm
         gamepadEx2.getGamepadButton(DPAD_UP).whileHeld(arm.incrementalArm(-1));
@@ -120,7 +130,7 @@ public class PokeboltsTeleOp extends OpModeBase
         gamepadEx1.getGamepadButton(B).whenActive(gyroManager::reset);
 
         //Slides
-        gamepadEx2.getGamepadButton(LEFT_STICK_BUTTON).toggleWhenPressed(scoringSlides.extendToPosition(500), scoringSlides.extendToPosition(0));
+        //gamepadEx2.getGamepadButton(LEFT_STICK_BUTTON).toggleWhenPressed(scoringSlides.extendToPosition(800), scoringSlides.extendToPosition(0));
         scoringSlides.setDefaultCommand(scoringSlides.slideMovement(gamepadEx2::getRightY));
 
         mecanumDrive.setDefaultCommand(mecanumDrive.fieldCentric(gamepadEx1::getLeftX, gamepadEx1::getLeftY, gamepadEx1::getRightX, gyroManager::getHeading, telemetry));
@@ -130,11 +140,12 @@ public class PokeboltsTeleOp extends OpModeBase
 
         waitForStart();
 
+        //Turn off cameras to save bandwidth
         if (aprilPortal.getCameraState() == VisionPortal.CameraState.STREAMING)
-        {
-            aprilPortal.stopLiveView();
-            aprilPortal.stopStreaming();
-        }
+            aprilPortal.close();
+        if (colorPortal.getCameraState() == VisionPortal.CameraState.STREAMING)
+            colorPortal.close();
+
     }
 
     @Override
