@@ -43,7 +43,7 @@ public class MecanumDriveSubsystem extends SubsystemBase
     private final MecanumDrive drive;
     private DistanceSensor distSensor;
     private boolean aligningToBackdrop = false;
-    private double aligningInches = 0.75;
+    private double aligningInches = 4;
 
     private ElapsedTime time = new ElapsedTime();
     public Telemetry telemetry;
@@ -61,14 +61,6 @@ public class MecanumDriveSubsystem extends SubsystemBase
     public void periodic()
     {
         super.periodic();
-        if (aligningToBackdrop && distSensor.getDistance(DistanceUnit.INCH) > aligningInches)
-        {
-            drive.driveRobotCentric(0, -0.75, 0);
-        }
-        else if (aligningToBackdrop && distSensor.getDistance(DistanceUnit.INCH) < aligningInches)
-        {
-            drive.driveRobotCentric(0, 0.75, 0);
-        }
     }
 
     /**
@@ -93,6 +85,19 @@ public class MecanumDriveSubsystem extends SubsystemBase
         return new RunCommand(() -> drive.driveRobotCentric(strafeSpeed, forwardSpeed, turnSpeed), this);
     }
 
+    public void alignToBackdrop()
+    {
+        if (distSensor.getDistance(DistanceUnit.INCH) > aligningInches)
+        {
+            drive.driveRobotCentric(0, -1, 0);
+        }
+        else if (distSensor.getDistance(DistanceUnit.INCH) < aligningInches)
+        {
+            drive.driveRobotCentric(0, 1, 0);
+        }
+    }
+
+    //Deprecated method. Might remove depending on if itʻs usefull in auto
     public void setBackdropAlignment(boolean state)
     {
         aligningToBackdrop = state;
