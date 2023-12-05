@@ -6,6 +6,7 @@ import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.vision.VisionPortal;
 
@@ -163,6 +164,7 @@ public class PokeboltsTeleOp extends OpModeBase
         telemetry.addData("Slide Controlling Joystick", gamepadEx2.getRightY());
         telemetry.addData("Left Arm Position", leftPlatformServo.getPosition());
         telemetry.addData("Wrist Position", wristServo.getPosition());
+        telemetry.addData("FR Current (Amps)", rightFrontCurrentReader.getCurrent(CurrentUnit.AMPS));
         telemetry.addData("Gyro Heading ", gyroManager.getHeading());
         telemetry.addData("x cord", poseEstimate.getX());
         telemetry.addData("y cord", poseEstimate.getY());
