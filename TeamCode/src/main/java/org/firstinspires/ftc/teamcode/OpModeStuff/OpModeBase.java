@@ -14,6 +14,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.JavaUtil;
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.EndgameStuff.HangSubsystem;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
@@ -70,7 +71,7 @@ public class OpModeBase extends CommandOpMode
     private AprilTagDetection detectedTag;
     public int redTagId = 8, blueTagId = 9;
     protected AprilTagProcessor aprilProcessor;
-    protected PropDetectionProcessor colorProcessor;
+    protected PropDetectionProcessor colorProcessor = new PropDetectionProcessor(false);
     public VisionPortal aprilPortal, colorPortal;
     VisionPortal.Builder visionPortalBuilder;
     protected double tagTargetDistance = 12.0;
@@ -156,13 +157,8 @@ public class OpModeBase extends CommandOpMode
         gamepadEx1 = new GamepadEx(gamepad1);
         gamepadEx2 = new GamepadEx(gamepad2);
 
-        //April tag startup
-//        aprilProcessor = new AprilTagProcessor.Builder().build();
-//        aprilProcessor.setDecimation(2); // Higher decimation = increased performance but less distance
-//        aprilPortal = new VisionPortal.Builder()
-//                .setCamera(hardwareMap.get(WebcamName.class, "aprilCam")).addProcessor(aprilProcessor)
-//                .build();
-        //https://ftc-docs.firstinspires.org/en/latest/apriltag/vision_portal/vision_multiportal/vision-multiportal.html
+//        DcMotorEx asdf = (DcMotorEx)leftFront;
+//        telemetry.addData("CurrentAlert ", asdf.getCurrentAlert(CurrentUnit.AMPS));
 
         //Initialize subsystems
         mecanumDrive = new MecanumDriveSubsystem(leftFront, leftRearLeftEncoder, rightFront, rightRearFrontEncoder, navxMicro, distanceSensor);
@@ -181,6 +177,7 @@ public class OpModeBase extends CommandOpMode
         //Initialize processors
         initMultiPortals();
         initProcessors();
+        //https://ftc-docs.firstinspires.org/en/latest/apriltag/vision_portal/vision_multiportal/vision-multiportal.html
 
         // Wait until the gyro calibration is complete
         navxCalibrationTimer.reset();
@@ -222,8 +219,9 @@ public class OpModeBase extends CommandOpMode
         aprilPortalId = ((Integer) JavaUtil.inListGet(myPortalsList, JavaUtil.AtMode.FROM_START, 1, false)).intValue();
     }
 
+    //Initializes processors + portals; PropDetectionProcessor has to be called elsewhere because it depends on the OpMode
     public void initProcessors() {
-        colorProcessor = new PropDetectionProcessor(false);
+        //colorProcessor = new PropDetectionProcessor(false);
         AprilTagProcessor.Builder aprilTagProcessorBuilder = new AprilTagProcessor.Builder();
         aprilProcessor = aprilTagProcessorBuilder.build();
         makeColorPortal("colorCam", colorPortalId, colorProcessor);

@@ -20,19 +20,17 @@ public class AutoTopRight extends OpModeBase
 {
     //I'm also using this one for experimental testing right now
     String propLocation;
-    PropDetectionProcessor processor = new PropDetectionProcessor(false);
 
     //https://github.com/NoahBres/road-runner-quickstart/blob/advanced-examples/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/advanced/AsyncFollowingFSM.java
     enum State
     {
-        TRAJECTORY_1,
-        TRAJECTORY_2,
-        TURN_1,
-        TRAJECTORY_3,
-        WAIT_1,
-        TURN_2,
+        PLEFT, PCENTER, PRIGHT,
+        YLEFT, YCENTER, YRIGHT,
+        PARKING,
         IDLE
     }
+    private State currentState = State.IDLE;
+
     //Middle coordinates
     public static int centerPurpleForward = 30;
     public static int centerYellowX = 56;
@@ -76,12 +74,8 @@ public class AutoTopRight extends OpModeBase
     @Override
     public void initialize()
     {
+        colorProcessor = new PropDetectionProcessor(false);
         super.initialize();
-
-//        VisionPortal colorPortal = new VisionPortal.Builder()
-//                .addProcessor(processor)
-//                .setCamera(hardwareMap.get(WebcamName.class, "colorCam"))
-//                .build();
 
         Pose2d startPose = new Pose2d(15.5, -63.5, Math.toRadians(0));
 
@@ -97,15 +91,6 @@ public class AutoTopRight extends OpModeBase
                 .lineToLinearHeading(new Pose2d(purpleX, purpleY, Math.toRadians(90)))
                 .waitSeconds(2)
                 .build();
-
-
-        //Trajectory leftPurpleScore = roadrunnerMecanumDrive.trajectoryBuilder(startPose)
-        //.lineTo(new Vector2d(leftPurpleX, leftPurpleY))
-        //.build();
-
-        //Trajectory middlePurpleScore = roadrunnerMecanumDrive.trajectoryBuilder(startPose)
-        //.forward(centerPurpleForward)
-        //.build();
 
         //Trajectory rightPurpleScore = roadrunnerMecanumDrive.trajectoryBuilder(startPose)
         //.lineTo(new Vector2d(rightPurpleX, rightPurpleY))
@@ -178,10 +163,6 @@ public class AutoTopRight extends OpModeBase
                 .strafeLeft(10)
                 .build();
 
-        //Trajectory parkScore = roadrunnerMecanumDrive.trajectoryBuilder(parkBackup.end())
-        //.lineToLinearHeading(new Pose2d(parkX, parkY, Math.toRadians(0)))
-        //.build();
-
         //truss
         TrajectorySequence rightTopTruss = roadrunnerMecanumDrive.trajectorySequenceBuilder(rightPark.end())
                 .waitSeconds(1)
@@ -242,9 +223,8 @@ public class AutoTopRight extends OpModeBase
              * will be (0,0) for a bit, which falls in the LEFT range. After init, wait a few seconds
              * before starting the OpMode so that it detects the right positon.
              */
-            propLocation = processor.GetPropLocation();
+            propLocation = colorProcessor.GetPropLocation();
             telemetry.addData("Prop Location: ", propLocation);
-            //telemetry.addData("April Camera state ", aprilPortal.getCameraState());
             telemetry.update();
         }
 
@@ -252,12 +232,9 @@ public class AutoTopRight extends OpModeBase
 
         if(isStopRequested()) return;
 
-        //Turns off camera
+        //Turn off camera
         if (colorPortal.getCameraState() == VisionPortal.CameraState.STREAMING)
-        {
-            colorPortal.stopLiveView();
-            colorPortal.stopStreaming();
-        }
+            colorPortal.close();
 
         if(propLocation.equals("LEFT"))
         {
@@ -330,12 +307,6 @@ public class AutoTopRight extends OpModeBase
                     arm.pickupFront()
             ));
         }
-
-//        if (aprilPortal.getCameraState() == VisionPortal.CameraState.STREAMING)
-//        {
-//            aprilPortal.stopLiveView();
-//            aprilPortal.stopStreaming();
-//        }
     }
 
     @Override
@@ -349,9 +320,9 @@ public class AutoTopRight extends OpModeBase
         telemetry.addData("x cord", poseEstimate.getX());
         telemetry.addData("y cord", poseEstimate.getY());
         telemetry.addData("roadrunner heading", poseEstimate.getHeading());
-        telemetry.addData("LargestContourX: ", processor.GetContourX());
-        telemetry.addData("LargestContourY: ", processor.GetContourY());
-        telemetry.addLine(processor.GetPropLocation());
+        telemetry.addData("LargestContourX: ", colorProcessor.GetContourX());
+        telemetry.addData("LargestContourY: ", colorProcessor.GetContourY());
+        telemetry.addLine(colorProcessor.GetPropLocation());
         telemetry.update();
     }
 }
