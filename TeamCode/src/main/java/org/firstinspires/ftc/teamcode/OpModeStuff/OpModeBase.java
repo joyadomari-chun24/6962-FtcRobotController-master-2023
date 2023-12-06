@@ -240,14 +240,14 @@ public class OpModeBase extends CommandOpMode
     private void makeColorPortal(String name, int portalId, VisionProcessor processor) {
         visionPortalBuilder = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, name))
-                .setCameraResolution(new Size(320, 240))
+                //.setCameraResolution(new Size(320, 240))
                 .addProcessor(processor).setLiveViewContainerId(portalId);
         colorPortal = visionPortalBuilder.build();
     }
     private void makeAprilPortal(String name, int portalId, VisionProcessor processor) {
         visionPortalBuilder = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, name))
-                .setCameraResolution(new Size(320, 240))
+                //.setCameraResolution(new Size(320, 240))
                 .addProcessor(processor).setLiveViewContainerId(portalId);
         aprilPortal = visionPortalBuilder.build();
     }
