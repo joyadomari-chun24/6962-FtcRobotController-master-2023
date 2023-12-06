@@ -134,6 +134,9 @@ public class PokeboltsTeleOp extends OpModeBase
         //gamepadEx2.getGamepadButton(LEFT_STICK_BUTTON).toggleWhenPressed(scoringSlides.extendToPosition(800), scoringSlides.extendToPosition(0));
         scoringSlides.setDefaultCommand(scoringSlides.slideMovement(gamepadEx2::getRightY));
 
+        //Temporary apriltag experiment
+        gamepadEx1.getGamepadButton(DPAD_UP).whileHeld(new InstantCommand(() -> driveToAprilTag(redTagId)));
+
         mecanumDrive.setDefaultCommand(mecanumDrive.fieldCentric(gamepadEx1::getLeftX, gamepadEx1::getLeftY, gamepadEx1::getRightX, gyroManager::getHeading, telemetry));
         telemetry.log().clear();
         telemetry.log().add("TeleOpTest2 has initialized.");
@@ -142,8 +145,8 @@ public class PokeboltsTeleOp extends OpModeBase
         waitForStart();
 
         //Turn off cameras to save bandwidth
-        if (aprilPortal.getCameraState() == VisionPortal.CameraState.STREAMING)
-            aprilPortal.close();
+//        if (aprilPortal.getCameraState() == VisionPortal.CameraState.STREAMING)
+//            aprilPortal.close();
         if (colorPortal.getCameraState() == VisionPortal.CameraState.STREAMING)
             colorPortal.close();
 

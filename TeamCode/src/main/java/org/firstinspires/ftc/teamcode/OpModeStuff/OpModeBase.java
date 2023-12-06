@@ -264,7 +264,7 @@ public class OpModeBase extends CommandOpMode
             if (detection.metadata != null)
             {
                 //  Check to see if we want to track towards this tag.
-                if ((targetTag < 0) || (detection.id == targetTag))
+                if (detection.id == targetTag)
                 {
                     // Yes, we want to use this tag.
                     targetFound = true;
@@ -317,7 +317,7 @@ public class OpModeBase extends CommandOpMode
         } while(/*aprilDrive > 0.1 || aprilTurn > 0.1 || aprilStrafe > 0.1 &&*/ navxCalibrationTimer.seconds() - timestamp < timeoutInSeconds);
     }
 
-    //temp telemetry method
+    //temp telemetry method: taken from double vision example
     private void AprilTag_telemetry_for_Portal_1() {
         List<AprilTagDetection> myAprilTagDetections_1;
         AprilTagDetection thisDetection_1;
