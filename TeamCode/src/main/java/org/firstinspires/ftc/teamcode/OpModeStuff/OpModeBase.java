@@ -138,10 +138,10 @@ public class OpModeBase extends CommandOpMode
         leftRearLeftEncoder = new MotorEx(hardwareMap, "Bl/Le");
         rightRearFrontEncoder = new MotorEx(hardwareMap, "Br/Fe");
         rightFront = new MotorEx(hardwareMap, "Fr");
-        leftFrontCurrentReader = (DcMotorEx) leftFront;
-        leftRearCurrentReader = (DcMotorEx) leftRearLeftEncoder;
-        rightRearCurrentReader = (DcMotorEx) rightRearFrontEncoder;
-        rightFrontCurrentReader = (DcMotorEx) rightFront;
+        leftFrontCurrentReader = hardwareMap.get(DcMotorEx.class, "Fl/Re");
+        leftRearCurrentReader = hardwareMap.get(DcMotorEx.class, "Bl/Le");
+        rightRearCurrentReader = hardwareMap.get(DcMotorEx.class, "Br/Fe");
+        rightFrontCurrentReader = hardwareMap.get(DcMotorEx.class, "Fr");
         scoringSlideMotorL = hardwareMap.get(DcMotorEx.class, "scoreSlideLeft");
         scoringSlideMotorR = hardwareMap.get(DcMotorEx.class, "scoreSlideRight");
         navxMicro = hardwareMap.get(NavxMicroNavigationSensor.class, "navx");
