@@ -35,7 +35,6 @@ public class AprilTagDriveTest extends OpModeBase
         schedule(new ParallelCommandGroup(
                 arm.deployFront(),
                 new RunCommand(() -> driveUntilAprilTag(redTagId, 20))));
-        //todo: rewrite this and look into scheduling during opmode
     }
 
     @Override

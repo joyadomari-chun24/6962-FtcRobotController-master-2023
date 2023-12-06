@@ -147,8 +147,8 @@ public class PokeboltsTeleOp extends OpModeBase
         //Turn off cameras to save bandwidth
 //        if (aprilPortal.getCameraState() == VisionPortal.CameraState.STREAMING)
 //            aprilPortal.close();
-        if (colorPortal.getCameraState() == VisionPortal.CameraState.STREAMING)
-            colorPortal.close();
+//        if (colorPortal.getCameraState() == VisionPortal.CameraState.STREAMING)
+//            colorPortal.close();
 
     }
 

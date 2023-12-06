@@ -316,6 +316,12 @@ public class AutoTopRight extends OpModeBase
         roadrunnerMecanumDrive.update();
         Pose2d poseEstimate = roadrunnerMecanumDrive.getPoseEstimate();
 
+        if(currentSpike)
+        {
+            telemetry.addLine("Current spike detected! Following broken.");
+            roadrunnerMecanumDrive.breakFollowing();
+        }
+
         telemetry.addData("Gyro Heading", gyroManager.getHeading());
         telemetry.addData("x cord", poseEstimate.getX());
         telemetry.addData("y cord", poseEstimate.getY());

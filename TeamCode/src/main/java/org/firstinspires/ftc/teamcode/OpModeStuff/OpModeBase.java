@@ -28,6 +28,7 @@ import org.firstinspires.ftc.teamcode.DriveStuff.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.SlideStuff.ScoringSlideSubsystem;
 import org.firstinspires.ftc.teamcode.VisionStuff.PropDetectionProcessor;
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.roadrunner.util.RegressionUtil;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.VisionProcessor;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
@@ -75,7 +76,7 @@ public class OpModeBase extends CommandOpMode
     protected PropDetectionProcessor colorProcessor = new PropDetectionProcessor(false);
     public VisionPortal aprilPortal, colorPortal;
     VisionPortal.Builder visionPortalBuilder;
-    protected double tagTargetDistance = 12.0;
+    protected double tagTargetDistance = 8.0;
     protected double aprilDriveGain = 0.02;
     protected double aprilTurnGain = 0.01;
     protected double aprilStrafeGain = 0.015;
@@ -85,6 +86,9 @@ public class OpModeBase extends CommandOpMode
     protected double aprilStrafe = 0;
     private int colorPortalId;
     private int aprilPortalId;
+    protected double maxCurrent = 99;
+    protected double pastCurrent;
+    public boolean currentSpike;
 
     /*
     * Things with positions to be reset if needed:
@@ -307,6 +311,7 @@ public class OpModeBase extends CommandOpMode
     }
 
     //VERY EXPERIMENTAL; Drives robot until it is aligned with apriltag or the timeout passes
+    //Rewrite this.
     public void driveUntilAprilTag(int targetTag, int timeoutInSeconds)
     {
         navxCalibrationTimer.reset();
@@ -346,5 +351,15 @@ public class OpModeBase extends CommandOpMode
     public void run() {
         super.run();
         AprilTag_telemetry_for_Portal_1();
+
+        //Every 4 seconds, if a current reading from the past and the current reading right now is over the limit, there's a spike
+        if ( (int)time % 4 == 0 && rightFrontCurrentReader.getCurrent(CurrentUnit.AMPS) > maxCurrent && pastCurrent > maxCurrent)
+            currentSpike = true;
+        else
+            currentSpike = false;
+        //Every 2 seconds, the pastCurrent gets reset
+        if( ((int)time) % 2 == 0)
+            pastCurrent = rightFrontCurrentReader.getCurrent(CurrentUnit.AMPS);
+
     }
 }

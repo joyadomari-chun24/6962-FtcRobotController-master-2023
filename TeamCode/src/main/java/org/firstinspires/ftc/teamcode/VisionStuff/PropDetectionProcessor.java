@@ -33,10 +33,6 @@ public class PropDetectionProcessor implements VisionProcessor
     Scalar highBlueHSV = new Scalar(260, 100, 100);
     Scalar strictLowBlueHSV = new Scalar(180, 50, 0);
     Scalar strictHighBlueHSV = new Scalar(260, 100, 100);
-//    Scalar highHSV = propIsBlue ? highBlueHSV : highRedHSV;
-//    Scalar lowHSV = propIsBlue ? lowBlueHSV : lowRedHSV;
-//    Scalar strictHighHSV = propIsBlue ? strictHighBlueHSV : strictHighRedHSV;
-//    Scalar strictLowHSV = propIsBlue ? strictLowBlueHSV : strictLowRedHSV;
     Scalar highHSV;
     Scalar lowHSV;
     Scalar strictHighHSV;
