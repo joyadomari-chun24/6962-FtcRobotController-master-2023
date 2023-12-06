@@ -57,7 +57,7 @@ public class AutoBottomLeft extends OpModeBase
 
         VisionPortal visionPortal = new VisionPortal.Builder()
                 .addProcessor(processor)
-                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
+                .setCamera(hardwareMap.get(WebcamName.class, "colorCam"))
                 .build();
 
         Pose2d startPose = new Pose2d(-35, 64, Math.toRadians(-180));

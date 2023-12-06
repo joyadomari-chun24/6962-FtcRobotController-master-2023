@@ -19,7 +19,7 @@ import org.firstinspires.ftc.vision.VisionPortal;
 public class AutoBottomRight extends OpModeBase
 {
     String propLocation;
-    PropDetectionProcessor processor = new PropDetectionProcessor(true);
+    PropDetectionProcessor processor = new PropDetectionProcessor(false);
 
     //Experimental coordinates
     public static int PurpleX = -36;
@@ -64,7 +64,7 @@ public class AutoBottomRight extends OpModeBase
 
         VisionPortal visionPortal = new VisionPortal.Builder()
                 .addProcessor(processor)
-                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
+                .setCamera(hardwareMap.get(WebcamName.class, "colorCam"))
                 .build();
 
         Pose2d startPose = new Pose2d(-39, -63.5, Math.toRadians(0));

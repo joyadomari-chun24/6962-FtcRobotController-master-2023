@@ -26,20 +26,20 @@ public class AutoTopLeft extends OpModeBase
 
     //Middle coordinates
     public static int centerPurpleForward = 30;
-    public static int centerYellowX = 57;
-    public static int centerYellowY = 39;
+    public static int centerYellowX = 54;
+    public static int centerYellowY = 37;
 
     //Left coordinates
     public static int leftPurpleX = 29;
     public static int leftPurpleY = 35;
-    public static int leftYellowX = 56;
-    public static int leftYellowY = 46;
+    public static int leftYellowX = 54;
+    public static int leftYellowY = 30;
 
     //Right coordinates
     public static int rightPurpleX = 10;
     public static int rightPurpleY = 33;
-    public static int rightYellowX = 56;
-    public static int rightYellowY = 32;
+    public static int rightYellowX = 54;
+    public static int rightYellowY = 44;
     public static int rightBackup = 5;
 
     //Parking coordinates
@@ -59,10 +59,10 @@ public class AutoTopLeft extends OpModeBase
 
         VisionPortal visionPortal = new VisionPortal.Builder()
                 .addProcessor(processor)
-                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
+                .setCamera(hardwareMap.get(WebcamName.class, "colorCam"))
                 .build();
 
-        Pose2d startPose = new Pose2d(15.5, 63.5, Math.toRadians(-180));
+        Pose2d startPose = new Pose2d(14.5, 63.5, Math.toRadians(-180));
 
         roadrunnerMecanumDrive.setPoseEstimate(startPose);
 
