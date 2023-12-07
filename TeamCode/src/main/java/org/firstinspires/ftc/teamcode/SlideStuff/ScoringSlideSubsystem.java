@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.SlideStuff;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.RunCommand;
@@ -14,6 +15,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import java.util.function.DoubleSupplier;
 
+@Config
 public class ScoringSlideSubsystem extends SubsystemBase
 {
     /**
@@ -25,7 +27,6 @@ public class ScoringSlideSubsystem extends SubsystemBase
     private double slideScalar = 0.45;
     private int target = 0;
     public Telemetry telemetry;
-    FtcDashboard dashboard = FtcDashboard.getInstance();;
     public static double Kp = 0.006;
     public static double Ki = 0;
     public static double Kd = 0;
