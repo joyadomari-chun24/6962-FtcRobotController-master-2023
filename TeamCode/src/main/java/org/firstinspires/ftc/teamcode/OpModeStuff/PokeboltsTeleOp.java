@@ -3,11 +3,13 @@ package org.firstinspires.ftc.teamcode.OpModeStuff;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.arcrobotics.ftclib.command.InstantCommand;
+import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.VisionStuff.PropDetectionProcessor;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 import static com.arcrobotics.ftclib.gamepad.GamepadKeys.Button.A;
@@ -33,6 +35,7 @@ public class PokeboltsTeleOp extends OpModeBase
     @Override
     public void initialize()
     {
+        colorProcessor = new PropDetectionProcessor(true);
         super.initialize();
 
         //aprilPortal.stopStreaming();
@@ -146,8 +149,8 @@ public class PokeboltsTeleOp extends OpModeBase
         //Turn off cameras to save bandwidth
 //        if (aprilPortal.getCameraState() == VisionPortal.CameraState.STREAMING)
 //            aprilPortal.close();
-//        if (colorPortal.getCameraState() == VisionPortal.CameraState.STREAMING)
-//            colorPortal.close();
+        if (colorPortal.getCameraState() == VisionPortal.CameraState.STREAMING)
+            colorPortal.close();
 
     }
 

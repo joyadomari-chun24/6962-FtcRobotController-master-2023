@@ -73,12 +73,12 @@ public class OpModeBase extends CommandOpMode
     private AprilTagDetection detectedTag;
     public int redTagId = 8, blueTagId = 9;
     protected AprilTagProcessor aprilProcessor;
-    protected PropDetectionProcessor colorProcessor = new PropDetectionProcessor(false);
+    protected PropDetectionProcessor colorProcessor;
     public VisionPortal aprilPortal, colorPortal;
     VisionPortal.Builder visionPortalBuilder;
     protected double tagTargetDistance = 8.0;
-    protected double aprilDriveGain = 0.02;
-    protected double aprilTurnGain = 0.01;
+    protected double aprilDriveGain = 0.3;
+    protected double aprilTurnGain = 0.2;
     protected double aprilStrafeGain = 0.015;
     protected double maxAprilPower = 0.5;
     protected double aprilDrive = 0;
@@ -306,7 +306,7 @@ public class OpModeBase extends CommandOpMode
             aprilTurn = Range.clip(headingError * aprilTurnGain, -maxAprilPower, maxAprilPower);
             aprilStrafe = Range.clip(-yawError * aprilStrafeGain, -maxAprilPower, maxAprilPower);
 
-            mecanumDrive.roboCentric(-aprilDrive, aprilTurn, -aprilStrafe);
+            schedule(mecanumDrive.roboCentric(-aprilDrive, aprilTurn, -aprilStrafe));
         }
     }
 
@@ -350,7 +350,11 @@ public class OpModeBase extends CommandOpMode
     @Override
     public void run() {
         super.run();
-        AprilTag_telemetry_for_Portal_1();
+        //AprilTag_telemetry_for_Portal_1();
+
+        telemetry.addData("April drive", aprilDrive);
+        telemetry.addData("April strafe", aprilStrafe);
+        telemetry.addData("April turn", aprilTurn);
 
         //Every 4 seconds, if a current reading from the past and the current reading right now is over the limit, there's a spike
         if ( (int)time % 4 == 0 && rightFrontCurrentReader.getCurrent(CurrentUnit.AMPS) > maxCurrent && pastCurrent > maxCurrent)
