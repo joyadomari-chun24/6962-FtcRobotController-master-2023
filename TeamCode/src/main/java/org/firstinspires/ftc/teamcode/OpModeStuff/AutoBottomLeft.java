@@ -18,7 +18,6 @@ import org.firstinspires.ftc.vision.VisionPortal;
 public class AutoBottomLeft extends OpModeBase
 {
     String propLocation;
-    PropDetectionProcessor processor = new PropDetectionProcessor(true);
 
     //Middle coordinates
     public static int purpleX = -36;
@@ -52,13 +51,8 @@ public class AutoBottomLeft extends OpModeBase
     @Override
     public void initialize()
     {
+        colorProcessor = new PropDetectionProcessor(true);
         super.initialize();
-
-
-        VisionPortal visionPortal = new VisionPortal.Builder()
-                .addProcessor(processor)
-                .setCamera(hardwareMap.get(WebcamName.class, "colorCam"))
-                .build();
 
         Pose2d startPose = new Pose2d(-35, 64, Math.toRadians(-180));
 
@@ -207,7 +201,7 @@ public class AutoBottomLeft extends OpModeBase
              * will be (0,0) for a bit, which falls in the LEFT range. After init, wait a few seconds
              * before starting the OpMode so that it detects the right positon.
              */
-            propLocation = processor.GetPropLocation();
+            propLocation = colorProcessor.GetPropLocation();
             telemetry.addData("Prop Location: ", propLocation);
             telemetry.addData("Camera state ", aprilPortal.getCameraState());
             telemetry.update();
@@ -216,11 +210,10 @@ public class AutoBottomLeft extends OpModeBase
         if(isStopRequested()) return;
 
         //Turns off camera
-        if (visionPortal.getCameraState() == VisionPortal.CameraState.STREAMING)
+        if (colorPortal.getCameraState() == VisionPortal.CameraState.STREAMING)
         {
-            visionPortal.stopLiveView();
-            visionPortal.stopStreaming();
-            aprilPortal.resumeStreaming();
+            colorPortal.stopLiveView();
+            colorPortal.stopStreaming();
         }
 
         if(propLocation.equals("LEFT"))
@@ -308,9 +301,9 @@ public class AutoBottomLeft extends OpModeBase
         telemetry.addData("x cord", poseEstimate.getX());
         telemetry.addData("y cord", poseEstimate.getY());
         telemetry.addData("roadrunner heading", poseEstimate.getHeading());
-        telemetry.addData("LargestContourX: ", processor.GetContourX());
-        telemetry.addData("LargestContourY: ", processor.GetContourY());
-        telemetry.addLine(processor.GetPropLocation());
+        telemetry.addData("LargestContourX: ", colorProcessor.GetContourX());
+        telemetry.addData("LargestContourY: ", colorProcessor.GetContourY());
+        telemetry.addLine(colorProcessor.GetPropLocation());
         telemetry.update();
     }
 }
