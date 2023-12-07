@@ -106,7 +106,7 @@ public class PokeboltsTeleOp extends OpModeBase
 
         //Hang
         gamepadEx1.getGamepadButton(X).and(gamepadEx1.getGamepadButton(A)).whileActiveOnce(hang.hangRobot());
-
+        
         //Claw
         gamepadEx2.getGamepadButton(RIGHT_BUMPER).toggleWhenPressed(clawR.openClaw(), clawR.closeClaw());
         gamepadEx2.getGamepadButton(LEFT_BUMPER).toggleWhenPressed(clawL.openClaw(), clawL.closeClaw());
@@ -131,7 +131,6 @@ public class PokeboltsTeleOp extends OpModeBase
         gamepadEx1.getGamepadButton(B).whenActive(gyroManager::reset);
 
         //Slides
-        //gamepadEx2.getGamepadButton(LEFT_STICK_BUTTON).toggleWhenPressed(scoringSlides.extendToPosition(800), scoringSlides.extendToPosition(0));
         scoringSlides.setDefaultCommand(scoringSlides.slideMovement(gamepadEx2::getRightY));
 
         //Temporary apriltag experiment
