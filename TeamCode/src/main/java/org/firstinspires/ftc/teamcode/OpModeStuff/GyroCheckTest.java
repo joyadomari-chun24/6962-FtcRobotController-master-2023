@@ -2,22 +2,17 @@ package org.firstinspires.ftc.teamcode.OpModeStuff;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
-import com.acmerobotics.roadrunner.trajectory.Trajectory;
-import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.OpModeStuff.OpModeBase;
 import org.firstinspires.ftc.teamcode.VisionStuff.PropDetectionProcessor;
-import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence.TrajectorySequence;
 
 @Config
 @Autonomous
-public class AprilTagDriveTest extends OpModeBase
+public class GyroCheckTest extends OpModeBase
 {
     @Override
     public void initialize()
@@ -25,17 +20,31 @@ public class AprilTagDriveTest extends OpModeBase
         colorProcessor = new PropDetectionProcessor(true);
         super.initialize();
 
-        Pose2d startPose = new Pose2d(12, -66, Math.toRadians(90));
+        Pose2d startPose = new Pose2d(15.5, -63.5, Math.toRadians(0));
 
         roadrunnerMecanumDrive.setPoseEstimate(startPose);
+
+        TrajectorySequence traj1 = roadrunnerMecanumDrive.trajectorySequenceBuilder(startPose)
+                .lineToLinearHeading(new Pose2d(13, -39, Math.toRadians(90)))
+                .waitSeconds(2)
+                .build();
+
+        TrajectorySequence traj2 = roadrunnerMecanumDrive.trajectorySequenceBuilder(traj1.end())
+                .lineToLinearHeading(new Pose2d(33, -30, Math.toRadians(270)))
+                .turn(Math.toRadians(-190))
+                .build();
 
         waitForStart();
 
         if(isStopRequested()) return;
 
-        schedule(new ParallelCommandGroup(
+        schedule(new SequentialCommandGroup(
                 arm.deployFront(),
-                new RunCommand(() -> driveUntilAprilTag(redTagId, 20))));
+                new RunCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(traj1)),
+                new RunCommand(() -> gyroCheck(90, 10)),
+                new RunCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(traj2)),
+                new RunCommand(() -> gyroCheck(270, 10))
+        ));
     }
 
     @Override

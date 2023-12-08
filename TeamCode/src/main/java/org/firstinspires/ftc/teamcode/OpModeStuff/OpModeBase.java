@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.OpModeStuff;
 
 import android.util.Size;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
@@ -79,7 +80,7 @@ public class OpModeBase extends CommandOpMode
     protected double tagTargetDistance = 8.0;
     protected double aprilDriveGain = 0.3;
     protected double aprilTurnGain = 0.2;
-    protected double aprilStrafeGain = 0.015;
+    protected double aprilStrafeGain = 0.2;
     protected double maxAprilPower = 0.5;
     protected double aprilDrive = 0;
     protected double aprilTurn = 0;
@@ -181,7 +182,7 @@ public class OpModeBase extends CommandOpMode
         gyroManager = new NavxManager(navxMicro);
 
         //Put drone launcher in set position
-        launcher.setDrone();
+        schedule(launcher.setDrone());
 
         //Initialize processors
         initMultiPortals();
@@ -203,6 +204,23 @@ public class OpModeBase extends CommandOpMode
     }
 
     //Put methods here:
+
+    /**
+     * @param targetAngle in degrees, roadrunner format
+     * @param timeout in seconds
+     */
+    public void gyroCheck(double targetAngle, int timeout)
+    {
+        navxCalibrationTimer.reset();
+        while (Math.abs(targetAngle - gyroManager.roadrunnerFormat()) > 3 && opModeIsActive())
+        {
+            schedule(mecanumDrive.roboCentric(0, 0, 1/(1-(targetAngle-gyroManager.roadrunnerFormat())) ));
+            if (navxCalibrationTimer.seconds() > timeout)
+                return;
+        }
+        Pose2d currentPos = roadrunnerMecanumDrive.getPoseEstimate();
+        roadrunnerMecanumDrive.setPoseEstimate(new Pose2d(currentPos.getX(), currentPos.getY(), Math.toRadians(targetAngle)));
+    }
 
     //Set camera exposure to minimize motion blur (6 ms exposure, 250 gain)
     public void setAprilExposure(VisionPortal portal)

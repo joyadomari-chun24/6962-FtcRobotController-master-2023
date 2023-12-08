@@ -78,5 +78,18 @@ public class NavxManager extends GyroEx
     public String getDeviceType() {
         return "Navx Micro v2";
     }
+
+    public void rotateHeading(double clockwiseRotation)
+    {
+        // getHeading rotates clockwise by the offset, so this increments that
+        offset += clockwiseRotation;
+    }
+
+    //Formats the angle to roadrunner. It's still in degrees here though.
+    public double roadrunnerFormat()
+    {
+       return getHeading() - 90;
+    }
+
 }
 

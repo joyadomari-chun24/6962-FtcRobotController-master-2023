@@ -102,7 +102,7 @@ public class PokeboltsTeleOp extends OpModeBase
         gamepadEx1.getGamepadButton(DPAD_RIGHT).whileHeld(mecanumDrive.roboCentric(0.5, 0.0, 0.0));
 
         //Align with backdrop
-        gamepadEx1.getGamepadButton(RIGHT_BUMPER).whileHeld(new InstantCommand(() -> mecanumDrive.alignToBackdrop()));
+        gamepadEx1.getGamepadButton(RIGHT_BUMPER).whileHeld(mecanumDrive.alignToBackdrop());
 
         //Drone launcher
         gamepadEx1.getGamepadButton(X).and(gamepadEx1.getGamepadButton(Y)).toggleWhenActive(launcher.setDrone(), launcher.fireDrone());

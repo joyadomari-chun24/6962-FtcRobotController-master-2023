@@ -22,14 +22,14 @@ public class AutoTopRight extends OpModeBase
     String propLocation;
 
     //https://github.com/NoahBres/road-runner-quickstart/blob/advanced-examples/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/advanced/AsyncFollowingFSM.java
-    enum State
-    {
-        PLEFT, PCENTER, PRIGHT,
-        YLEFT, YCENTER, YRIGHT,
-        PARKING,
-        IDLE
-    }
-    private State currentState = State.IDLE;
+//    enum State
+//    {
+//        PLEFT, PCENTER, PRIGHT,
+//        YLEFT, YCENTER, YRIGHT,
+//        PARKING,
+//        IDLE
+//    }
+//    private State currentState = State.IDLE;
 
     //Middle coordinates
     public static int centerPurpleForward = 30;
@@ -79,6 +79,7 @@ public class AutoTopRight extends OpModeBase
         super.initialize();
 
         Pose2d startPose = new Pose2d(15.5, -63.5, Math.toRadians(0));
+        gyroManager.rotateHeading(90);
 
         roadrunnerMecanumDrive.setPoseEstimate(startPose);
 
@@ -228,6 +229,7 @@ public class AutoTopRight extends OpModeBase
              */
             propLocation = colorProcessor.GetPropLocation();
             telemetry.addData("Prop Location: ", propLocation);
+            telemetry.addData("Gyro Heading", gyroManager.getHeading());
             telemetry.update();
         }
 

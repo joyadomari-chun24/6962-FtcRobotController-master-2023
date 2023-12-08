@@ -8,26 +8,15 @@ import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.drivebase.MecanumDrive;
-import com.arcrobotics.ftclib.drivebase.RobotDrive;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.JavaUtil;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainControl;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.VisionStuff.PropDetectionProcessor;
-import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.vision.VisionPortal;
-import org.firstinspires.ftc.vision.VisionProcessor;
-import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
-import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -35,7 +24,6 @@ import java.util.function.DoubleSupplier;
 
 public class MecanumDriveSubsystem extends SubsystemBase
 {
-    private NavxMicroNavigationSensor navx;
     private int slowModeFactor = 2;
     private static double kP = 0;
     private static double kI = 0;
@@ -86,16 +74,17 @@ public class MecanumDriveSubsystem extends SubsystemBase
         return new RunCommand(() -> drive.driveRobotCentric(strafeSpeed, forwardSpeed, turnSpeed), this);
     }
 
-    public void alignToBackdrop()
+    public Command alignToBackdrop()
     {
         if (distSensor.getDistance(DistanceUnit.INCH) > aligningInches)
         {
-            drive.driveRobotCentric(0, -1, 0);
+            return new InstantCommand(()->drive.driveRobotCentric(0, -1, 0));
         }
         else if (distSensor.getDistance(DistanceUnit.INCH) < aligningInches)
         {
-            drive.driveRobotCentric(0, 1, 0);
+            return new InstantCommand(() -> drive.driveRobotCentric(0, 1, 0));
         }
+        return new InstantCommand(() -> drive.driveRobotCentric(0, 0, 0));
     }
 
     //Deprecated method. Might remove depending on if itʻs usefull in auto
