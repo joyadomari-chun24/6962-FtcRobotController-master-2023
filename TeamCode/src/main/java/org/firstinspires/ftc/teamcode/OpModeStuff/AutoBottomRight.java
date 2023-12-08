@@ -23,7 +23,7 @@ public class AutoBottomRight extends OpModeBase
     //Experimental coordinates
     public static double offset = 6;
     public static int PurpleX = -33;
-    public static int PurpleY = -36;
+    public static int PurpleY = -38;
     public static int middlePurpleX = -36;
     public static int middlePurpleY = -16;
     public static int trussBottomX = -36;
@@ -96,8 +96,18 @@ public class AutoBottomRight extends OpModeBase
                 .waitSeconds(1)
                 .build();
 
+        TrajectorySequence leftPurpleBackup = roadrunnerMecanumDrive.trajectorySequenceBuilder(leftPurpleScore.end())
+                .back(4)
+                .waitSeconds(1)
+                .build();
+
         TrajectorySequence rightPurpleScore = roadrunnerMecanumDrive.trajectorySequenceBuilder(startPose)
                 .lineToConstantHeading(new Vector2d(PurpleX, PurpleY))
+                .waitSeconds(1)
+                .build();
+
+        TrajectorySequence rightPurpleBackup = roadrunnerMecanumDrive.trajectorySequenceBuilder(rightPurpleScore.end())
+                .back(4)
                 .waitSeconds(1)
                 .build();
 
@@ -111,7 +121,7 @@ public class AutoBottomRight extends OpModeBase
                 .waitSeconds(1)
                 .build();
 
-        TrajectorySequence leftBottomTruss = roadrunnerMecanumDrive.trajectorySequenceBuilder(leftPurpleScore.end())
+        TrajectorySequence leftBottomTruss = roadrunnerMecanumDrive.trajectorySequenceBuilder(leftPurpleBackup.end())
                 .waitSeconds(2)
                 .lineToLinearHeading(new Pose2d(trussBottomX, trussBottomY, Math.toRadians(-90)))
                 .waitSeconds(1)
@@ -119,7 +129,7 @@ public class AutoBottomRight extends OpModeBase
                 .waitSeconds(1)
                 .build();
 
-        TrajectorySequence rightBottomTruss = roadrunnerMecanumDrive.trajectorySequenceBuilder(rightPurpleScore.end())
+        TrajectorySequence rightBottomTruss = roadrunnerMecanumDrive.trajectorySequenceBuilder(rightPurpleBackup.end())
                 .waitSeconds(2)
                 .lineToLinearHeading(new Pose2d(trussBottomX, trussBottomY, Math.toRadians(-90)))
                 .waitSeconds(1)
@@ -238,6 +248,7 @@ public class AutoBottomRight extends OpModeBase
                     //new InstantCommand(() -> roadrunnerMecanumDrive.turn(Math.toRadians(-181))),
                     //arm.pickupFront(),
                     clawL.openClaw(),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(leftPurpleBackup)),
                     arm.deployFront(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(leftBottomTruss)),
                     arm.transport(),
@@ -289,6 +300,7 @@ public class AutoBottomRight extends OpModeBase
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(rightPurpleScore)),
                     //arm.pickupFront(),
                     clawL.openClaw(),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(rightPurpleBackup)),
                     arm.deployFront(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(rightBottomTruss)),
                     arm.transport(),

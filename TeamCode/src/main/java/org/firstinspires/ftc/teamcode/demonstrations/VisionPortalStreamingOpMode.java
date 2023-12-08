@@ -179,7 +179,7 @@ public class VisionPortalStreamingOpMode extends LinearOpMode {
         //Builds a vision portal with the processor we just made and sets the webcam (if we use .addProcessors, we can add multiple processors to the frame. See double vision example)
         new VisionPortal.Builder()
                 .addProcessor(processor)
-                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
+                .setCamera(hardwareMap.get(WebcamName.class, "colorCam"))
                 .build();
 
         //Sends the camera feed to the dashboard
