@@ -83,9 +83,9 @@ public class MecanumDriveSubsystem extends SubsystemBase
         }
         else if (distSensor.getDistance(DistanceUnit.INCH) < aligningInches)
         {
-            return new InstantCommand(() -> drive.driveRobotCentric(0, 1, 0));
+            return new RunCommand(() -> drive.driveRobotCentric(0, 1, 0));
         }
-        return new InstantCommand(() -> drive.driveRobotCentric(0, 0, 0));
+        return new RunCommand(() -> drive.driveRobotCentric(0, 0, 0));
     }
 
     //Deprecated method. Might remove depending on if itʻs usefull in auto

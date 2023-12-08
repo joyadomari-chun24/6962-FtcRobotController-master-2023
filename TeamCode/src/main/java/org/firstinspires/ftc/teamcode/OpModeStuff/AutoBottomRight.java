@@ -32,12 +32,9 @@ public class AutoBottomRight extends OpModeBase
     public static int trussTopY = -11;
 
     //Middle coordinates
-    public static double centerPurpleForward = 30 * 2.5;
     public static int middleYellowX = 56;
     public static int middleYellowY = -39;
 
-    //New center!
-    public static int otherPurpleforward = 22;
 
     //Left coordinates
     public static int leftPurpleX = -43;
@@ -232,10 +229,7 @@ public class AutoBottomRight extends OpModeBase
 
         //Turns off camera
         if (colorPortal.getCameraState() == VisionPortal.CameraState.STREAMING)
-        {
-            colorPortal.stopLiveView();
-            colorPortal.stopStreaming();
-        }
+            colorPortal.close();
 
         if(propLocation.equals("LEFT"))
         {
@@ -318,12 +312,6 @@ public class AutoBottomRight extends OpModeBase
         }
 
         //sleep(23000);
-
-//        if (aprilPortal.getCameraState() == VisionPortal.CameraState.STREAMING)
-//        {
-//            aprilPortal.stopLiveView();
-//            aprilPortal.stopStreaming();
-//        }
     }
 
     @Override

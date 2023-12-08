@@ -79,15 +79,16 @@ public class OpModeBase extends CommandOpMode
     public VisionPortal aprilPortal, colorPortal;
     VisionPortal.Builder visionPortalBuilder;
     protected double tagTargetDistance = 8.0;
-    protected double aprilDriveGain = 0.3;
-    protected double aprilTurnGain = 0.2;
-    protected double aprilStrafeGain = 0.2;
-    protected double maxAprilPower = 0.5;
+    protected double aprilDriveGain = 0.15;
+    protected double aprilTurnGain = 0.1;
+    protected double aprilStrafeGain = 0.1;
+    protected double maxAprilPower = 0.4;
     protected double aprilDrive = 0;
     protected double aprilTurn = 0;
     protected double aprilStrafe = 0;
     private int colorPortalId;
     private int aprilPortalId;
+    //Current spike variables
     protected double maxCurrent = 99;
     protected double pastCurrent;
     public boolean currentSpike;
@@ -327,8 +328,11 @@ public class OpModeBase extends CommandOpMode
             aprilTurn = Range.clip(headingError * aprilTurnGain, -maxAprilPower, maxAprilPower);
             aprilStrafe = Range.clip(-yawError * aprilStrafeGain, -maxAprilPower, maxAprilPower);
 
-            schedule(mecanumDrive.roboCentric(-aprilDrive, aprilTurn, -aprilStrafe));
+            schedule(mecanumDrive.roboCentric(aprilDrive, aprilTurn, aprilStrafe));
         }
+        aprilDrive = 0;
+        aprilTurn = 0;
+        aprilStrafe = 0;
     }
 
     //VERY EXPERIMENTAL; Drives robot until it is aligned with apriltag or the timeout passes
@@ -371,7 +375,7 @@ public class OpModeBase extends CommandOpMode
     @Override
     public void run() {
         super.run();
-        //AprilTag_telemetry_for_Portal_1();
+        AprilTag_telemetry_for_Portal_1();
 
         telemetry.addData("April drive", aprilDrive);
         telemetry.addData("April strafe", aprilStrafe);
@@ -385,6 +389,9 @@ public class OpModeBase extends CommandOpMode
         //Every 2 seconds, the pastCurrent gets reset
         if( ((int)time) % 2 == 0)
             pastCurrent = rightFrontCurrentReader.getCurrent(CurrentUnit.AMPS);
+
+        if (currentSpike)
+            telemetry.addLine("ALERT: Current spike in drive motor!");
 
     }
 }
