@@ -19,6 +19,8 @@ public class AutoBottomLeft extends OpModeBase
 {
     String propLocation;
 
+    public static double offset = 6;
+
     //Middle coordinates
     public static int purpleX = -36;
     public static int purpleY = 35;
@@ -162,28 +164,28 @@ public class AutoBottomLeft extends OpModeBase
         TrajectorySequence leftPark = roadrunnerMecanumDrive.trajectorySequenceBuilder(leftYellowScore.end())
                 .waitSeconds(2)
                 .back(6)
-                .turn(Math.toRadians(90))
+                .turn(Math.toRadians(-90-offset))
                 .waitSeconds(1)
-                .back(24)
-                .strafeRight(10)
+                .forward(24)
+                .strafeLeft(10)
                 .build();
 
         TrajectorySequence middlePark = roadrunnerMecanumDrive.trajectorySequenceBuilder(middleYellowScore.end())
                 .waitSeconds(2)
                 .back(6)
-                .turn(Math.toRadians(90))
+                .turn(Math.toRadians(-90-offset))
                 .waitSeconds(1)
-                .back(24)
-                .strafeRight(10)
+                .forward(24)
+                .strafeLeft(10)
                 .build();
 
         TrajectorySequence rightPark = roadrunnerMecanumDrive.trajectorySequenceBuilder(rightYellowScore.end())
                 .waitSeconds(2)
                 .back(6)
-                .turn(Math.toRadians(90))
+                .turn(Math.toRadians(-90-offset))
                 .waitSeconds(1)
-                .back(24)
-                .strafeRight(10)
+                .forward(24)
+                .strafeLeft(10)
                 .build();
 
         //Trajectory parkBackup = roadrunnerMecanumDrive.trajectoryBuilder(trussPath.end())

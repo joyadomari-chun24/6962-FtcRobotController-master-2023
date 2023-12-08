@@ -191,7 +191,7 @@ public class AutoBottomRight extends OpModeBase
 
         TrajectorySequence leftPark = roadrunnerMecanumDrive.trajectorySequenceBuilder(leftYellowScore.end())
                 .back(6)
-                .turn(Math.toRadians(90-offset))
+                .turn(Math.toRadians(90+offset))
                 .waitSeconds(1)
                 .forward(24)
                 .strafeRight(10)
@@ -199,7 +199,7 @@ public class AutoBottomRight extends OpModeBase
 
         TrajectorySequence middlePark = roadrunnerMecanumDrive.trajectorySequenceBuilder(middleYellowScore.end())
                 .back(6)
-                .turn(Math.toRadians(90-offset))
+                .turn(Math.toRadians(90+offset))
                 .waitSeconds(1)
                 .forward(24)
                 .strafeRight(10)
@@ -207,7 +207,7 @@ public class AutoBottomRight extends OpModeBase
 
         TrajectorySequence rightPark = roadrunnerMecanumDrive.trajectorySequenceBuilder(rightYellowScore.end())
                 .back(6)
-                .turn(Math.toRadians(-90-offset))
+                .turn(Math.toRadians(90+offset))
                 .waitSeconds(1)
                 .forward(24)
                 .strafeRight(20)
