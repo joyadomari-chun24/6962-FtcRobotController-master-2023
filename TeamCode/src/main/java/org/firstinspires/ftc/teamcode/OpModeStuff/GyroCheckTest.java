@@ -31,7 +31,6 @@ public class GyroCheckTest extends OpModeBase
 
         TrajectorySequence traj2 = roadrunnerMecanumDrive.trajectorySequenceBuilder(traj1.end())
                 .lineToLinearHeading(new Pose2d(33, -30, Math.toRadians(270)))
-                .turn(Math.toRadians(-190))
                 .build();
 
         waitForStart();
@@ -41,9 +40,9 @@ public class GyroCheckTest extends OpModeBase
         schedule(new SequentialCommandGroup(
                 arm.deployFront(),
                 new RunCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(traj1)),
-                new RunCommand(() -> gyroCheck(90, 10)),
+                new RunCommand(() -> gyroCheck(90, 10, traj1)),
                 new RunCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(traj2)),
-                new RunCommand(() -> gyroCheck(270, 10))
+                new RunCommand(() -> gyroCheck(270, 10, traj2))
         ));
     }
 

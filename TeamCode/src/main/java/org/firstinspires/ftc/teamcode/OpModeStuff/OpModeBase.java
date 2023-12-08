@@ -29,6 +29,7 @@ import org.firstinspires.ftc.teamcode.DriveStuff.MecanumDriveSubsystem;
 import org.firstinspires.ftc.teamcode.SlideStuff.ScoringSlideSubsystem;
 import org.firstinspires.ftc.teamcode.VisionStuff.PropDetectionProcessor;
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.roadrunner.util.RegressionUtil;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.VisionProcessor;
@@ -209,7 +210,7 @@ public class OpModeBase extends CommandOpMode
      * @param targetAngle in degrees, roadrunner format
      * @param timeout in seconds
      */
-    public void gyroCheck(double targetAngle, int timeout)
+    public void gyroCheck(double targetAngle, int timeout, TrajectorySequence traj)
     {
         navxCalibrationTimer.reset();
         while (Math.abs(targetAngle - gyroManager.roadrunnerFormat()) > 3 && opModeIsActive())
@@ -219,7 +220,9 @@ public class OpModeBase extends CommandOpMode
                 return;
         }
         Pose2d currentPos = roadrunnerMecanumDrive.getPoseEstimate();
-        roadrunnerMecanumDrive.setPoseEstimate(new Pose2d(currentPos.getX(), currentPos.getY(), Math.toRadians(targetAngle)));
+        roadrunnerMecanumDrive.setPoseEstimate(new Pose2d(traj.end().getX(), traj.end().getY(), Math.toRadians(targetAngle)));
+        telemetry.addLine("Gyrochecked!!");
+        telemetry.update();
     }
 
     //Set camera exposure to minimize motion blur (6 ms exposure, 250 gain)
