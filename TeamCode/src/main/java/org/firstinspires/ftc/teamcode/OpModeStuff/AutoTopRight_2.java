@@ -6,17 +6,15 @@ import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
-import com.arcrobotics.ftclib.trajectory.constraint.MecanumDriveKinematicsConstraint;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.VisionStuff.PropDetectionProcessor;
 import org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 @Config
 @Autonomous(preselectTeleOp = "RedTeleOp", group = "Active Autos")
-public class AutoTopRight extends OpModeBase
+public class AutoTopRight_2 extends OpModeBase
 {
     //I'm also using this one for experimental testing right now
     String propLocation;
@@ -63,15 +61,19 @@ public class AutoTopRight extends OpModeBase
 
     //Truss coordinates
     public static int trussTopX = 26;
-    public static int trussTopY = -11;
+    public static int trussTopY = -21;
     public static int trussBottomX = -36;
-    public static int trussBottomY = -15;
+    public static int trussBottomY = -25;
 
     //White pixels
-    public static int whiteStackX = 2;
-    public static int whiteStackY = 2;
-    public static int whitePixelScoreX = 2;
-    public static int whitePixelScoreY = 2;
+    public static int whiteStackX = -57;
+    public static int whiteStackY = -22;
+    public static int whiteScoreLeftX = 58;
+    public static int whiteScoreLeftY = -40;
+    public static int whiteScoreMiddleX = 58;
+    public static int whiteScoreMiddleY = -34;
+    public static int whiteScoreRightX = 58;
+    public static int whiteScoreRightY = -29;
     @Override
     public void initialize()
     {
@@ -178,17 +180,17 @@ public class AutoTopRight extends OpModeBase
                 .build();
 
         //truss
-        TrajectorySequence rightTopTruss = roadrunnerMecanumDrive.trajectorySequenceBuilder(rightPark.end())
+        TrajectorySequence rightTopTruss = roadrunnerMecanumDrive.trajectorySequenceBuilder(rightYellowScore.end())
                 .waitSeconds(1)
                 .lineToLinearHeading(new Pose2d(trussTopX, trussTopY, Math.toRadians(175)))
                 .build();
 
-        TrajectorySequence middleTopTruss = roadrunnerMecanumDrive.trajectorySequenceBuilder(middlePark.end())
+        TrajectorySequence middleTopTruss = roadrunnerMecanumDrive.trajectorySequenceBuilder(middleYellowScore.end())
                 .waitSeconds(1)
                 .lineToLinearHeading(new Pose2d(trussTopX, trussTopY, Math.toRadians(175)))
                 .build();
 
-        TrajectorySequence leftTopTruss = roadrunnerMecanumDrive.trajectorySequenceBuilder(leftPark.end())
+        TrajectorySequence leftTopTruss = roadrunnerMecanumDrive.trajectorySequenceBuilder(leftYellowScore.end())
                 .waitSeconds(1)
                 .lineToLinearHeading(new Pose2d(trussTopX, trussTopY, Math.toRadians(175)))
                 .build();
@@ -225,6 +227,64 @@ public class AutoTopRight extends OpModeBase
                 .waitSeconds(1)
                 .lineToConstantHeading(new Vector2d(whiteStackX, whiteStackY))
                 .waitSeconds(1)
+                .build();
+
+        //return
+
+        TrajectorySequence leftWhiteReturn = roadrunnerMecanumDrive.trajectorySequenceBuilder(leftWhitePickup.end())
+                .waitSeconds(2)
+                .back(6)
+                .lineToLinearHeading(new Pose2d(trussBottomX, trussBottomY, Math.toRadians(0+offset)))
+                .waitSeconds(1)
+                .lineToLinearHeading(new Pose2d(trussTopX, trussTopY, Math.toRadians(0+offset)))
+                .waitSeconds(1)
+                .build();
+
+        TrajectorySequence middleWhiteReturn = roadrunnerMecanumDrive.trajectorySequenceBuilder(middleWhitePickup.end())
+                .waitSeconds(2)
+                .back(6)
+                .lineToLinearHeading(new Pose2d(trussBottomX, trussBottomY, Math.toRadians(0+offset)))
+                .waitSeconds(1)
+                .lineToLinearHeading(new Pose2d(trussTopX, trussTopY, Math.toRadians(0+offset)))
+                .waitSeconds(1)
+                .build();
+
+        TrajectorySequence rightWhiteReturn = roadrunnerMecanumDrive.trajectorySequenceBuilder(rightWhitePickup.end())
+                .waitSeconds(2)
+                .back(6)
+                .lineToLinearHeading(new Pose2d(trussBottomX, trussBottomY, Math.toRadians(0+offset)))
+                .waitSeconds(1)
+                .lineToLinearHeading(new Pose2d(trussTopX, trussTopY, Math.toRadians(0+offset)))
+                .waitSeconds(1)
+                .build();
+
+        //white score
+
+        TrajectorySequence leftWhiteScore = roadrunnerMecanumDrive.trajectorySequenceBuilder(leftWhiteReturn.end())
+                .lineToConstantHeading(new Vector2d(whiteScoreLeftX, whiteScoreLeftY))
+                .waitSeconds(2)
+                .build();
+
+        TrajectorySequence middleWhiteScore = roadrunnerMecanumDrive.trajectorySequenceBuilder(middleWhiteReturn.end())
+                .lineToConstantHeading(new Vector2d(whiteScoreMiddleX, whiteScoreMiddleY))
+                .waitSeconds(2)
+                .build();
+
+        TrajectorySequence rightWhiteScore = roadrunnerMecanumDrive.trajectorySequenceBuilder(rightWhiteReturn.end())
+                .lineToConstantHeading(new Vector2d(whiteScoreRightX, whiteScoreRightY))
+                .waitSeconds(2)
+                .build();
+
+        TrajectorySequence leftWhiteBackup = roadrunnerMecanumDrive.trajectorySequenceBuilder(leftWhiteScore.end())
+                .back(8)
+                .build();
+
+        TrajectorySequence rightWhiteBackup = roadrunnerMecanumDrive.trajectorySequenceBuilder(rightWhiteScore.end())
+                .back(8)
+                .build();
+
+        TrajectorySequence middleWhiteBackup = roadrunnerMecanumDrive.trajectorySequenceBuilder(middleWhiteScore.end())
+                .back(8)
                 .build();
 
         //return
@@ -266,9 +326,19 @@ public class AutoTopRight extends OpModeBase
                     arm.deployFront(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(leftYellowScore)),
                     clawR.openClaw(),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(leftPark)),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(leftTopTruss)),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(leftBottomTruss)),
+                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(leftPark)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(leftTopTruss)),
+                    arm.pickupStack(),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(leftBottomTruss)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(leftWhitePickup)),
+                    clawL.closeClaw(),
+                    clawR.closeClaw(),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(leftWhiteReturn)),
+                    arm.deployFront(),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(leftWhiteScore)),
+                    clawL.openClaw(),
+                    clawR.openClaw(),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(leftWhiteBackup)),
                     //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
                     arm.pickupFront()
             ));
@@ -289,9 +359,19 @@ public class AutoTopRight extends OpModeBase
                     arm.deployFront(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(middleYellowScore)),
                     clawR.openClaw(),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(middlePark)),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(middleTopTruss)),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(middleBottomTruss)),
+                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(middlePark)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(middleTopTruss)),
+                    arm.pickupStack(),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(middleBottomTruss)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(middleWhitePickup)),
+                    clawL.closeClaw(),
+                    clawR.closeClaw(),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(middleWhiteReturn)),
+                    arm.deployFront(),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(middleWhiteScore)),
+                    clawL.openClaw(),
+                    clawR.openClaw(),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(middleWhiteBackup)),
                     //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
                     arm.pickupFront()
             ));
@@ -312,9 +392,19 @@ public class AutoTopRight extends OpModeBase
                     //new InstantCommand(() -> roadrunnerMecanumDrive.turn(Math.toRadians(-190))),
                     clawL.openClaw(),
                     //arm.deployFront(),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(rightPark)),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(rightTopTruss)),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(rightBottomTruss)),
+                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(rightPark)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(rightTopTruss)),
+                    arm.pickupStack(),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(rightBottomTruss)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(rightWhitePickup)),
+                    clawL.closeClaw(),
+                    clawR.closeClaw(),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(rightWhiteReturn)),
+                    arm.deployFront(),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(rightWhiteScore)),
+                    clawL.openClaw(),
+                    clawR.openClaw(),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(rightWhiteBackup)),
                     //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPostPurple)),
                     //arm.deployFront(),
                     //clawR.openClaw()

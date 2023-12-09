@@ -18,13 +18,13 @@ public class ArmSubsystem extends SubsystemBase
     public static double left_transport = 0.339; // arm is parallel to ground, claw is pointing straight up
     public static double left_deployFront = 0.659; // arm is raised, claw parallel to scoring board
     public static double left_deployBack = 0.34; // arm is parallel to slides, claw is parallel to ground
-    public static double left_pickupStack = 0;
+    public static double left_pickupStack = 0.85;
     //Wrist positions
     public static double w_pickupFront = 0.463;
     public static double w_transport = 0.252;
     public static double w_deployFront = 0.373;
     public static double w_deployBack = 0.19;
-    public static double w_pickupStack = 0;
+    public static double w_pickupStack = 0.4;
 
     // incremental arm and wrist values
     private double armIncrement = 0.020;

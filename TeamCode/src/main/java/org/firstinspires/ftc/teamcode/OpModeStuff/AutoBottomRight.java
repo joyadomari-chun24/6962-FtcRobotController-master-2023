@@ -94,6 +94,7 @@ public class AutoBottomRight extends OpModeBase
                 .build();
 
         TrajectorySequence leftPurpleBackup = roadrunnerMecanumDrive.trajectorySequenceBuilder(leftPurpleScore.end())
+                .waitSeconds(2)
                 .back(4)
                 .waitSeconds(1)
                 .build();
@@ -104,6 +105,7 @@ public class AutoBottomRight extends OpModeBase
                 .build();
 
         TrajectorySequence rightPurpleBackup = roadrunnerMecanumDrive.trajectorySequenceBuilder(rightPurpleScore.end())
+                .waitSeconds(2)
                 .back(4)
                 .waitSeconds(1)
                 .build();
