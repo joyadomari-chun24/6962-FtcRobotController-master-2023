@@ -33,7 +33,6 @@ public class ArmSubsystem extends SubsystemBase
     //Wrist limit
     private double w_upperLimit = 1;
     private double w_lowerLimit = 0;
-    public static boolean isScoring = false;
 
     private Servo ArmL, ArmR, servoForWrist;
     public ArmSubsystem(Servo leftServo, Servo rightServo, Servo wristServo)
@@ -56,27 +55,27 @@ public class ArmSubsystem extends SubsystemBase
 
     public Command pickupFront()
     {
-        return new InstantCommand(() -> {moveArm(left_pickupFront, 1-left_pickupFront); moveWrist(w_pickupFront); isScoring = false;});
+        return new InstantCommand(() -> {moveArm(left_pickupFront, 1-left_pickupFront); moveWrist(w_pickupFront);});
     }
 
     public Command transport()
     {
-        return new InstantCommand(() -> {moveArm(left_transport, 1-left_transport); moveWrist(w_transport); isScoring = false;});
+        return new InstantCommand(() -> {moveArm(left_transport, 1-left_transport); moveWrist(w_transport);});
     }
 
     public Command deployFront()
     {
-        return new InstantCommand(() -> {moveArm(left_deployFront, 1-left_deployFront); moveWrist(w_deployFront); isScoring = true;});
+        return new InstantCommand(() -> {moveArm(left_deployFront, 1-left_deployFront); moveWrist(w_deployFront);});
     }
 
     public Command deployBack()
     {
-        return new InstantCommand(() -> {moveArm(left_deployBack, 1-left_deployBack); moveWrist(w_deployBack); isScoring = true;});
+        return new InstantCommand(() -> {moveArm(left_deployBack, 1-left_deployBack); moveWrist(w_deployBack);});
     }
 
     public Command pickupStack()
     {
-        return new InstantCommand(() -> {moveArm(left_pickupStack, 1-left_pickupStack); moveWrist(w_pickupStack); isScoring = true;});
+        return new InstantCommand(() -> {moveArm(left_pickupStack, 1-left_pickupStack); moveWrist(w_pickupStack);});
     }
 
     public Command incrementalWrist(int sign)
