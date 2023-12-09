@@ -211,7 +211,7 @@ public class OpModeBase extends CommandOpMode
      * @param targetAngle in degrees, roadrunner format
      * @param timeout in seconds
      */
-    public void gyroCheck(double targetAngle, int timeout, TrajectorySequence traj)
+    public void gyroCheck(double targetAngle, int timeout)
     {
         navxCalibrationTimer.reset();
         while (Math.abs(targetAngle - gyroManager.roadrunnerFormat()) > 3 && opModeIsActive())
@@ -220,8 +220,8 @@ public class OpModeBase extends CommandOpMode
             if (navxCalibrationTimer.seconds() > timeout)
                 return;
         }
-        Pose2d currentPos = roadrunnerMecanumDrive.getPoseEstimate();
-        roadrunnerMecanumDrive.setPoseEstimate(new Pose2d(traj.end().getX(), traj.end().getY(), Math.toRadians(targetAngle)));
+//        Pose2d currentPos = roadrunnerMecanumDrive.getPoseEstimate();
+//        roadrunnerMecanumDrive.setPoseEstimate(new Pose2d(currentPos.getX(), currentPos.getY(), Math.toRadians(targetAngle)));
         telemetry.addLine("Gyrochecked!!");
         telemetry.update();
     }
