@@ -40,9 +40,9 @@ public class GyroCheckTest extends OpModeBase
         schedule(new SequentialCommandGroup(
                 arm.deployFront(),
                 new RunCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(traj1)),
-                new RunCommand(() -> gyroCheck(90, 10, traj1)),
+                new RunCommand(() -> gyroCheck(90, 10)),
                 new RunCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(traj2)),
-                new RunCommand(() -> gyroCheck(270, 10, traj2))
+                new RunCommand(() -> gyroCheck(270, 10))
         ));
     }
 
