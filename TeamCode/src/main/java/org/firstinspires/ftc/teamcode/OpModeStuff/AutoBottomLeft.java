@@ -23,7 +23,7 @@ public class AutoBottomLeft extends OpModeBase
 
     //Middle coordinates
     public static int purpleX = -36;
-    public static int purpleY = 35;
+    public static int purpleY = 40;
     public static int middlePurpleX = -36;
     public static int middlePurpleY = 16;
     public static int trussBottomX = -36;
@@ -240,7 +240,7 @@ public class AutoBottomLeft extends OpModeBase
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(leftPurpleScore)),
                     //arm.pickupFront(),
                     clawL.openClaw(),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPostPurple)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(leftPurpleBackup)),
                     arm.deployFront(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(leftBottomTruss)),
                     arm.pickupStack(),
@@ -288,6 +288,7 @@ public class AutoBottomLeft extends OpModeBase
                     //arm.pickupFront(),
                     clawL.openClaw(),
                     //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPostPurple)),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(leftPurpleBackup)),
                     arm.deployFront(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(rightBottomTruss)),
                     arm.pickupStack(),

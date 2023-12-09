@@ -25,19 +25,19 @@ public class AutoTopLeft_0 extends OpModeBase
     //Middle coordinates
     public static int centerPurpleForward = 30;
     public static int centerYellowX = 56;
-    public static int centerYellowY = 40;
+    public static int centerYellowY = 42;
 
     //Left coordinates
     public static int leftPurpleX = 29;
     public static int leftPurpleY = 35;
     public static int leftYellowX = 56;
-    public static int leftYellowY = 44;
+    public static int leftYellowY = 46;
 
     //Right coordinates
     public static int rightPurpleX = 10;
     public static int rightPurpleY = 33;
     public static int rightYellowX = 56;
-    public static int rightYellowY = 34;
+    public static int rightYellowY = 36;
     public static int rightBackup = 5;
 
     //Parking coordinates
