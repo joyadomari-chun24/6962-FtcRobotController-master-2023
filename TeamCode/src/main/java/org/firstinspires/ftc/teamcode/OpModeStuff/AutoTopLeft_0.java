@@ -7,7 +7,9 @@ import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+
 import org.firstinspires.ftc.teamcode.VisionStuff.PropDetectionProcessor;
+import org.firstinspires.ftc.teamcode.roadrunner.drive.opmode.ManualFeedforwardTuner;
 import org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.vision.VisionPortal;
 
@@ -15,6 +17,10 @@ import org.firstinspires.ftc.vision.VisionPortal;
 @Autonomous(group = "Active Autos")
 public class AutoTopLeft_0 extends OpModeBase
 {
+    enum Mode {
+        DRIVER_MODE
+    }
+    private Mode mode;
     String propLocation;
 
     //Experimental coordinates
@@ -286,7 +292,10 @@ public class AutoTopLeft_0 extends OpModeBase
             ));
         }
 
-//        if (aprilPortal.getCameraState() == VisionPortal.CameraState.STREAMING)
+        if (gamepad1.y) {
+        mode = Mode.DRIVER_MODE;
+        }
+        //        if (aprilPortal.getCameraState() == VisionPortal.CameraState.STREAMING)
 //        {
 //            aprilPortal.stopLiveView();
 //            aprilPortal.stopStreaming();
