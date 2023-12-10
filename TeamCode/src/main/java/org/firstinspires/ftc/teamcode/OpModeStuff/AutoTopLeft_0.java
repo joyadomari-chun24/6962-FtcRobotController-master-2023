@@ -29,19 +29,19 @@ public class AutoTopLeft_0 extends OpModeBase
     //Middle coordinates
     public static int centerPurpleForward = 30;
     public static int centerYellowX = 56;
-    public static int centerYellowY = 40;
+    public static int centerYellowY = 44;
 
     //Left coordinates
     //public static int leftPurpleX = 29;
     //public static int leftPurpleY = 35;
     public static int leftYellowX = 56;
-    public static int leftYellowY = 44;
+    public static int leftYellowY = 48;
 
     //Right coordinates
     //public static int rightPurpleX = 10;
     //public static int rightPurpleY = 33;
     public static int rightYellowX = 56;
-    public static int rightYellowY = 34;
+    public static int rightYellowY = 38;
     public static int rightBackup = 5;
 
     //Parking coordinates
@@ -71,7 +71,7 @@ public class AutoTopLeft_0 extends OpModeBase
 
         TrajectorySequence middlePurpleBackup = roadrunnerMecanumDrive.trajectorySequenceBuilder(middlePurpleScore.end())
                 .waitSeconds(2)
-                .back(6)
+                .back(8)
                 .waitSeconds(1)
                 .build();
 
@@ -82,7 +82,7 @@ public class AutoTopLeft_0 extends OpModeBase
 
         TrajectorySequence rightPurpleBackup = roadrunnerMecanumDrive.trajectorySequenceBuilder(rightPurpleScore.end())
                 .waitSeconds(2)
-                .back(6)
+                .back(8)
                 .waitSeconds(1)
                 .build();
 
@@ -139,28 +139,28 @@ public class AutoTopLeft_0 extends OpModeBase
 
         TrajectorySequence rightPark = roadrunnerMecanumDrive.trajectorySequenceBuilder(rightYellowScore.end())
                 .waitSeconds(2)
-                .back(6)
+                .back(8)
                 .turn(Math.toRadians(-90-offset))
                 .waitSeconds(1)
-                .forward(24)
+                .forward(20)
                 .strafeLeft(10)
                 .build();
 
         TrajectorySequence middlePark = roadrunnerMecanumDrive.trajectorySequenceBuilder(middleYellowScore.end())
                 .waitSeconds(2)
-                .back(6)
+                .back(8)
                 .turn(Math.toRadians(-90-offset))
                 .waitSeconds(1)
-                .forward(24)
+                .forward(20)
                 .strafeLeft(10)
                 .build();
 
         TrajectorySequence leftPark = roadrunnerMecanumDrive.trajectorySequenceBuilder(leftPurpleScore.end())
                 .waitSeconds(2)
-                .back(6)
+                .back(8)
                 .turn(Math.toRadians(90+offset))
                 .waitSeconds(1)
-                .forward(24)
+                .forward(20)
                 .strafeLeft(20)
                 .build();
 

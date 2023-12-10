@@ -8,14 +8,13 @@ import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.VisionStuff.PropDetectionProcessor;
 import org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 @Config
 @Autonomous(group = "Active Autos")
-public class AutoBottomLeft extends OpModeBase
+public class AutoBottomLeftWait extends OpModeBase
 {
     String propLocation;
 
@@ -35,13 +34,13 @@ public class AutoBottomLeft extends OpModeBase
     public static int centerYellowY = 29;
 
     //Left coordinates
-    public static int leftPurpleX = -24;
-    public static int leftPurpleY = 40;
+    public static int leftPurpleX = -33;
+    public static int leftPurpleY = 33;
     public static int leftYellowX = 56;
     public static int leftYellowY = 25;
 
     //Right coordinates
-    public static int rightPurpleX = -43;
+    public static int rightPurpleX = -39;
     public static int rightPurpleY = 33;
     public static int rightYellowX = 56;
     public static int rightYellowY = 15;
@@ -62,7 +61,8 @@ public class AutoBottomLeft extends OpModeBase
 
         //Scoring purple pixel
         TrajectorySequence leftPurpleScore = roadrunnerMecanumDrive.trajectorySequenceBuilder(startPose)
-                .lineToLinearHeading(new Pose2d(purpleX, purpleY, Math.toRadians(0)))
+                .waitSeconds(15)
+                .lineToLinearHeading(new Pose2d(leftPurpleX, leftPurpleY, Math.toRadians(0)))
                 .waitSeconds(1)
                 .build();
 
@@ -73,6 +73,7 @@ public class AutoBottomLeft extends OpModeBase
                 .build();
 
         TrajectorySequence middlePurplePrep = roadrunnerMecanumDrive.trajectorySequenceBuilder(startPose)
+                .waitSeconds(15)
                 .lineToLinearHeading(new Pose2d(purpleX, purpleY, Math.toRadians(90)))
                 .waitSeconds(1)
                 .build();
@@ -83,7 +84,8 @@ public class AutoBottomLeft extends OpModeBase
                 .build();
 
         TrajectorySequence rightPurpleScore = roadrunnerMecanumDrive.trajectorySequenceBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(purpleX, purpleY))
+                .waitSeconds(15)
+                .lineToConstantHeading(new Vector2d(rightPurpleX, rightPurpleY))
                 .waitSeconds(1)
                 .build();
 

@@ -90,7 +90,7 @@ public class AutoTopRight_0 extends OpModeBase
                 .build();
 
         TrajectorySequence leftPurpleBackup = roadrunnerMecanumDrive.trajectorySequenceBuilder(leftPurpleScore.end())
-                .back(4)
+                .back(6)
                 .waitSeconds(1)
                 .build();
 
@@ -100,7 +100,7 @@ public class AutoTopRight_0 extends OpModeBase
                 .build();
 
         TrajectorySequence middlePurpleBackup = roadrunnerMecanumDrive.trajectorySequenceBuilder(middlePurpleScore.end())
-                .back(4)
+                .back(6)
                 .waitSeconds(1)
                 .build();
 
@@ -158,26 +158,26 @@ public class AutoTopRight_0 extends OpModeBase
 
         //Parking
         TrajectorySequence leftPark = roadrunnerMecanumDrive.trajectorySequenceBuilder(leftYellowScore.end())
-                .back(6)
+                .back(8)
                 .turn(Math.toRadians(90-offset))
                 .waitSeconds(1)
-                .forward(24)
+                .forward(20)
                 .strafeRight(10)
                 .build();
 
         TrajectorySequence middlePark = roadrunnerMecanumDrive.trajectorySequenceBuilder(middleYellowScore.end())
-                .back(6)
+                .back(8)
                 .turn(Math.toRadians(90-offset))
                 .waitSeconds(1)
-                .forward(24)
+                .forward(20)
                 .strafeRight(10)
                 .build();
 
         TrajectorySequence rightPark = roadrunnerMecanumDrive.trajectorySequenceBuilder(rightPurpleScore.end())
-                .back(6)
+                .back(8)
                 .turn(Math.toRadians(-90-offset))
                 .waitSeconds(1)
-                .forward(24)
+                .forward(20)
                 .strafeRight(20)
                 .build();
 
