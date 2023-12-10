@@ -19,12 +19,14 @@ public class ArmSubsystem extends SubsystemBase
     public static double left_deployFront = 0.659; // arm is raised, claw parallel to scoring board
     public static double left_deployBack = 0.34; // arm is parallel to slides, claw is parallel to ground
     public static double left_pickupStack = 0.85;
+    public static double left_scoreYellow = 0.7;
     //Wrist positions
     public static double w_pickupFront = 0.463;
     public static double w_transport = 0.252;
     public static double w_deployFront = 0.373;
     public static double w_deployBack = 0.19;
     public static double w_pickupStack = 0.4;
+    public static double w_scoreYellow = 0.35;
 
     // incremental arm and wrist values
     private double armIncrement = 0.020;
@@ -76,6 +78,11 @@ public class ArmSubsystem extends SubsystemBase
     public Command pickupStack()
     {
         return new InstantCommand(() -> {moveArm(left_pickupStack, 1-left_pickupStack); moveWrist(w_pickupStack);});
+    }
+
+    public Command scoreYellow()
+    {
+        return new InstantCommand(() -> {moveArm(left_scoreYellow, 1-left_scoreYellow); moveWrist(w_scoreYellow);});
     }
 
     public Command incrementalWrist(int sign)
