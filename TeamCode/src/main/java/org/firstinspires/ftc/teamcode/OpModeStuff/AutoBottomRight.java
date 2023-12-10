@@ -117,7 +117,11 @@ public class AutoBottomRight extends OpModeBase
 
         TrajectorySequence middlePurpleScore = roadrunnerMecanumDrive.trajectorySequenceBuilder(middlePurplePrep.end())
                 .lineToConstantHeading(new Vector2d(middlePurpleX, middlePurpleY))
-                .waitSeconds(1)
+                .waitSeconds(2)
+                .build();
+
+        TrajectorySequence middlePurpleBackup = roadrunnerMecanumDrive.trajectorySequenceBuilder(middlePurpleScore.end())
+                .back(6)
                 .build();
 
         TrajectorySequence leftBottomTruss = roadrunnerMecanumDrive.trajectorySequenceBuilder(leftPurpleBackup.end())
@@ -136,8 +140,8 @@ public class AutoBottomRight extends OpModeBase
                 .waitSeconds(1)
                 .build();
 
-        TrajectorySequence middleBottomTruss = roadrunnerMecanumDrive.trajectorySequenceBuilder(middlePurpleScore.end())
-                .waitSeconds(2)
+        TrajectorySequence middleBottomTruss = roadrunnerMecanumDrive.trajectorySequenceBuilder(middlePurpleBackup.end())
+                .waitSeconds(1)
                 .lineToConstantHeading(new Vector2d(trussBottomX, trussBottomY))
                 .waitSeconds(1)
                 .turn(Math.toRadians(90))
@@ -271,9 +275,10 @@ public class AutoBottomRight extends OpModeBase
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(middlePurpleScore)),
                     //arm.pickupFront(),
                     clawL.openClaw(),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(middlePurpleBackup)),
                     arm.scoreYellow(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(middleBottomTruss)),
-                    arm.transport(),
+                    //arm.transport(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(middleTopTruss)),
                     arm.scoreYellow(),
                     //clawR.openClaw()

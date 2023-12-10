@@ -234,11 +234,7 @@ public class AutoBottomLeft extends OpModeBase
         {
             schedule(new SequentialCommandGroup(
                     clawL.closeClaw(), clawR.closeClaw(),
-                    //arm.transport(),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(otherPurple)),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPurpleScore)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(leftPurpleScore)),
-                    //arm.pickupFront(),
                     clawL.openClaw(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(leftPurpleBackup)),
                     arm.deployFront(),
@@ -249,7 +245,6 @@ public class AutoBottomLeft extends OpModeBase
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(leftYellowScore)),
                     clawR.openClaw(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(leftPark)),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
                     arm.pickupFront()
             ));
         }

@@ -21,7 +21,7 @@ public class AutoTopLeft_0 extends OpModeBase
     public static int purpleX = 13;
     public static int purpleY = 36;
     public static int leftPurpleX = 15;
-    public static int leftPurpleY = 36;
+    public static int leftPurpleY = 39;
     public static int rightPurpleX = 11;
     public static int rightPurpleY = 36;
     public static double offset = 8;
@@ -109,7 +109,7 @@ public class AutoTopLeft_0 extends OpModeBase
 
         TrajectorySequence leftPurpleScore = roadrunnerMecanumDrive.trajectorySequenceBuilder(leftPurplePrep.end())
                 .waitSeconds(1)
-                .turn(Math.toRadians(190))
+                .back(rightBackup)
                 .waitSeconds(2)
                 .build();
 
@@ -158,7 +158,7 @@ public class AutoTopLeft_0 extends OpModeBase
         TrajectorySequence leftPark = roadrunnerMecanumDrive.trajectorySequenceBuilder(leftPurpleScore.end())
                 .waitSeconds(2)
                 .back(8)
-                .turn(Math.toRadians(90+offset))
+                .turn(Math.toRadians(-90+offset))
                 .waitSeconds(1)
                 .forward(20)
                 .strafeLeft(20)
@@ -221,22 +221,13 @@ public class AutoTopLeft_0 extends OpModeBase
             schedule(new SequentialCommandGroup(
                     clawL.closeClaw(), clawR.closeClaw(),
                     arm.scoreYellow(),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(otherPurple)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(leftYellowScore)),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(middlePurpleScore)),
-                    //arm.pickupFront(),
                     clawR.openClaw(),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPostPurple)),
-                    //arm.scoreYellow(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(leftPurplePrep)),
                     arm.pickupFront(),
-                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(leftPurpleScore)),
                     clawL.openClaw(),
-                    //arm.scoreYellow(),
+                    new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(leftPurpleScore)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(leftPark)),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(leftTopTruss)),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(leftBottomTruss)),
                     arm.pickupFront()
             ));
         }
@@ -245,21 +236,13 @@ public class AutoTopLeft_0 extends OpModeBase
             //Using the scheduler allows us to run commands in auto
             schedule(new SequentialCommandGroup(
                     clawL.closeClaw(), clawR.closeClaw(),
-                    //arm.transport(),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(otherPurple)),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPurpleScore)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(middlePurpleScore)),
-                    //arm.pickupFront(),
                     clawL.openClaw(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(middlePurpleBackup)),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPostPurple)),
                     arm.scoreYellow(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(middleYellowScore)),
                     clawR.openClaw(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(middlePark)),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(middleTopTruss)),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(middleBottomTruss)),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
                     arm.pickupFront()
             ));
         }
@@ -267,21 +250,13 @@ public class AutoTopLeft_0 extends OpModeBase
         {
             schedule(new SequentialCommandGroup(
                     clawL.closeClaw(), clawR.closeClaw(),
-                    //arm.transport(),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(otherPurple)),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPurpleScore)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(rightPurpleScore)),
-                    //arm.pickupFront(),
                     clawL.openClaw(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(rightPurpleBackup)),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPostPurple)),
                     arm.scoreYellow(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(rightYellowScore)),
                     clawR.openClaw(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(rightPark)),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(rightTopTruss)),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(rightBottomTruss)),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
                     arm.pickupFront()
             ));
         }

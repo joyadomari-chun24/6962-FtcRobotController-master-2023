@@ -388,8 +388,6 @@ public class AutoTopRight_2 extends OpModeBase
                     clawR.openClaw(),
                     //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(rightPark)),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(rightPurpleScore)),
-                    //arm.pickupFront(),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.turn(Math.toRadians(-190))),
                     clawL.openClaw(),
                     //arm.deployFront(),
                     //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(rightPark)),
@@ -405,10 +403,6 @@ public class AutoTopRight_2 extends OpModeBase
                     clawL.openClaw(),
                     clawR.openClaw(),
                     new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectorySequence(rightWhiteBackup)),
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(leftPostPurple)),
-                    //arm.deployFront(),
-                    //clawR.openClaw()
-                    //new InstantCommand(() -> roadrunnerMecanumDrive.followTrajectory(parkScore)),
                     arm.pickupFront()
             ));
         }
