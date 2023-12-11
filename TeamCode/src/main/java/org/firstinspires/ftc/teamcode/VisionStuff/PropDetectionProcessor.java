@@ -43,7 +43,7 @@ public class PropDetectionProcessor implements VisionProcessor
     Scalar strictHighHSV;
     Scalar strictLowHSV;
     double leftZone = 150;
-    double rightZone = 500;
+    double rightZone = 450;
 
     public PropDetectionProcessor(boolean propIsBlue)
     {

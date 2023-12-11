@@ -33,14 +33,14 @@ public class AutoBottomRight extends OpModeBase
 
     //Middle coordinates
     public static int middleYellowX = 56;
-    public static int middleYellowY = -39;
+    public static int middleYellowY = -36;
 
 
     //Left coordinates
     public static int leftPurpleX = -43;
     public static int leftPurpleY = -40;
     public static int leftYellowX = 57;
-    public static int leftYellowY = -35;
+    public static int leftYellowY = -33;
 
     //Right coordinates
     public static int rightPurpleX = -24;
